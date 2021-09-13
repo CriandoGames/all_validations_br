@@ -6,42 +6,42 @@
 
 ## ⚙️ Funcionalidades
 
-- [X]  isNull
-- [X]  isNum
-- [X]  isNumericOnly
-- [X]  isNumericFloat
-- [X]  isAlphabetOnly
-- [X]  isVideo
-- [X]  isImage
-- [X]  isURL
-- [X]  isEmail
-- [X]  isPhoneNumber
-- [X]  isDateTime
-- [X]  isMD5
-- [X]  isSHA1
-- [X]  isSHA256
-- [X]  isSSN
-- [X]  isBinary
-- [X]  isIPv4
-- [X]  isIPv6
-- [X]  isHexadecimal
-- [X]  isLowerThan
-- [X]  isGreaterThan
-- [X]  isCnpj
-- [X]  isCpf
-- [X]  removeCaracteres
+- [✅]  isNull
+- [✅]  isNum
+- [✅]  isNumericOnly
+- [✅]  isNumericFloat
+- [✅]  isAlphabetOnly
+- [✅]  isVideo
+- [✅]  isImage
+- [✅]  isURL
+- [✅]  isEmail
+- [✅]  isPhoneNumber
+- [✅]  isDateTime
+- [✅]  isMD5
+- [✅]  isSHA1
+- [✅]  isSHA256
+- [✅]  isSSN
+- [✅]  isBinary
+- [✅]  isIPv4
+- [✅]  isIPv6
+- [✅]  isHexadecimal
+- [✅]  isLowerThan
+- [✅]  isGreaterThan
+- [✅]  isCnpj
+- [✅]  isCpf
+- [✅]  removeCaracteres
 
-### Features test
+### 🧪 testes
 
-- [X]  isNull
-- [X]  isNum
-- [X]  isNumericOnly
-- [X]  isNumericFloat
-- [X]  isAlphabetOnly
+- [✅]  isNull
+- [✅]  isNum
+- [✅]  isNumericOnly
+- [✅]  isNumericFloat
+- [✅]  isAlphabetOnly
 - [ ]  isVideo
 - [ ]  isImage
-- [X]  isURL
-- [X]  isEmail
+- [✅]  isURL
+- [✅]  isEmail
 - [ ]  isPhoneNumber
 - [ ]  isDateTime
 - [ ]  isMD5
