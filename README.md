@@ -82,11 +82,10 @@ var isCpf = AllValidations.isBool('true');
 
 <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/14837643?s=96&v=4" width="100px;" alt=""/>
- <br />
- 
+
  <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/60795279?v=4" width="100px;" alt=""/>
- <br />
+
  
   <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/30814200?v=4" width="100px;" alt=""/>
