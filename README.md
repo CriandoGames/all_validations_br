@@ -79,6 +79,7 @@ var isCpf = AllValidations.isBool('true');
 
 ### Autores
 ---
+Feito com ❤️ por 
 
 <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/14837643?s=96&v=4" width="100px;" alt=""/>
@@ -95,13 +96,6 @@ var isCpf = AllValidations.isBool('true');
   <sub><b>Benjamim Soprani</b></sub></a> <a href="###" title="">🚀</a>
   <sub><b>Shedy Husein</b></sub></a> <a href="###" title="">🚀</a>
 
-Feito com ❤️ por Carlos Castro, Shedy e benjamim 👋🏽 Entre em contato!
-
-[![Github Badge](https://img.shields.io/badge/-Github-000?style=flat-square&logo=Github&logoColor=white&link=https://github.com/lucasgdb)](https://github.com/CriandoGames)
-[![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/carlos-castro-07031692/)](https://www.linkedin.com/in/carlos-castro-07031692/)
-[![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:carloscastrogames@gmail.com)](mailto:carloscastrogames@gmail.com)
-[![Instagram Badge](https://img.shields.io/badge/-Instagram-C13584?style=flat-square&labelColor=C13584&logo=instagram&logoColor=white&link=https://www.instagram.com/codepwr/)](https://www.instagram.com/llcarloscastroll/)
-  
   
   ## 📝 Licença
 
