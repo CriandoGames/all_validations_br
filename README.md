@@ -4,7 +4,7 @@
 
 - AllValidations é uma solução extra leve e poderosa para Flutter. Combine validações para agilizar seu desenvolvimento. esperamos que ajude você com seus projetos.
 
-### services validations
+## ⚙️ Funcionalidades
 
 - [X]  isNull
 - [X]  isNum
