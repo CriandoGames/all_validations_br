@@ -82,19 +82,19 @@ var isCpf = AllValidations.isBool('true');
 
 <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/14837643?s=96&v=4" width="100px;" alt=""/>
-  <sub><b>Carlos Castro </b></sub></a> <a href="###" title="">🚀</a>
  <br />
  
  <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/60795279?v=4" width="100px;" alt=""/>
  <br />
- <sub><b>Benjamim Soprani</b></sub></a> <a href="###" title="">🚀</a>
  
   <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/30814200?v=4" width="100px;" alt=""/>
  <br />
- <sub><b>Shedy Husein Sinkoc</b></sub></a> <a href="###" title="">🚀</a>
 
+  <sub><b>Carlos Castro </b></sub></a> <a href="###" title="">🚀</a>
+  <sub><b>Benjamim Soprani</b></sub></a> <a href="###" title="">🚀</a>
+  <sub><b>Shedy Husein Sinkoc</b></sub></a> <a href="###" title="">🚀</a>
 
 Feito com ❤️ por Carlos Castro, Shedy e benjamim 👋🏽 Entre em contato!
 
