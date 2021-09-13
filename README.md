@@ -91,9 +91,9 @@ var isCpf = AllValidations.isBool('true');
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/30814200?v=4" width="100px;" alt=""/>
  <br />
 
-  <sub><b>Carlos Castro </b></sub></a> <a href="###" title="">🚀</a>
+  <sub><b>Carlos Castro</b></sub></a> <a href="###" title="">🚀</a>
   <sub><b>Benjamim Soprani</b></sub></a> <a href="###" title="">🚀</a>
-  <sub><b>Shedy Husein Sinkoc</b></sub></a> <a href="###" title="">🚀</a>
+  <sub><b>Shedy Husein</b></sub></a> <a href="###" title="">🚀</a>
 
 Feito com ❤️ por Carlos Castro, Shedy e benjamim 👋🏽 Entre em contato!
 
