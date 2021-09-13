@@ -73,7 +73,7 @@ var isCpf = AllValidations.isCpf(000.000.000.00);
 #### 🎲 exemplos de validação String é bool 
 
 ```dart
-var isCpf = AllValidations.isBool('true'); 
+var isBool = AllValidations.isBool('true'); 
 //this return true
 ```
 
