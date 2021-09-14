@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AllValidations {
   AllValidations._();
 
@@ -22,7 +24,7 @@ class AllValidations {
   /// Numeric only doesn't accepting "." which double data type have
   static bool isNumericOnly(String s) => hasMatch(s, r'^\d+$');
 
-/// Numeric only but '' return true
+  /// Numeric only but '' return true
   static bool isNumericFloat(String s) => hasMatch(
       s, r'^(?:-?(?:[0-9]+))?(?:\.[0-9]*)?(?:[eE][\+\-]?(?:[0-9]+))?$');
 
@@ -133,10 +135,8 @@ class AllValidations {
 
   //Check if num is a cnpj
   static bool isCnpj(String cnpj) {
- 
     final numbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
 
-  
     if (numbers.length != 14) {
       return false;
     }
@@ -176,7 +176,6 @@ class AllValidations {
 
   /// Checks if the cpf is valid.
   static bool isCpf(String cpf) {
-   
     // get only the numbers
     final numbers = cpf.replaceAll(RegExp(r'[^0-9]'), '');
     // Test if the CPF has 11 digits
@@ -222,9 +221,72 @@ class AllValidations {
     return true;
   }
 
+  /// check if the string [str] is an integer
+  bool isInt(String str) {
+    RegExp _int = new RegExp(r'^(?:-?(?:0|[1-9][0-9]*))$');
+    return _int.hasMatch(str);
+  }
+
+  /// check if the string [str] is lowercase
+  bool isLowercase(String str) {
+    return str == str.toLowerCase();
+  }
+
+  /// check if the string [str] is uppercase
+  bool isUppercase(String str) {
+    return str == str.toUpperCase();
+  }
+
   /// Remover caracteres especiais (ex: `/`, `-`, `.`)
   static String removeCaracteres(String valor) {
     assert(valor.isNotEmpty);
     return valor.replaceAll(RegExp('[^0-9a-zA-Z]+'), '');
+  }
+
+  /// check if the string is a credit card
+  bool isCreditCard(String str) {
+    RegExp _creditCard = new RegExp(
+        r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$');
+
+    String sanitized = str.replaceAll(new RegExp(r'[^0-9]+'), '');
+    if (!_creditCard.hasMatch(sanitized)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /// check if the string is a UUID (version 3, 4 or 5).
+  bool isUUID(String? str, [version]) {
+    Map _uuid = {
+      '3': new RegExp(
+          r'^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$'),
+      '4': new RegExp(
+          r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'),
+      '5': new RegExp(
+          r'^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'),
+      'all': new RegExp(
+          r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$')
+    };
+
+    if (version == null) {
+      version = 'all';
+    } else {
+      version = version.toString();
+    }
+
+    RegExp? pat = _uuid[version];
+
+    return (pat != null && pat.hasMatch(str!.toUpperCase()));
+  }
+
+  /// check if the string is valid JSON
+  bool isJSON(str) {
+    try {
+      jsonDecode(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }

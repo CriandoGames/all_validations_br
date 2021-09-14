@@ -35,7 +35,6 @@
 - [✅]  isLowercase
 - [✅]  isUppercase
 - [✅]  isInt
-- [✅]  isLowercase
 - [✅]  removeCaracteres
 
 ### 🧪 testes
