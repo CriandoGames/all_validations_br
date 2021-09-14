@@ -222,18 +222,18 @@ class AllValidations {
   }
 
   /// check if the string [str] is an integer
-  bool isInt(String str) {
+  static bool isInt(String str) {
     RegExp _int = new RegExp(r'^(?:-?(?:0|[1-9][0-9]*))$');
     return _int.hasMatch(str);
   }
 
   /// check if the string [str] is lowercase
-  bool isLowercase(String str) {
+  static bool isLowercase(String str) {
     return str == str.toLowerCase();
   }
 
   /// check if the string [str] is uppercase
-  bool isUppercase(String str) {
+  static bool isUppercase(String str) {
     return str == str.toUpperCase();
   }
 
@@ -244,7 +244,7 @@ class AllValidations {
   }
 
   /// check if the string is a credit card
-  bool isCreditCard(String str) {
+  static bool isCreditCard(String str) {
     RegExp _creditCard = new RegExp(
         r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$');
 
@@ -257,7 +257,7 @@ class AllValidations {
   }
 
   /// check if the string is a UUID (version 3, 4 or 5).
-  bool isUUID(String? str, [version]) {
+  static bool isUUID(String? str, [version]) {
     Map _uuid = {
       '3': new RegExp(
           r'^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$'),
@@ -281,12 +281,18 @@ class AllValidations {
   }
 
   /// check if the string is valid JSON
-  bool isJSON(str) {
+  static bool isJSON(str) {
     try {
       jsonDecode(str);
     } catch (e) {
       return false;
     }
     return true;
+  }
+
+  static bool isValidBRZip(String cep) {
+    RegExp isZipValid =
+        RegExp(r"^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$", caseSensitive: false);
+    return isZipValid.hasMatch(cep);
   }
 }
