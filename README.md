@@ -69,7 +69,6 @@
 - [ ]  isLowercase
 - [ ]  isUppercase
 - [ ]  isInt
-- [ ]  isLowercase
 
 ### 🛠 Tecnologias
 - [Flutter](https://flutter.dev/)
