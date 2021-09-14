@@ -76,7 +76,6 @@
 - [Flutter](https://flutter.dev/)
 
 
-
 #### 🎲 exemplo de validação CPF
 
 ```dart
@@ -90,10 +89,10 @@ var isCpf = AllValidations.isCpf(000.000.000.00);
 var isBool = AllValidations.isBool('true'); 
 //this return true
 ```
-
+#### 🎲 exemplos de Remoção caracteres  
 ```dart
 //(ex: `/`, `-`, `.`)
-var remover = AllValidations.isBool('000.000.000-00'); 
+var remover = AllValidations.removeCaracteres('000.000.000-00'); 
 //this return 00000000000
 ```
 
@@ -107,7 +106,6 @@ Feito com ❤️ por
  <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/60795279?v=4" width="100px;" alt=""/>
 
- 
   <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/30814200?v=4" width="100px;" alt=""/>
  <br />
