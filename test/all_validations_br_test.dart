@@ -95,4 +95,23 @@ void main() {
     sut = AllValidations.isNumericFloat('dasd5345!!!#');
     expect(sut, false);
   });
+
+    test('should call validation Checks if CEP BRAZIL',
+      () {
+    var sut = AllValidations.isValidBRZip('65092-276');
+    expect(sut, true);
+
+    sut = AllValidations.isValidBRZip('65092276');
+    expect(sut, true);
+
+     sut = AllValidations.isValidBRZip('650.922.76');
+    expect(sut, false);
+
+     sut = AllValidations.isValidBRZip('650.922.76');
+    expect(sut, false);
+
+     sut = AllValidations.isValidBRZip('650.922');
+    expect(sut, false);
+
+  });
 }

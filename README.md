@@ -69,6 +69,8 @@
 - [ ]  isLowercase
 - [ ]  isUppercase
 - [ ]  isInt
+- [✅]  isValidBRZip
+
 
 ### 🛠 Tecnologias
 - [Flutter](https://flutter.dev/)
