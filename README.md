@@ -29,6 +29,13 @@
 - [✅]  isGreaterThan
 - [✅]  isCnpj
 - [✅]  isCpf
+- [✅]  isUUID
+- [✅]  isJSON
+- [✅]  isCreditCard
+- [✅]  isLowercase
+- [✅]  isUppercase
+- [✅]  isInt
+- [✅]  isLowercase
 - [✅]  removeCaracteres
 
 ### 🧪 testes
@@ -57,6 +64,13 @@
 - [ ]  isCnpj
 - [ ]  isCpf
 - [ ]  removeCaracteres
+- [ ]  isUUID
+- [ ]  isJSON
+- [ ]  isCreditCard
+- [ ]  isLowercase
+- [ ]  isUppercase
+- [ ]  isInt
+- [ ]  isLowercase
 
 ### 🛠 Tecnologias
 - [Flutter](https://flutter.dev/)
@@ -75,6 +89,12 @@ var isCpf = AllValidations.isCpf(000.000.000.00);
 ```dart
 var isBool = AllValidations.isBool('true'); 
 //this return true
+```
+
+```dart
+//(ex: `/`, `-`, `.`)
+var remover = AllValidations.isBool('000.000.000-00'); 
+//this return 00000000000
 ```
 
 ### Autores
