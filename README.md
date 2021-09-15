@@ -92,7 +92,7 @@ var isBool = AllValidations.isBool('true');
 #### 🎲 exemplos de Remoção caracteres  
 ```dart
 //(ex: `/`, `-`, `.`)
-var remover = AllValidations.removeCaracteres('000.000.000-00'); 
+var remover = AllValidations.removeCharacters('000.000.000-00'); 
 //this return 00000000000
 ```
 
