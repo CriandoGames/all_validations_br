@@ -2,6 +2,7 @@ import 'package:all_validations_br/all_validations_br.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+
   test('should call validation Checks if data is null', () {
     var sut = AllValidations.isNull(null);
     expect(sut, true);
@@ -198,6 +199,7 @@ void main() {
     sut = AllValidations.isVideo('\/.mp4');
     expect(sut, true);
   });
+  
   test('should call validation Checks if isImage', () {
     var sut = AllValidations.isImage(".jpg");
     expect(sut, true);
@@ -236,5 +238,72 @@ void main() {
     expect(sut, false);
   });
 
+  test('should call validation Checks if formar RG ', () {
+    //RG gerado com https://www.4devs.com.br/gerador_de_rg
+    var sut = AllValidations.isRG('222733822');
+    expect(sut, true);
+
+    sut = AllValidations.isRG('29.385.462-2');
+    expect(sut, true);
+
+    sut = AllValidations.isRG('65092276');
+    expect(sut, true);
+
+    sut = AllValidations.isRG('992.864.791-74');
+    expect(sut, false);
+
+    sut = AllValidations.isRG('1111');
+    expect(sut, false);
+
+    sut = AllValidations.isRG('aaaaa');
+    expect(sut, false);
+  });
+
+  test('should call validation Checks if formar CPF ', () {
+    //RG gerado com https://www.4devs.com.br/gerador_de_rg
+    var sut = AllValidations.isCpf('222733822');
+    expect(sut, false);
+
+    sut = AllValidations.isCpf('29.385.462-2');
+    expect(sut, false);
+
+    sut = AllValidations.isCpf('65092276');
+    expect(sut, false);
+
+    sut = AllValidations.isCpf('992.864.791-74');
+    expect(sut, true);
+
+    sut = AllValidations.isCpf('99286479174');
+    expect(sut, true);
+
+    sut = AllValidations.isCpf('1111');
+    expect(sut, false);
+
+    sut = AllValidations.isCpf('aaaaa');
+    expect(sut, false);
+  });
+
+  test('should call validation Checks if Phone BRAZIL', () {
+    var sut = AllValidations.isPhoneNumber('947240687');
+    expect(sut, true);
+
+    sut = AllValidations.isPhoneNumber('21947240687');
+    expect(sut, true);
+
+    sut = AllValidations.isPhoneNumber('21 947240687');
+    expect(sut, true);
+
+    sut = AllValidations.isPhoneNumber('21 9 4724-0687');
+    expect(sut, true);
+
+   sut =  AllValidations.isPhoneNumber('(21) 9 4724-0687');
+    expect(sut, true);
+    
+    ///numeros antigos com 8 digitos
+    sut = AllValidations.isPhoneNumber('94724067');
+    expect(sut, false);
+
+    sut = AllValidations.isPhoneNumber('947240');
+    expect(sut, false);
   });
 }

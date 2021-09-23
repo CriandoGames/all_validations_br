@@ -100,8 +100,11 @@ class AllValidations {
 
   /// Checks if string is phone number.
   static bool isPhoneNumber(String s) {
-    if (s.length > 16 || s.length < 9) return false;
-    return hasMatch(s, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
+    if (s.length > 16 || s.length < 9) {
+      return false;
+    } else {
+      return hasMatch(s, r'(^[0-9]{2})?(\s|-)?(9?[0-9]{4})-?([0-9]{4}$)');
+    }
   }
 
   /// Checks if string is DateTime (UTC or Iso8601).
@@ -312,7 +315,7 @@ class AllValidations {
     return isZipValid.hasMatch(cep);
   }
 
-/// check if RG is valid format
+  /// check if RG is valid format included with x in end
   static bool isRG(String rg) =>
-      hasMatch(rg, 'r^(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x\$)');
+      hasMatch(rg, r'(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)');
 }

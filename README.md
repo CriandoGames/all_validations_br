@@ -29,6 +29,7 @@
 - [✅]  isGreaterThan
 - [✅]  isCnpj
 - [✅]  isCpf
+- [✅]  isRG
 - [✅]  isUUID
 - [✅]  isJSON
 - [✅]  isCreditCard
@@ -37,15 +38,16 @@
 - [✅]  isInt
 - [✅]  removeCaracteres
 
-### 🧪 testes
 
+
+### 🧪 testes
 - [✅]  isNull
 - [✅]  isNum
 - [✅]  isNumericOnly
 - [✅]  isNumericFloat
 - [✅]  isAlphabetOnly
-- [ ]  isVideo
-- [ ]  isImage
+- [✅]  isVideo
+- [✅]  isImage
 - [✅]  isURL
 - [✅]  isEmail
 - [ ]  isPhoneNumber
@@ -61,7 +63,8 @@
 - [ ]  isLowerThan
 - [ ]  isGreaterThan
 - [ ]  isCnpj
-- [ ]  isCpf
+- [✅]  isCpf
+- [✅]  isRG
 - [ ]  removeCaracteres
 - [ ]  isUUID
 - [ ]  isJSON
