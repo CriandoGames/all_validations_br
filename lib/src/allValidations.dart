@@ -253,7 +253,7 @@ class AllValidations {
   }
 
   /// Remover caracteres especiais (ex: `/`, `-`, `.`)
-  static String removeCaracteres(String valor) {
+  static String removeCharacters(String valor) {
     assert(valor.isNotEmpty);
     return valor.replaceAll(RegExp('[^0-9a-zA-Z]+'), '');
   }
@@ -305,9 +305,14 @@ class AllValidations {
     return true;
   }
 
+  /// check if  CEP is valid format
   static bool isValidBRZip(String cep) {
     RegExp isZipValid =
         RegExp(r"^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$", caseSensitive: false);
     return isZipValid.hasMatch(cep);
   }
+
+/// check if RG is valid format
+  static bool isRG(String rg) =>
+      hasMatch(rg, 'r^(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x\$)');
 }
