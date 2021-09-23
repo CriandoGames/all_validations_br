@@ -96,22 +96,145 @@ void main() {
     expect(sut, false);
   });
 
-    test('should call validation Checks if CEP BRAZIL',
-      () {
+  test('should call validation Checks if CEP BRAZIL', () {
     var sut = AllValidations.isValidBRZip('65092-276');
     expect(sut, true);
 
     sut = AllValidations.isValidBRZip('65092276');
     expect(sut, true);
 
-     sut = AllValidations.isValidBRZip('650.922.76');
+    sut = AllValidations.isValidBRZip('650.922.76');
     expect(sut, false);
 
-     sut = AllValidations.isValidBRZip('650.922.76');
+    sut = AllValidations.isValidBRZip('650.922.76');
     expect(sut, false);
 
-     sut = AllValidations.isValidBRZip('650.922');
+    sut = AllValidations.isValidBRZip('650.922');
     expect(sut, false);
+  });
+
+  test('should call validation Checks if isVideo', () {
+    var sut = AllValidations.isVideo('a.mp4');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.wmv');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mpg');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.3gp');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.m4v');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mgv');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mov');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mkv');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.ogv');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.qtm');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.srt');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.amc');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.dvx');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.flv');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.evo');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.avi');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.rmvb');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mpg');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mpeg');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('a.mp3');
+    expect(sut, false);
+
+    sut = AllValidations.isVideo('a');
+    expect(sut, false);
+
+    sut = AllValidations.isVideo('1');
+    expect(sut, false);
+
+    sut = AllValidations.isVideo('');
+    expect(sut, false);
+
+    sut = AllValidations.isVideo('.mp 4');
+    expect(sut, false);
+
+    sut = AllValidations.isVideo('.mP4');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo(0x00.toString());
+    expect(sut, false);
+
+    sut = AllValidations.isVideo('\'.mp4');
+    expect(sut, true);
+
+    sut = AllValidations.isVideo('\/.mp4');
+    expect(sut, true);
+  });
+  test('should call validation Checks if isImage', () {
+    var sut = AllValidations.isImage(".jpg");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".jpeg");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".png");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".gif");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".ico");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".svg");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".raw");
+    expect(sut, true);
+
+    sut = AllValidations.isImage(".bmp");
+    expect(sut, true);
+
+    sut = AllValidations.isImage('');
+    expect(sut, false);
+
+    sut = AllValidations.isImage('1');
+    expect(sut, false);
+
+    sut = AllValidations.isImage('A');
+    expect(sut, false);
+
+    sut = AllValidations.isImage('.');
+    expect(sut, false);
+  });
 
   });
 }

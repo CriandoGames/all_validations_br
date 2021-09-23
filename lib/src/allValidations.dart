@@ -45,12 +45,24 @@ class AllValidations {
     var ext = filePath.toLowerCase();
 
     return ext.endsWith(".mp4") ||
-        ext.endsWith(".avi") ||
         ext.endsWith(".wmv") ||
-        ext.endsWith(".rmvb") ||
         ext.endsWith(".mpg") ||
-        ext.endsWith(".mpeg") ||
-        ext.endsWith(".3gp");
+        ext.endsWith(".3gp") ||
+        ext.endsWith(".m4v") ||
+        ext.endsWith(".mgv") ||
+        ext.endsWith(".mov") ||
+        ext.endsWith(".mkv") ||
+        ext.endsWith(".ogv") ||
+        ext.endsWith(".qtm") ||
+        ext.endsWith(".srt") ||
+        ext.endsWith(".amc") ||
+        ext.endsWith(".dvx") ||
+        ext.endsWith(".flv") ||
+        ext.endsWith(".evo") ||
+        ext.endsWith(".avi") ||
+        ext.endsWith("rmvb") ||
+        ext.endsWith(".mpg") ||
+        ext.endsWith("mpeg");
   }
 
   /// Checks if string is an image file.
@@ -61,6 +73,9 @@ class AllValidations {
         ext.endsWith(".jpeg") ||
         ext.endsWith(".png") ||
         ext.endsWith(".gif") ||
+        ext.endsWith(".ico") ||
+        ext.endsWith(".svg") ||
+        ext.endsWith(".raw") ||
         ext.endsWith(".bmp");
   }
 
