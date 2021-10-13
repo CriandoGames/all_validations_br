@@ -36,6 +36,7 @@
 - [✅]  isLowercase
 - [✅]  isUppercase
 - [✅]  isInt
+- [✅]  isEqual
 - [✅]  removeCaracteres
 
 
@@ -50,7 +51,8 @@
 - [✅]  isImage
 - [✅]  isURL
 - [✅]  isEmail
-- [ ]  isPhoneNumber
+- [✅]  isPhoneNumber
+- [✅]  isEqual
 - [ ]  isDateTime
 - [ ]  isMD5
 - [ ]  isSHA1
@@ -60,18 +62,18 @@
 - [ ]  isIPv4
 - [ ]  isIPv6
 - [ ]  isHexadecimal
-- [ ]  isLowerThan
-- [ ]  isGreaterThan
-- [ ]  isCnpj
+- [✅]  isLowerThan
+- [✅]  isGreaterThan
+- [✅]  isCnpj
 - [✅]  isCpf
 - [✅]  isRG
-- [ ]  removeCaracteres
+- [✅]  removeCaracteres
 - [ ]  isUUID
 - [ ]  isJSON
 - [ ]  isCreditCard
-- [ ]  isLowercase
-- [ ]  isUppercase
-- [ ]  isInt
+- [✅]  isLowercase
+- [✅]  isUppercase
+- [✅]  isInt
 - [✅]  isValidBRZip
 
 

@@ -2,9 +2,8 @@
 
 * Changed name in  Function removeCaracteres to removeCharacters
 * this can break your code please check before update.
-
-*more formar in validation photos and videos add 
-*more validations isRG
+* more formar in validation photos and videos add 
+* more validations isRG
 
 ## 1.0.1
 

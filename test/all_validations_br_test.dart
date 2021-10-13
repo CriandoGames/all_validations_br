@@ -2,7 +2,6 @@ import 'package:all_validations_br/all_validations_br.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
   test('should call validation Checks if data is null', () {
     var sut = AllValidations.isNull(null);
     expect(sut, true);
@@ -199,7 +198,7 @@ void main() {
     sut = AllValidations.isVideo('\/.mp4');
     expect(sut, true);
   });
-  
+
   test('should call validation Checks if isImage', () {
     var sut = AllValidations.isImage(".jpg");
     expect(sut, true);
@@ -296,9 +295,9 @@ void main() {
     sut = AllValidations.isPhoneNumber('21 9 4724-0687');
     expect(sut, true);
 
-   sut =  AllValidations.isPhoneNumber('(21) 9 4724-0687');
+    sut = AllValidations.isPhoneNumber('(21) 9 4724-0687');
     expect(sut, true);
-    
+
     ///numeros antigos com 8 digitos
     sut = AllValidations.isPhoneNumber('94724067');
     expect(sut, false);
@@ -306,4 +305,92 @@ void main() {
     sut = AllValidations.isPhoneNumber('947240');
     expect(sut, false);
   });
+
+  test('should call validation Checks if num a EQUAL than num b.', () {
+    var sut = AllValidations.isEqual(1, 1);
+    expect(sut, true);
+
+    sut = AllValidations.isEqual(2, 1);
+    expect(sut, false);
+
+    sut = AllValidations.isEqual(0, 0);
+    expect(sut, true);
+  });
+
+  test('should call validation Checks if isLowerThan.', () {
+    var sut = AllValidations.isLowerThan(1, 1);
+    expect(sut, false);
+
+    sut = AllValidations.isLowerThan(2, 1);
+    expect(sut, false);
+
+    sut = AllValidations.isLowerThan(1, 5);
+    expect(sut, true);
+  });
+
+  test('should call validation Checks if isLowerThan.', () {
+    var sut = AllValidations.isLowerThan(1, 1);
+    expect(sut, false);
+
+    sut = AllValidations.isLowerThan(2, 1);
+    expect(sut, false);
+
+    sut = AllValidations.isLowerThan(1, 5);
+    expect(sut, true);
+  });
+
+  test('should call validation Checks if isGreaterThan.', () {
+    var sut = AllValidations.isGreaterThan(1, 1);
+    expect(sut, false);
+
+    sut = AllValidations.isGreaterThan(2, 1);
+    expect(sut, true);
+
+    sut = AllValidations.isGreaterThan(1, 5);
+    expect(sut, false);
+  });
+
+  test('should call validation Checks isInt.', () {
+    var sut = AllValidations.isInt('1.1');
+    expect(sut, false);
+
+    sut = AllValidations.isInt('0');
+    expect(sut, true);
+
+    sut = AllValidations.isInt('1');
+    expect(sut, true);
+  });
+
+  test('should call validation remove characters.', () {
+    //(ex: `/`, `-`, `.`)
+    String temp = '1-2/6.5';
+    String resultTrue = '1265';
+
+    var sut = AllValidations.removeCharacters(temp);
+    expect(sut, resultTrue);
+  });
+
+  test('should call validation check if isLowercase.', () {
+    var sut = AllValidations.isLowercase('aaaaaaa');
+    expect(sut, true);
+
+    sut = AllValidations.isLowercase('aaaaaaA');
+    expect(sut, false);
+
+    sut = AllValidations.isLowercase('AAAA');
+    expect(sut, false);
+  });
+
+  test('should call validation check if isUppercase.', () {
+    var sut = AllValidations.isUppercase('aaaaaaa');
+    expect(sut, false);
+
+    sut = AllValidations.isUppercase('aaaaaaA');
+    expect(sut, false);
+
+    sut = AllValidations.isUppercase('AAAA');
+    expect(sut, true);
+  });
+
+  
 }
