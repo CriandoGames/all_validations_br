@@ -318,4 +318,29 @@ class AllValidations {
   /// check if RG is valid format included with x in end
   static bool isRG(String rg) =>
       hasMatch(rg, r'(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)');
+
+  /// Checks if string is an pdf file.
+  static bool isPDF(String filePath) {
+    return filePath.toLowerCase().endsWith(".pdf");
+  }
+
+  /// Checks if string is an txt file.
+  static bool isTxt(String filePath) {
+    return filePath.toLowerCase().endsWith(".txt");
+  }
+
+  /// Checks if string is an chm file.
+  static bool isChm(String filePath) {
+    return filePath.toLowerCase().endsWith(".chm");
+  }
+
+  /// Checks if string is a vector file.
+  static bool isVector(String filePath) {
+    return filePath.toLowerCase().endsWith(".svg");
+  }
+
+  /// Checks if string is an html file.
+  static bool isHTML(String filePath) {
+    return filePath.toLowerCase().endsWith(".html");
+  }
 }

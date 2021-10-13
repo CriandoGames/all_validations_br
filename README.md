@@ -37,6 +37,11 @@
 - [✅]  isUppercase
 - [✅]  isInt
 - [✅]  isEqual
+- [✅]  isPDF
+- [✅]  isTxt
+- [✅]  isChm
+- [✅]  isVector
+- [✅]  isHTML
 - [✅]  removeCaracteres
 
 
@@ -68,13 +73,18 @@
 - [✅]  isCpf
 - [✅]  isRG
 - [✅]  removeCaracteres
-- [ ]  isUUID
+- [✅]  isUUID
 - [ ]  isJSON
 - [ ]  isCreditCard
 - [✅]  isLowercase
 - [✅]  isUppercase
 - [✅]  isInt
 - [✅]  isValidBRZip
+- [ ]  isPDF
+- [ ]  isTxt
+- [ ]  isChm
+- [ ]  isVector
+- [ ]  isHTML
 
 
 ### 🛠 Tecnologias

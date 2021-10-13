@@ -328,17 +328,6 @@ void main() {
     expect(sut, true);
   });
 
-  test('should call validation Checks if isLowerThan.', () {
-    var sut = AllValidations.isLowerThan(1, 1);
-    expect(sut, false);
-
-    sut = AllValidations.isLowerThan(2, 1);
-    expect(sut, false);
-
-    sut = AllValidations.isLowerThan(1, 5);
-    expect(sut, true);
-  });
-
   test('should call validation Checks if isGreaterThan.', () {
     var sut = AllValidations.isGreaterThan(1, 1);
     expect(sut, false);
@@ -392,5 +381,26 @@ void main() {
     expect(sut, true);
   });
 
-  
+  test('should call validation check if isUUID.', () {
+    var sut = AllValidations.isUUID('edf06bf4-2c10-11ec-8d3d-0242ac130003');
+    expect(sut, true);
+
+    sut = AllValidations.isUUID('7b1e3188-e526-47ec-b7b8-fe390a1a2bee');
+    expect(sut, true);
+
+    sut = AllValidations.isUUID('a3bb189e-8bf9-3888-9912-ace4e6543002');
+    expect(sut, true);
+
+    sut = AllValidations.isUUID('a6edc906-2f9f-5fb2-a373-efac406f0ef2');
+    expect(sut, true);
+
+    sut = AllValidations.isUUID('a6edc906');
+    expect(sut, false);
+
+    sut = AllValidations.isUUID('aaaaaaaa');
+    expect(sut, false);
+
+    sut = AllValidations.isUUID('aaaaa423423aaa');
+    expect(sut, false);
+  });
 }
