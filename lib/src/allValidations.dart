@@ -354,4 +354,10 @@ class AllValidations {
   static bool isHTML(String filePath) {
     return filePath.toLowerCase().endsWith(".html");
   }
+
+  static bool isMediumPassword(String password) => hasMatch(password,
+      r"^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+
+  static bool isStrongPassword(String password) => hasMatch(password,
+      r"^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=|\\{}[\]:;<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,99}$");
 }

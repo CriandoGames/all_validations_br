@@ -43,6 +43,8 @@
 - [✅]  isVector
 - [✅]  isHTML
 - [✅]  removeCaracteres
+- [✅]  isMediumPassword
+- [✅]  isStrongPassword
 
 
 
@@ -80,6 +82,8 @@
 - [✅]  isUppercase
 - [✅]  isInt
 - [✅]  isValidBRZip
+- [✅]  isMediumPassword
+- [✅]  isStrongPassword
 - [ ]  isPDF
 - [ ]  isTxt
 - [ ]  isChm

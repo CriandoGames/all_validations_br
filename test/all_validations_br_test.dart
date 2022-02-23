@@ -433,21 +433,22 @@ void main() {
     sut = AllValidations.isEmail('abc');
     expect(sut, false);
 
-     sut = AllValidations.isEmail('carloscastrogames@gmail.com');
+    sut = AllValidations.isEmail('carloscastrogames@gmail.com');
     expect(sut, true);
 
-     sut = AllValidations.isEmail('carloscastrogames@live.com');
+    sut = AllValidations.isEmail('carloscastrogames@live.com');
     expect(sut, true);
 
-     sut = AllValidations.isEmail('carloscastrogames@org.com');
+    sut = AllValidations.isEmail('carloscastrogames@org.com');
     expect(sut, true);
 
-     sut = AllValidations.isEmail('carloscastrogames@loja.com');
+    sut = AllValidations.isEmail('carloscastrogames@loja.com');
     expect(sut, true);
 
-     sut = AllValidations.isEmail('carloscastrogames@loja.com.br');
+    sut = AllValidations.isEmail('carloscastrogames@loja.com.br');
     expect(sut, true);
   });
+
    test('should call validation checks of Nickname', () {
     var sut = AllValidations.isNickname('CriandoGames');
     expect(sut, true);
@@ -466,5 +467,51 @@ void main() {
 
     sut = AllValidations.isNickname('Criando-games');
     expect(sut, false);
+  });
+
+  test('should be check if password if medium', () {
+    var sut = AllValidations.isMediumPassword('123456789');
+    expect(sut, false);
+
+    sut = AllValidations.isMediumPassword('aaaaa');
+    expect(sut, false);
+
+    sut = AllValidations.isMediumPassword('dkjashdkjashldk');
+    expect(sut, false);
+
+    sut = AllValidations.isMediumPassword('123456789a');
+    expect(sut, true);
+
+    sut = AllValidations.isMediumPassword('123456789aA');
+    expect(sut, true);
+
+    sut = AllValidations.isMediumPassword('123456789aA1');
+    expect(sut, true);
+
+    sut = AllValidations.isMediumPassword('123456789aA1@');
+    expect(sut, true);
+  });
+
+  test('should be check if password if Strong', () {
+    var sut = AllValidations.isStrongPassword('123456789');
+    expect(sut, false);
+
+    sut = AllValidations.isStrongPassword('aaaaa');
+    expect(sut, false);
+
+    sut = AllValidations.isStrongPassword('dkjashdkjashldk');
+    expect(sut, false);
+
+    sut = AllValidations.isStrongPassword('123456789a');
+    expect(sut, false);
+
+    sut = AllValidations.isStrongPassword('123456789aA');
+    expect(sut, false);
+
+    sut = AllValidations.isStrongPassword('123456789aA1');
+    expect(sut, false);
+
+    sut = AllValidations.isStrongPassword('123456789aA1@');
+    expect(sut, true);
   });
 }
