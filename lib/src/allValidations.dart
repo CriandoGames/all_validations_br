@@ -103,7 +103,7 @@ class AllValidations {
     if (s.length > 16 || s.length < 9) {
       return false;
     } else {
-      return hasMatch(s, r'(^[0-9]{2})?(\s|-)?(9?[0-9]{4})-?([0-9]{4}$)');
+      return hasMatch(s, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
     }
   }
 
