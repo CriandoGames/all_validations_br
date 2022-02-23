@@ -117,7 +117,6 @@ Feito com ❤️ por
 
 <a href="###">
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/14837643?s=96&v=4" width="100px;" alt=""/>
-
  <br />
 
   <sub><b>Carlos Castro</b></sub></a> <a href="###" title="">🚀</a>

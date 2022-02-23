@@ -1,3 +1,7 @@
+## 1.1.4
+
+* Bug fix
+
 ## 1.1.2
 
 * News Validations implemented isPDF, isTxt, isChm, isVector, isHTML
