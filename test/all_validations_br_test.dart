@@ -514,4 +514,26 @@ void main() {
     sut = AllValidations.isStrongPassword('123456789aA1@');
     expect(sut, true);
   });
+
+  test('Should be check if pharse is equal for send service', (){
+
+    var sut = AllValidations.isPharseEqual('123456789', '123456789');
+    expect(sut, true);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789a');
+    expect(sut, false);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789aA');
+    expect(sut, false);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789aA1');
+    expect(sut, false);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789aA1@');
+    expect(sut, false);
+  });
+
+
+
+
 }

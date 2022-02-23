@@ -328,7 +328,7 @@ class AllValidations {
 
   /// check if Nickname is valid format
   static bool isNickname(String nickName) =>
-      hasMatch(nickName, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');    
+      hasMatch(nickName, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');
 
   /// Checks if string is an pdf file.
   static bool isPDF(String filePath) {
@@ -360,4 +360,9 @@ class AllValidations {
 
   static bool isStrongPassword(String password) => hasMatch(password,
       r"^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=|\\{}[\]:;<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,99}$");
+
+  ///check if password is equal to confirm password or pharse is equal to confirm phrase
+  static bool isPharseEqual(String phase1, String phase2) {
+    return phase1 == phase2;
+  }
 }

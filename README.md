@@ -116,12 +116,21 @@ var remover = AllValidations.removeCharacters('000.000.000-00');
 ```
 
 
-#### 🎲 exemplos de Remoção caracteres  
+#### 🎲 exemplos de comparação de senha ou frases  
 ```dart
 //(ex: `/`, `-`, `.`)
-var remover = AllValidations.removeCharacters('000.000.000-00'); 
-//this return 00000000000
+var remover = AllValidations.isPharseEqual('123456789', '123456789');
+//this return true
 ```
+
+
+#### 🎲 exemplos de retorno de lista de dias semana  
+```dart
+//(ex: `/`, `-`, `.`)
+var remover = AllValidationsGetWeek.listDaysWeekAbvr;
+//this return ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo']
+```
+você também pode retorna meses , regiões , estados tudo atraveis do AllValidationsGet
 
 ### Autores
 ---
