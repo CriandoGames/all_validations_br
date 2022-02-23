@@ -1,3 +1,7 @@
+## 2.0.0
+
+* upgrade SDK
+
 ## 1.1.4
 
 * Bug fix
