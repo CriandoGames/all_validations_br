@@ -43,9 +43,11 @@
 - [✅]  isVector
 - [✅]  isHTML
 - [✅]  removeCaracteres
+- [✅]  removeAccents
 - [✅]  isMediumPassword
 - [✅]  isStrongPassword
 - [✅]  isNickname
+- [✅]  isPalindrome
 
 
 
@@ -76,6 +78,7 @@
 - [✅]  isCpf
 - [✅]  isRG
 - [✅]  removeCaracteres
+- [✅]  removeAccents
 - [✅]  isUUID
 - [ ]  isJSON
 - [ ]  isCreditCard
@@ -91,6 +94,7 @@
 - [ ]  isVector
 - [ ]  isHTML
 - [✅] isNickname
+- [✅]  isPalindrome
 
 
 ### 🛠 Tecnologias

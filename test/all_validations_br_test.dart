@@ -449,7 +449,7 @@ void main() {
     expect(sut, true);
   });
 
-   test('should call validation checks of Nickname', () {
+  test('should call validation checks of Nickname', () {
     var sut = AllValidations.isNickname('CriandoGames');
     expect(sut, true);
 
@@ -513,5 +513,51 @@ void main() {
 
     sut = AllValidations.isStrongPassword('123456789aA1@');
     expect(sut, true);
+  });
+
+  test('should call validation checks of Palindrome', () {
+    var sut = AllValidations.isPalindrome('Ana');
+    expect(sut, true);
+
+    sut = AllValidations.isPalindrome('Subi no onibus');
+    expect(sut, true);
+
+    sut = AllValidations.isPalindrome('a;;;;;;a...,.,.');
+    expect(sut, true);
+
+    sut = AllValidations.isPalindrome('22022022');
+    expect(sut, true);
+
+    sut = AllValidations.isPalindrome(
+        'Luza Rocelina, a namorada do Manuel, leu na moda da romana: "anil é cor azul".');
+    expect(sut, true);
+
+    sut = AllValidations.isPalindrome('Criando games');
+    expect(sut, false);
+
+    sut = AllValidations.isPalindrome('Criando');
+    expect(sut, false);
+
+    sut = AllValidations.isPalindrome('123456');
+    expect(sut, false);
+  });
+
+  test('should call validation remove accents. ', () {
+    var sut = AllValidations.removeAccents('áêíôú');
+    expect(sut, 'aeiou');
+
+    sut = AllValidations.removeAccents('aeiou');
+    expect(sut, 'aeiou');
+
+    sut =
+        AllValidations.removeAccents('você, Antônio, fêmea, gênio, acadêmico');
+    expect(sut, 'voce, Antonio, femea, genio, academico');
+
+    sut = AllValidations.removeAccents('maçã, coração, limão, benção, fusão');
+    expect(sut, 'maca, coracao, limao, bencao, fusao');
+
+    sut = AllValidations.removeAccents(
+        'Vou à escola; Ele se referiu à planície; Vou à Bahia');
+    expect(sut, 'Vou a escola; Ele se referiu a planicie; Vou a Bahia');
   });
 }
