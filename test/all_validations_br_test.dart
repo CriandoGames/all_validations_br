@@ -403,4 +403,49 @@ void main() {
     sut = AllValidations.isUUID('aaaaa423423aaa');
     expect(sut, false);
   });
+
+  test('should be check if is Email valide or not ', () {
+    var sut = AllValidations.isEmail('história@historia.com');
+
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('história@historia');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('histó');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('história@história');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('historia@historia');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('a@b.c.d.e.f');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('      ');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('a.c.d');
+    expect(sut, false);
+
+    sut = AllValidations.isEmail('abc');
+    expect(sut, false);
+
+     sut = AllValidations.isEmail('carloscastrogames@gmail.com');
+    expect(sut, true);
+
+     sut = AllValidations.isEmail('carloscastrogames@live.com');
+    expect(sut, true);
+
+     sut = AllValidations.isEmail('carloscastrogames@org.com');
+    expect(sut, true);
+
+     sut = AllValidations.isEmail('carloscastrogames@loja.com');
+    expect(sut, true);
+
+     sut = AllValidations.isEmail('carloscastrogames@loja.com.br');
+    expect(sut, true);
+  });
 }
