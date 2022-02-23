@@ -45,6 +45,7 @@
 - [✅]  removeCaracteres
 - [✅]  isMediumPassword
 - [✅]  isStrongPassword
+- [✅]  isNickname
 
 
 
@@ -89,6 +90,7 @@
 - [ ]  isChm
 - [ ]  isVector
 - [ ]  isHTML
+- [✅] isNickname
 
 
 ### 🛠 Tecnologias
