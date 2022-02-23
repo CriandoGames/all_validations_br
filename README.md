@@ -124,13 +124,13 @@ var remover = AllValidations.isPharseEqual('123456789', '123456789');
 ```
 
 
-#### 🎲 exemplos de retorno de lista de dias semana  
+#### 🎲 exemplos de retorno de lista de dias da semana  
 ```dart
 //(ex: `/`, `-`, `.`)
 var remover = AllValidationsGetWeek.listDaysWeekAbvr;
 //this return ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo']
 ```
-você também pode retorna meses , regiões , estados tudo atraveis do AllValidationsGet
+Você também pode retorna meses, regiões , estados tudo atraveis do AllValidationsGet
 
 ### Autores
 ---
