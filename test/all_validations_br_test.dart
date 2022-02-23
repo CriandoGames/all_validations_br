@@ -449,6 +449,26 @@ void main() {
     expect(sut, true);
   });
 
+   test('should call validation checks of Nickname', () {
+    var sut = AllValidations.isNickname('CriandoGames');
+    expect(sut, true);
+
+    sut = AllValidations.isNickname('Criando_games');
+    expect(sut, true);
+
+    sut = AllValidations.isNickname('criando_games');
+    expect(sut, true);
+
+    sut = AllValidations.isNickname('Criando games');
+    expect(sut, false);
+
+    sut = AllValidations.isNickname('Cr');
+    expect(sut, false);
+
+    sut = AllValidations.isNickname('Criando-games');
+    expect(sut, false);
+  });
+
   test('should be check if password if medium', () {
     var sut = AllValidations.isMediumPassword('123456789');
     expect(sut, false);
@@ -494,5 +514,4 @@ void main() {
     sut = AllValidations.isStrongPassword('123456789aA1@');
     expect(sut, true);
   });
- 
 }
