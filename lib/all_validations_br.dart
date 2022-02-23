@@ -1,3 +1,4 @@
 library all_validations_br;
 
-export './src/allValidations.dart';
+export 'src/validator/allValidations.dart';
+export 'src/models/models.dart';

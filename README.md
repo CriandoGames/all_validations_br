@@ -115,6 +115,14 @@ var remover = AllValidations.removeCharacters('000.000.000-00');
 //this return 00000000000
 ```
 
+
+#### 🎲 exemplos de Remoção caracteres  
+```dart
+//(ex: `/`, `-`, `.`)
+var remover = AllValidations.removeCharacters('000.000.000-00'); 
+//this return 00000000000
+```
+
 ### Autores
 ---
 Feito com ❤️ por 
