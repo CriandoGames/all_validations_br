@@ -448,4 +448,23 @@ void main() {
      sut = AllValidations.isEmail('carloscastrogames@loja.com.br');
     expect(sut, true);
   });
+   test('should call validation checks of Nickname', () {
+    var sut = AllValidations.isNickname('CriandoGames');
+    expect(sut, true);
+
+    sut = AllValidations.isNickname('Criando_games');
+    expect(sut, true);
+
+    sut = AllValidations.isNickname('criando_games');
+    expect(sut, true);
+
+    sut = AllValidations.isNickname('Criando games');
+    expect(sut, false);
+
+    sut = AllValidations.isNickname('Cr');
+    expect(sut, false);
+
+    sut = AllValidations.isNickname('Criando-games');
+    expect(sut, false);
+  });
 }

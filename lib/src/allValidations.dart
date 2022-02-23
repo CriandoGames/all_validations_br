@@ -315,7 +315,7 @@ class AllValidations {
     return true;
   }
 
-  /// check if  CEP is valid format
+  /// check if CEP is valid format
   static bool isValidBRZip(String cep) {
     RegExp isZipValid =
         RegExp(r"^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$", caseSensitive: false);
@@ -325,6 +325,10 @@ class AllValidations {
   /// check if RG is valid format included with x in end
   static bool isRG(String rg) =>
       hasMatch(rg, r'(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)');
+
+  /// check if Nickname is valid format
+  static bool isNickname(String nickName) =>
+      hasMatch(nickName, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');    
 
   /// Checks if string is an pdf file.
   static bool isPDF(String filePath) {
