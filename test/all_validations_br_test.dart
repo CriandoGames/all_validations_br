@@ -549,7 +549,7 @@ void main() {
 
     sut = AllValidations.removeAccents('aeiou');
     expect(sut, 'aeiou');
-
+    
     sut =
         AllValidations.removeAccents('você, Antônio, fêmea, gênio, acadêmico');
     expect(sut, 'voce, Antonio, femea, genio, academico');
@@ -578,6 +578,7 @@ void main() {
 
     sut = AllValidations.isPharseEqual('123456789', '123456789aA1@');
     expect(sut, false);
+    
   });
 
 

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:all_validations_br/src/helpers/constants.dart';
 
 class AllValidations {
@@ -267,13 +266,13 @@ class AllValidations {
 
   /// Remover caracteres especiais (ex: `/`, `-`, `.`)
   static String removeCharacters(String valor) {
-    assert(valor.isNotEmpty);
+    assert(valor.isNotEmpty,  'Valor não pode ser vazio');
     return valor.replaceAll(RegExp('[^0-9a-zA-Z]+'), '');
   }
 
-
   /// Remove Accents from Strings
   static String removeAccents(String phrase) {
+    assert(phrase.contains('0123456789'), 'A string não pode ser vazia ou conter números');
     phrase.split('').forEach((value) => Constants.accents.forEach((acc) {
           if (value == acc) {
             int indexOfAccentChar = Constants.accents.indexOf(value);
@@ -377,7 +376,6 @@ class AllValidations {
   static bool isStrongPassword(String password) => hasMatch(password,
       r"^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=|\\{}[\]:;<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,99}$");
 
-
   /// Checks if string is Palindrome.
   static bool isPalindrome(String string) {
     string = removeAccents(string);
@@ -389,10 +387,10 @@ class AllValidations {
       }
     }
     return true;
+  }
 
   ///check if password is equal to confirm password or pharse is equal to confirm phrase
   static bool isPharseEqual(String phase1, String phase2) {
     return phase1 == phase2;
-
   }
 }
