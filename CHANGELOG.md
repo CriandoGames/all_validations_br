@@ -1,3 +1,11 @@
+## 2.1.0
+- [✅]  isMediumPassword
+- [✅]  isStrongPassword
+- [✅]  isNickname
+- [✅]  isPharseEqual;
+- agora você pode utilizar o AllvalidetionsGetMonth Week, Regions and States é obter
+os meses , semanas , regiões e estados do brasil. 
+
 ## 2.0.0
 
 * upgrade SDK

@@ -515,6 +515,7 @@ void main() {
     expect(sut, true);
   });
 
+
   test('should call validation checks of Palindrome', () {
     var sut = AllValidations.isPalindrome('Ana');
     expect(sut, true);
@@ -560,4 +561,25 @@ void main() {
         'Vou à escola; Ele se referiu à planície; Vou à Bahia');
     expect(sut, 'Vou a escola; Ele se referiu a planicie; Vou a Bahia');
   });
+
+  test('Should be check if pharse is equal for send service', (){
+
+    var sut = AllValidations.isPharseEqual('123456789', '123456789');
+    expect(sut, true);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789a');
+    expect(sut, false);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789aA');
+    expect(sut, false);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789aA1');
+    expect(sut, false);
+
+    sut = AllValidations.isPharseEqual('123456789', '123456789aA1@');
+    expect(sut, false);
+  });
+
+
+
 }
