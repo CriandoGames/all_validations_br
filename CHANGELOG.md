@@ -5,7 +5,7 @@
 *  isMediumPassword
 *  isStrongPassword
 *  isNickname @danieldcastro
-*  isPharseEqual;
+*  isPhraseEqual;
 *  removeAccents @danieldcastro 
 *  isPalindrome @danieldcastro 
 
