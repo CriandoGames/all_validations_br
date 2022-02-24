@@ -515,7 +515,6 @@ void main() {
     expect(sut, true);
   });
 
-
   test('should call validation checks of Palindrome', () {
     var sut = AllValidations.isPalindrome('Ana');
     expect(sut, true);
@@ -549,7 +548,7 @@ void main() {
 
     sut = AllValidations.removeAccents('aeiou');
     expect(sut, 'aeiou');
-    
+
     sut =
         AllValidations.removeAccents('você, Antônio, fêmea, gênio, acadêmico');
     expect(sut, 'voce, Antonio, femea, genio, academico');
@@ -562,8 +561,7 @@ void main() {
     expect(sut, 'Vou a escola; Ele se referiu a planicie; Vou a Bahia');
   });
 
-  test('Should be check if pharse is equal for send service', (){
-
+  test('Should be check if pharse is equal for send service', () {
     var sut = AllValidations.isPharseEqual('123456789', '123456789');
     expect(sut, true);
 
@@ -578,9 +576,19 @@ void main() {
 
     sut = AllValidations.isPharseEqual('123456789', '123456789aA1@');
     expect(sut, false);
-    
   });
 
+  test('Should be check if name is valid', () {
+    var sut = AllValidations.isName('Teste');
+    expect(sut, true);
 
+    sut = AllValidations.isName('Çiçà');
+    expect(sut, true);
 
+    sut = AllValidations.isName('Ç1çà');
+    expect(sut, false);
+
+    sut = AllValidations.isName('Çiç@');
+    expect(sut, false);
+  });
 }
