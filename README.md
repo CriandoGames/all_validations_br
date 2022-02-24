@@ -123,7 +123,7 @@ var remover = AllValidations.removeCharacters('000.000.000-00');
 #### 🎲 exemplos de comparação de senha ou frases  
 ```dart
 //(ex: `/`, `-`, `.`)
-var remover = AllValidations.isPharseEqual('123456789', '123456789');
+var remover = AllValidations.isPhraseEqual('123456789', '123456789');
 //this return true
 ```
 
@@ -139,7 +139,7 @@ Você também pode retorna meses, regiões , estados tudo atraveis do AllValidat
 #### 🎲 exemplos de comparação de senha ou frases  
 ```dart
 //(ex: `/`, `-`, `.`)
-var remover = AllValidations.isPharseEqual('123456789', '123456789');
+var remover = AllValidations.isPhraseEqual('123456789', '123456789');
 //this return true
 ```
 
