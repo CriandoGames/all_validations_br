@@ -1,3 +1,6 @@
+## 2.2.0
+* isName @lucascorrea30
+
 ## 2.1.0
 *  isMediumPassword
 *  isStrongPassword

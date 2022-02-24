@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:all_validations_br/src/helpers/constants.dart';
+import '../helpers/constants.dart';
 
 class AllValidations {
   AllValidations._();
@@ -266,13 +266,14 @@ class AllValidations {
 
   /// Remover caracteres especiais (ex: `/`, `-`, `.`)
   static String removeCharacters(String valor) {
-    assert(valor.isNotEmpty,  'Valor não pode ser vazio');
+    assert(valor.isNotEmpty, 'Valor não pode ser vazio');
     return valor.replaceAll(RegExp('[^0-9a-zA-Z]+'), '');
   }
 
   /// Remove Accents from Strings
   static String removeAccents(String phrase) {
-    assert(phrase.contains('0123456789'), 'A string não pode ser vazia ou conter números');
+    assert(phrase.contains('0123456789'),
+        'A string não pode ser vazia ou conter números');
     phrase.split('').forEach((value) => Constants.accents.forEach((acc) {
           if (value == acc) {
             int indexOfAccentChar = Constants.accents.indexOf(value);
@@ -393,4 +394,8 @@ class AllValidations {
   static bool isPharseEqual(String phase1, String phase2) {
     return phase1 == phase2;
   }
+
+  /// check if name not contain special character like #$%*@!
+  static bool isName(String value) =>
+      !hasMatch(value, r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
 }

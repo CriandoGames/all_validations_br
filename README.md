@@ -47,7 +47,7 @@
 - [✅]  isStrongPassword
 - [✅]  removeAccents
 - [✅]  isPalindrome
-
+- [✅]  isName
 
 
 ### 🧪 testes
@@ -93,6 +93,7 @@
 - [ ]  isHTML
 - [✅]  removeAccents
 - [✅]  isPalindrome
+- [✅]  isName
 
 
 ### 🛠 Tecnologias
