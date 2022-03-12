@@ -331,9 +331,10 @@ class AllValidations {
 
   /// Check if CEP is valid format
   static bool isValidBRZip(String cep) {
+    int len = cep.trim().length;
     RegExp isZipValid =
-        RegExp(r"^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$", caseSensitive: false);
-    return isZipValid.hasMatch(cep);
+        RegExp(r'[0-9]{2}\.?[0-9]{3}-?[0-9]{3}', caseSensitive: false);
+    return len >= 8 && len <= 10 && isZipValid.hasMatch(cep);
   }
 
   /// Check if RG is valid format included with x in end
