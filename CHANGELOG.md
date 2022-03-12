@@ -1,3 +1,7 @@
+## 2.2.1
+* validation fix on isValidBRZip @lucascorrea30
+* new tests on isValidBRZip @lucascorrea30
+
 ## 2.2.0
 * isName @lucascorrea30
 

@@ -37,6 +37,7 @@
 - [✅]  isUppercase
 - [✅]  isInt
 - [✅]  isEqual
+- [✅]  isValidBRZip
 - [✅]  isPDF
 - [✅]  isTxt
 - [✅]  isChm
