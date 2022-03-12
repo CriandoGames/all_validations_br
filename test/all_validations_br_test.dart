@@ -103,6 +103,9 @@ void main() {
     sut = AllValidations.isValidBRZip('65092276');
     expect(sut, true);
 
+    sut = AllValidations.isValidBRZip('65.092-276');
+    expect(sut, true);
+
     sut = AllValidations.isValidBRZip('650.922.76');
     expect(sut, false);
 
@@ -110,6 +113,21 @@ void main() {
     expect(sut, false);
 
     sut = AllValidations.isValidBRZip('650.922');
+    expect(sut, false);
+
+    sut = AllValidations.isValidBRZip('65');
+    expect(sut, false);
+
+    sut = AllValidations.isValidBRZip('6ç.321-321');
+    expect(sut, false);
+
+    sut = AllValidations.isValidBRZip('62.6321-3261');
+    expect(sut, false);
+
+    sut = AllValidations.isValidBRZip('1234567');
+    expect(sut, false);
+
+    sut = AllValidations.isValidBRZip('12345678910');
     expect(sut, false);
   });
 
