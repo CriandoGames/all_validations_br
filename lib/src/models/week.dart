@@ -1,4 +1,3 @@
-
 class AllValidationsGetWeek {
   static const List<String> listWorkDays = [
     'Segunda-Feira',

@@ -58,7 +58,5 @@ main() {
       expect(AllValidationsGetWeek.mapDaysWeekOrderAbvr['Sexta'], 6);
       expect(AllValidationsGetWeek.mapDaysWeekOrderAbvr['Sábado'], 7);
     });
-
-
   });
 }
