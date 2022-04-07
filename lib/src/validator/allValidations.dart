@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import '../helpers/constants.dart';
 import 'package:all_validations_br/src/helpers/constants.dart';
+import 'dart:developer' as developer;
 
 class AllValidations {
   AllValidations._();
@@ -400,4 +401,29 @@ class AllValidations {
   /// Check if name not contain special character like #$%*@!
   static bool isName(String value) =>
       !hasMatch(value, r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
+
+
+  static bool isMapExists({required List<String> key, required Map map}) {
+    for (var currentKey in key) {
+      if (map.containsKey(currentKey)) {
+        if (map[currentKey] != null) {
+          if (map[currentKey].toString() == '') {
+            developer.log(
+              currentKey + ' is empty value',
+            );
+          }
+          developer.log(
+            currentKey + ' has value $map[currentKey]',
+          );
+        } else {
+          developer.log('Error', error: currentKey + ' is null value');
+          return false;
+        }
+      } else {
+        developer.log('Error', error: currentKey + ' is not found');
+        return false;
+      }
+    }
+    return true;
+}   
 }
