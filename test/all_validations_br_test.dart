@@ -331,7 +331,6 @@ void main() {
     sut = AllValidations.isPhoneNumber('03582129012');
     expect(sut, false);
 
-    
     ///numeros antigos com 8 digitos
     sut = AllValidations.isPhoneNumber('94724067');
     expect(sut, false);
@@ -540,7 +539,7 @@ void main() {
     expect(sut, false);
 
     sut = AllValidations.isStrongPassword('123456789aA');
-    
+
     sut = AllValidations.isStrongPassword('123456789aA1');
     expect(sut, false);
 
@@ -596,7 +595,7 @@ void main() {
     expect(sut, 'voce, Antonio, femea, genio, academico');
 
     sut = AllValidations.removeAccents('maçã, coração, limão, benção, fusão');
-    expect(sut, 'maca, coracao, limao, bencao, fusao'); 
+    expect(sut, 'maca, coracao, limao, bencao, fusao');
     sut = AllValidations.removeAccents(
         'Vou à escola; Ele se referiu à planície; Vou à Bahia');
     expect(sut, 'Vou a escola; Ele se referiu a planicie; Vou a Bahia');
@@ -616,7 +615,24 @@ void main() {
     expect(sut, false);
 
     sut = AllValidations.isPhraseEqual('123456789', '123456789aA1@');
-  
+
+    expect(sut, false);
+  });
+
+  test('Should be check if map exists', () {
+    Map map1 = {"status": "success", "message": "successfully logged out"};
+
+    final sut =
+        AllValidations.isMapExists(map: map1, key: ['status', 'message']);
+
+    expect(sut, true);
+  });
+
+  test('Should be check if map no exists', () {
+    Map map1 = {"status": "success", "message": "successfully logged out"};
+
+    final sut = AllValidations.isMapExists(map: map1, key: ['error']);
+
     expect(sut, false);
   });
 
