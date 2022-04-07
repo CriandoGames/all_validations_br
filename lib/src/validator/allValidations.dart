@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-
+import '../helpers/constants.dart';
 import 'package:all_validations_br/src/helpers/constants.dart';
+import 'dart:developer' as developer;
 
 class AllValidations {
   AllValidations._();
@@ -111,6 +112,8 @@ class AllValidations {
   /// Checks if string is phone number.
   static bool isPhoneNumber(String s) {
     if (s.length > 16 || s.length < 9) {
+      return false;
+    } else if (s.length > 9 && !ddds.contains(removeCharacters(s).substring(0, 2))) {
       return false;
     } else {
       return hasMatch(s, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
@@ -249,28 +252,27 @@ class AllValidations {
     return true;
   }
 
-  /// check if the string [str] is an integer
+  /// Check if the string [str] is an integer
   static bool isInt(String str) {
     RegExp _int = new RegExp(r'^(?:-?(?:0|[1-9][0-9]*))$');
     return _int.hasMatch(str);
   }
 
-  /// check if the string [str] is lowercase
+  /// Check if the string [str] is lowercase
   static bool isLowercase(String str) {
     return str == str.toLowerCase();
   }
 
-  /// check if the string [str] is uppercase
+  /// Check if the string [str] is uppercase
   static bool isUppercase(String str) {
     return str == str.toUpperCase();
   }
 
-  /// Remover caracteres especiais (ex: `/`, `-`, `.`)
+  /// Remove special characters (ex: `/`, `-`, `.`)
   static String removeCharacters(String valor) {
-    assert(valor.isNotEmpty);
+    assert(valor.isNotEmpty, 'Valor não pode ser vazio');
     return valor.replaceAll(RegExp('[^0-9a-zA-Z]+'), '');
   }
-
 
   /// Remove Accents from Strings
   static String removeAccents(String phrase) {
@@ -284,7 +286,7 @@ class AllValidations {
     return phrase;
   }
 
-  /// check if the string is a credit card
+  /// Check if the string is a credit card
   static bool isCreditCard(String str) {
     RegExp _creditCard = new RegExp(
         r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$');
@@ -297,7 +299,7 @@ class AllValidations {
     }
   }
 
-  /// check if the string is a UUID (version 3, 4 or 5).
+  /// Check if the string is a UUID (version 3, 4 or 5).
   static bool isUUID(String? str, [version]) {
     Map _uuid = {
       '3': new RegExp(
@@ -321,7 +323,7 @@ class AllValidations {
     return (pat != null && pat.hasMatch(str!.toUpperCase()));
   }
 
-  /// check if the string is valid JSON
+  /// Check if the string is valid JSON
   static bool isJSON(str) {
     try {
       jsonDecode(str);
@@ -331,18 +333,19 @@ class AllValidations {
     return true;
   }
 
-  /// check if CEP is valid format
+  /// Check if CEP is valid format
   static bool isValidBRZip(String cep) {
+    int len = cep.trim().length;
     RegExp isZipValid =
-        RegExp(r"^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$", caseSensitive: false);
-    return isZipValid.hasMatch(cep);
+        RegExp(r'[0-9]{2}\.?[0-9]{3}-?[0-9]{3}', caseSensitive: false);
+    return len >= 8 && len <= 10 && isZipValid.hasMatch(cep);
   }
 
-  /// check if RG is valid format included with x in end
+  /// Check if RG is valid format included with x in end
   static bool isRG(String rg) =>
       hasMatch(rg, r'(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)');
 
-  /// check if Nickname is valid format
+  /// Check if Nickname is valid format
   static bool isNickname(String nickName) =>
       hasMatch(nickName, r'^[a-zA-Z0-9][a-zA-Z0-9_.]+[a-zA-Z0-9]$');
 
@@ -377,7 +380,6 @@ class AllValidations {
   static bool isStrongPassword(String password) => hasMatch(password,
       r"^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=|\\{}[\]:;<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,99}$");
 
-
   /// Checks if string is Palindrome.
   static bool isPalindrome(String string) {
     string = removeAccents(string);
@@ -389,10 +391,39 @@ class AllValidations {
       }
     }
     return true;
+  }
 
   ///check if password is equal to confirm password or pharse is equal to confirm phrase
-  static bool isPharseEqual(String phase1, String phase2) {
+  static bool isPhraseEqual(String phase1, String phase2) {
     return phase1 == phase2;
-
   }
+
+  /// Check if name not contain special character like #$%*@!
+  static bool isName(String value) =>
+      !hasMatch(value, r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
+
+
+  static bool isMapExists({required List<String> key, required Map map}) {
+    for (var currentKey in key) {
+      if (map.containsKey(currentKey)) {
+        if (map[currentKey] != null) {
+          if (map[currentKey].toString() == '') {
+            developer.log(
+              currentKey + ' is empty value',
+            );
+          }
+          developer.log(
+            currentKey + ' has value $map[currentKey]',
+          );
+        } else {
+          developer.log('Error', error: currentKey + ' is null value');
+          return false;
+        }
+      } else {
+        developer.log('Error', error: currentKey + ' is not found');
+        return false;
+      }
+    }
+    return true;
+}   
 }

@@ -1,4 +1,3 @@
-
 class AllValidationsGetStates {
   static const List<String> listStates = [
     'Acre',

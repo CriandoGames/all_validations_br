@@ -1,10 +1,20 @@
+## 2.2.1
+* validation fix on isValidBRZip @lucascorrea30
+* new tests on isValidBRZip @lucascorrea30
+
+## 2.2.0
+* isName @lucascorrea30
+
 ## 2.1.0
-- [✅]  isMediumPassword
-- [✅]  isStrongPassword
-- [✅]  isNickname
-- [✅]  isPharseEqual;
-- agora você pode utilizar o AllvalidetionsGetMonth Week, Regions and States é obter
-os meses , semanas , regiões e estados do brasil. 
+*  isMediumPassword
+*  isStrongPassword
+*  isNickname @danieldcastro
+*  isPhraseEqual;
+*  removeAccents @danieldcastro 
+*  isPalindrome @danieldcastro 
+
+* agora você pode utilizar o AllvalidetionsGetMonth Week, Regions and States é obter
+os meses do ano , semanas , regiões e estados do brasil. 
 
 ## 2.0.0
 
