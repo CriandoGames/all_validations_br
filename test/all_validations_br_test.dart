@@ -304,6 +304,9 @@ void main() {
     var sut = AllValidations.isPhoneNumber('947240687');
     expect(sut, true);
 
+    sut = AllValidations.isPhoneNumber('897240687');
+    expect(sut, true);
+
     sut = AllValidations.isPhoneNumber('21947240687');
     expect(sut, true);
 
@@ -316,6 +319,19 @@ void main() {
     sut = AllValidations.isPhoneNumber('(21) 9 4724-0687');
     expect(sut, true);
 
+    sut = AllValidations.isPhoneNumber('67640315093');
+    expect(sut, true);
+
+    sut = AllValidations.isPhoneNumber('(10) 9 9476-3908');
+    expect(sut, false);
+
+    sut = AllValidations.isPhoneNumber('01994763908');
+    expect(sut, false);
+
+    sut = AllValidations.isPhoneNumber('03582129012');
+    expect(sut, false);
+
+    
     ///numeros antigos com 8 digitos
     sut = AllValidations.isPhoneNumber('94724067');
     expect(sut, false);
@@ -524,8 +540,7 @@ void main() {
     expect(sut, false);
 
     sut = AllValidations.isStrongPassword('123456789aA');
-    expect(sut, false);
-
+    
     sut = AllValidations.isStrongPassword('123456789aA1');
     expect(sut, false);
 
@@ -581,8 +596,7 @@ void main() {
     expect(sut, 'voce, Antonio, femea, genio, academico');
 
     sut = AllValidations.removeAccents('maçã, coração, limão, benção, fusão');
-    expect(sut, 'maca, coracao, limao, bencao, fusao');
-
+    expect(sut, 'maca, coracao, limao, bencao, fusao'); 
     sut = AllValidations.removeAccents(
         'Vou à escola; Ele se referiu à planície; Vou à Bahia');
     expect(sut, 'Vou a escola; Ele se referiu a planicie; Vou a Bahia');
@@ -602,6 +616,7 @@ void main() {
     expect(sut, false);
 
     sut = AllValidations.isPhraseEqual('123456789', '123456789aA1@');
+  
     expect(sut, false);
   });
 

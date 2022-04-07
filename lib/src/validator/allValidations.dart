@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../helpers/constants.dart';
+import 'package:all_validations_br/src/helpers/constants.dart';
 
 class AllValidations {
   AllValidations._();
@@ -110,6 +111,8 @@ class AllValidations {
   /// Checks if string is phone number.
   static bool isPhoneNumber(String s) {
     if (s.length > 16 || s.length < 9) {
+      return false;
+    } else if (s.length > 9 && !ddds.contains(removeCharacters(s).substring(0, 2))) {
       return false;
     } else {
       return hasMatch(s, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
