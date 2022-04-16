@@ -49,6 +49,7 @@
 - [✅]  removeAccents
 - [✅]  isPalindrome
 - [✅]  isName
+- [✅]  isMapExists
 
 
 ### 🧪 testes
@@ -63,15 +64,6 @@
 - [✅]  isEmail
 - [✅]  isPhoneNumber
 - [✅]  isEqual
-- [ ]  isDateTime
-- [ ]  isMD5
-- [ ]  isSHA1
-- [ ]  isSHA256
-- [ ]  isSSN
-- [ ]  isBinary
-- [ ]  isIPv4
-- [ ]  isIPv6
-- [ ]  isHexadecimal
 - [✅]  isLowerThan
 - [✅]  isGreaterThan
 - [✅]  isCnpj
@@ -79,22 +71,16 @@
 - [✅]  isRG
 - [✅]  removeCaracteres
 - [✅]  isUUID
-- [ ]  isJSON
-- [ ]  isCreditCard
 - [✅]  isLowercase
 - [✅]  isUppercase
 - [✅]  isInt
 - [✅]  isValidBRZip
 - [✅]  isMediumPassword
 - [✅]  isStrongPassword
-- [ ]  isPDF
-- [ ]  isTxt
-- [ ]  isChm
-- [ ]  isVector
-- [ ]  isHTML
 - [✅]  removeAccents
 - [✅]  isPalindrome
 - [✅]  isName
+- [✅]  isMapExists
 
 
 ### 🛠 Tecnologias
