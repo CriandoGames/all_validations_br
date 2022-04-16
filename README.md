@@ -137,17 +137,22 @@ var remover = AllValidationsGetWeek.listDaysWeekAbvr;
 Você também pode retorna meses, regiões , estados tudo atraveis do AllValidationsGet
 
 
-#### 🎲 exemplos de comparação de senha ou frases  
-```dart
-//(ex: `/`, `-`, `.`)
-var remover = AllValidations.isPhraseEqual('123456789', '123456789');
-//this return true
-```
-
 #### 🎲 exemplos de remoção acentos e caracters de um texto
 ```dart
 //(ex: `/`, `-`, `.`)
 var remover = AllValidations.removeAccents( 'áãé');
+//this return aae
+```
+
+#### 🎲 exemplos para check se um key existe e se seu valor e nullo ou vazio -  map(json)
+```dart
+//(ex: `/`, `-`, `.`)
+ Map map1 = {"status": "success", "message": "successfully logged out"};
+
+    final sut =
+        AllValidations.isMapExists(map: map1, key: ['status']);
+
+    expect(sut, true);
 //this return aae
 ```
 
@@ -159,7 +164,7 @@ Feito com ❤️ por
  <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/14837643?s=96&v=4" width="100px;" alt=""/>
  <br />
 
-  <sub><b>Carlos Castro</b></sub></a> <a href="###" title="">🚀</a>
+  <sub><b>Carlos Castro</b></sub></a> <a href="https://www.linkedin.com/in/carlos-castro-07031692/" title="">🚀</a>
 
 
   

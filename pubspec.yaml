@@ -1,6 +1,6 @@
 name: all_validations_br
 description: String validations and remover char ex ('/', '-', '.'), more than a validation for your best projects. Made with love
-version: 2.2.1
+version: 2.3.0
 homepage: https://github.com/CriandoGames/all_validations_br
 
 environment:

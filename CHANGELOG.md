@@ -1,4 +1,8 @@
 ## 2.2.1
+* Should be check if map exists
+* Fix bug phone validation @danieldcastro
+
+## 2.2.1
 * validation fix on isValidBRZip @lucascorrea30
 * new tests on isValidBRZip @lucascorrea30
 

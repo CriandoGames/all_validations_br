@@ -113,7 +113,8 @@ class AllValidations {
   static bool isPhoneNumber(String s) {
     if (s.length > 16 || s.length < 9) {
       return false;
-    } else if (s.length > 9 && !ddds.contains(removeCharacters(s).substring(0, 2))) {
+    } else if (s.length > 9 &&
+        !ddds.contains(removeCharacters(s).substring(0, 2))) {
       return false;
     } else {
       return hasMatch(s, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
@@ -402,7 +403,6 @@ class AllValidations {
   static bool isName(String value) =>
       !hasMatch(value, r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
 
-
   static bool isMapExists({required List<String> key, required Map map}) {
     for (var currentKey in key) {
       if (map.containsKey(currentKey)) {
@@ -425,5 +425,5 @@ class AllValidations {
       }
     }
     return true;
-}   
+  }
 }
