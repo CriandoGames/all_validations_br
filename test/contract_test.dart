@@ -1,5 +1,4 @@
-import 'package:all_validations_br/src/Notifications/notifiable.dart';
-import 'package:all_validations_br/src/validator/contract.dart';
+import 'package:all_validations_br/validation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class TestParameters extends FluntNotifiable {
