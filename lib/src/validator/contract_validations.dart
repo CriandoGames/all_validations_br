@@ -1,6 +1,6 @@
 import 'package:all_validations_br/all_validations_br.dart';
 
-class ContractValidations extends FluntNotifiable {
+class ContractValidations extends ValidationNotifiable {
   ContractValidations isFalse(bool value, String property, String message) {
     if (!value) {
       addNotifications(FluntNotification(property: property, message: message));

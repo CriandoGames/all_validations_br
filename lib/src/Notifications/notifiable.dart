@@ -1,11 +1,11 @@
 import '../validator/contract.dart';
 
-class FluntNotifiable {
+class ValidationNotifiable {
   late List<FluntNotification> _notifications;
 
   List<FluntNotification> get notifications => _notifications;
 
-  FluntNotifiable() {
+  ValidationNotifiable() {
     _notifications = <FluntNotification>[];
   }
 
