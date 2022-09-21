@@ -24,7 +24,7 @@ class FluntNotifiable {
   }
 
   bool get invalid => _notifications.length != 0;
-  bool get valid => !invalid;
+  bool get isValid => !invalid;
 }
 
 class FluntNotification {

@@ -1,20 +1,19 @@
 import 'package:all_validations_br/all_validations_br.dart';
 
 import '../Notifications/notifiable.dart';
-import 'contract.dart';
 
 class ContractValidations extends FluntNotifiable {
-  isFalse(bool value, String property, String message) {
+  ContractValidations isFalse(bool value, String property, String message) {
     if (!value) {
       addNotifications(FluntNotification(property: property, message: message));
     }
     return this;
   }
 
-  Contract isTrue(bool value, String property, String message) =>
+  ContractValidations isTrue(bool value, String property, String message) =>
       isFalse(!value, property, message);
 
-  isGreaterThan(
+  ContractValidations isGreaterThan(
       dynamic value, dynamic comparer, String property, String message) {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
@@ -31,7 +30,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isGreaterOrEqualsThan(
+  ContractValidations isGreaterOrEqualsThan(
       dynamic value, dynamic comparer, String property, String message) {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
@@ -48,7 +47,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isLowerThan(
+  ContractValidations isLowerThan(
       dynamic value, dynamic comparer, String property, String message) {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
@@ -65,7 +64,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isLowerOrEqualsThan(
+  ContractValidations isLowerOrEqualsThan(
       dynamic value, dynamic comparer, String property, String message) {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
@@ -82,7 +81,8 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  areEquals(dynamic value, dynamic comparer, String property, String message) {
+  ContractValidations areEquals(
+      dynamic value, dynamic comparer, String property, String message) {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
@@ -98,7 +98,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  areNotEquals(
+  ContractValidations areNotEquals(
       dynamic value, dynamic comparer, String property, String message) {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
@@ -115,8 +115,8 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isBetween(dynamic value, dynamic from, dynamic into, String property,
-      String message) {
+  ContractValidations isBetween(dynamic value, dynamic from, dynamic into,
+      String property, String message) {
     bool hasDatetime =
         ((value is DateTime) || (from is DateTime) || (into is DateTime));
 
@@ -134,56 +134,63 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isNullOrNullable(dynamic value, String property, String message) {
+  ContractValidations isNullOrNullable(
+      dynamic value, String property, String message) {
     if (value == null || value.HasValue)
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  isNotNullOrEmpty(dynamic val, String property, String message) {
+  ContractValidations isNotNullOrEmpty(
+      dynamic val, String property, String message) {
     if (val == null || val.isEmpty)
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  isNullOrEmpty(String val, String property, String message) {
+  ContractValidations isNullOrEmpty(
+      String val, String property, String message) {
     if (val.isEmpty)
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  hasMinLen(String val, int min, String property, String message) {
+  ContractValidations hasMinLen(
+      String val, int min, String property, String message) {
     if (val.isEmpty || val.length < min)
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  hasMaxLen(String val, int max, String property, String message) {
+  ContractValidations hasMaxLen(
+      String val, int max, String property, String message) {
     if (val.isEmpty || val.length > max)
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  hasLen(String val, int len, String property, String message) {
+  ContractValidations hasLen(
+      String val, int len, String property, String message) {
     if (val.isEmpty || val.length != len)
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  contains(String val, String text, String property, String message) {
+  ContractValidations contains(
+      String val, String text, String property, String message) {
     if (!val.contains(text))
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  isDigit(String text, String property, String message) {
+  ContractValidations isDigit(String text, String property, String message) {
     var numeric = RegExp('^\d+\$');
 
     if (!numeric.hasMatch(text)) {
@@ -192,7 +199,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  hasMinLengthIfNotNullOrEmpty(
+  ContractValidations hasMinLengthIfNotNullOrEmpty(
       String text, int min, String property, String message) {
     if (text.isNotEmpty && text.length < min)
       addNotifications(FluntNotification(property: property, message: message));
@@ -200,7 +207,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  hasMaxLengthIfNotNullOrEmpty(
+  ContractValidations hasMaxLengthIfNotNullOrEmpty(
       String text, int max, String property, String message) {
     if (text.isNotEmpty && text.length > max)
       addNotifications(FluntNotification(property: property, message: message));
@@ -208,7 +215,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  hasExactLengthIfNotNullOrEmpty(
+  ContractValidations hasExactLengthIfNotNullOrEmpty(
       String text, int len, String property, String message) {
     if (text.isNotEmpty && text.length != len)
       addNotifications(FluntNotification(property: property, message: message));
@@ -216,7 +223,7 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isEmail(String email, String property, String message) {
+  ContractValidations isEmail(String email, String property, String message) {
     bool emailValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
@@ -227,14 +234,15 @@ class ContractValidations extends FluntNotifiable {
     return this;
   }
 
-  isValidCPF(String cpf, String property, String message) {
+  ContractValidations isValidCPF(String cpf, String property, String message) {
     if (!_isValid(cpf))
       addNotifications(FluntNotification(property: property, message: message));
 
     return this;
   }
 
-  isValidCNPJ(String cnpj, String property, String message) {
+  ContractValidations isValidCNPJ(
+      String cnpj, String property, String message) {
     if (!_isValidCNPJ(cnpj))
       addNotifications(FluntNotification(property: property, message: message));
 
