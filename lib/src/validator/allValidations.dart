@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../helpers/constants.dart';
-import 'package:all_validations_br/src/helpers/constants.dart';
 import 'dart:developer' as developer;
 
 class AllValidations {
