@@ -2,24 +2,25 @@ import '../validator/contract.dart';
 import 'dart:developer' as dev;
 
 class ValidationNotifiable {
-  late List<FluntNotification> _notifications;
+  late List<ValidationNotification> _notifications;
 
-  List<FluntNotification> get notifications => _notifications;
+  List<ValidationNotification> get notifications => _notifications;
 
   ValidationNotifiable() {
-    _notifications = <FluntNotification>[];
+    _notifications = <ValidationNotification>[];
   }
 
   void addNotifications<T>(T r) {
-    if (r is FluntNotification) {
+    if (r is ValidationNotification) {
       _notifications.add(r);
-    } else if (r is List<FluntNotification>) {
+    } else if (r is List<ValidationNotification>) {
       _notifications.addAll(r);
     } else if (r is Contract) {
       r.notifications.forEach((f) => _notifications.add(f));
     } else if (r is List) {
       if (r.length > 1) {
-        _notifications.add(FluntNotification(property: r[0], message: r[1]));
+        _notifications
+            .add(ValidationNotification(property: r[0], message: r[1]));
       }
     }
   }
@@ -35,17 +36,15 @@ class ValidationNotifiable {
     }
   }
 
-
-
   bool get invalid => _notifications.length != 0;
   bool get isValid => !invalid;
 }
 
-class FluntNotification {
+class ValidationNotification {
   late String _property;
   late String _message;
 
-  FluntNotification({required String property, required String message}) {
+  ValidationNotification({required String property, required String message}) {
     _property = property;
     _message = message;
   }

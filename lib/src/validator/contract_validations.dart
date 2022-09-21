@@ -3,7 +3,8 @@ import 'package:all_validations_br/all_validations_br.dart';
 class ContractValidations extends ValidationNotifiable {
   ContractValidations isFalse(bool value, String property, String message) {
     if (!value) {
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
     }
     return this;
   }
@@ -18,12 +19,13 @@ class ContractValidations extends ValidationNotifiable {
     if (hasDatetime) {
       if ((value as DateTime).isAfter((comparer as DateTime)))
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if (value > comparer)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -35,12 +37,13 @@ class ContractValidations extends ValidationNotifiable {
     if (hasDatetime) {
       if ((value as DateTime).isAfter((comparer as DateTime)))
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if (value >= comparer)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -52,12 +55,13 @@ class ContractValidations extends ValidationNotifiable {
     if (hasDatetime) {
       if ((value as DateTime).isBefore((comparer as DateTime)))
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if (value < comparer)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -69,12 +73,13 @@ class ContractValidations extends ValidationNotifiable {
     if (hasDatetime) {
       if ((value as DateTime).isBefore((comparer as DateTime)))
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if (value <= comparer)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -86,12 +91,13 @@ class ContractValidations extends ValidationNotifiable {
     if (hasDatetime) {
       if ((value as DateTime).difference((comparer as DateTime)).inDays == 0)
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if (value == comparer)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -103,12 +109,13 @@ class ContractValidations extends ValidationNotifiable {
     if (hasDatetime) {
       if ((value as DateTime).difference((comparer as DateTime)).inDays != 0)
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if (value != comparer)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -122,12 +129,13 @@ class ContractValidations extends ValidationNotifiable {
       if ((value as DateTime).isAfter((from as DateTime)) ||
           (value).isBefore((into as DateTime)))
         addNotifications(
-            FluntNotification(property: property, message: message));
+            ValidationNotification(property: property, message: message));
       return this;
     }
 
     if ((value >= from && value <= into))
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -135,7 +143,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations isNullOrNullable(
       dynamic value, String property, String message) {
     if (value == null || value.HasValue)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -143,7 +152,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations isNotNullOrEmpty(
       dynamic val, String property, String message) {
     if (val == null || val.isEmpty)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -151,7 +161,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations isNullOrEmpty(
       String val, String property, String message) {
     if (val.isEmpty)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -159,7 +170,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations hasMinLen(
       String val, int min, String property, String message) {
     if (val.isEmpty || val.length < min)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -167,7 +179,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations hasMaxLen(
       String val, int max, String property, String message) {
     if (val.isEmpty || val.length > max)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -175,7 +188,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations hasLen(
       String val, int len, String property, String message) {
     if (val.isEmpty || val.length != len)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -183,7 +197,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations contains(
       String val, String text, String property, String message) {
     if (!val.contains(text))
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -192,7 +207,8 @@ class ContractValidations extends ValidationNotifiable {
     var numeric = RegExp('^\d+\$');
 
     if (!numeric.hasMatch(text)) {
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
     }
     return this;
   }
@@ -200,7 +216,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations hasMinLengthIfNotNullOrEmpty(
       String text, int min, String property, String message) {
     if (text.isNotEmpty && text.length < min)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -208,7 +225,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations hasMaxLengthIfNotNullOrEmpty(
       String text, int max, String property, String message) {
     if (text.isNotEmpty && text.length > max)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -216,7 +234,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations hasExactLengthIfNotNullOrEmpty(
       String text, int len, String property, String message) {
     if (text.isNotEmpty && text.length != len)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -227,14 +246,16 @@ class ContractValidations extends ValidationNotifiable {
         .hasMatch(email);
 
     if (!emailValid)
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
 
   ContractValidations isValidCPF(String cpf, String property, String message) {
     if (!_isValid(cpf))
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
@@ -242,7 +263,8 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations isValidCNPJ(
       String cnpj, String property, String message) {
     if (!_isValidCNPJ(cnpj))
-      addNotifications(FluntNotification(property: property, message: message));
+      addNotifications(
+          ValidationNotification(property: property, message: message));
 
     return this;
   }
