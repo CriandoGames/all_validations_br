@@ -241,6 +241,7 @@ class ContractValidations extends ValidationNotifiable {
   }
 
   ContractValidations isEmail(String email, String property, String message) {
+
     if (!AllValidations.isCpf(email))
       addNotifications(
           ValidationNotification(property: property, message: message));
