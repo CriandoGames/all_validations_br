@@ -1,3 +1,9 @@
+## 3.0.0
+* novo metodo de validaçao por contratos
+* Breaking Change: import routes. 
+* Added Contract.
+* Documentation updates. 
+
 ## 2.2.1
 * Should be check if map exists
 * Fix bug phone validation @danieldcastro
