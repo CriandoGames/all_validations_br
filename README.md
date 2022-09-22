@@ -6,107 +6,75 @@
 
 ## ⚙️ Funcionalidades
 
-- [✅]  isNull
-- [✅]  isNum
-- [✅]  isNumericOnly
-- [✅]  isNumericFloat
-- [✅]  isAlphabetOnly
-- [✅]  isVideo
-- [✅]  isImage
-- [✅]  isURL
-- [✅]  isEmail
-- [✅]  isPhoneNumber
-- [✅]  isDateTime
-- [✅]  isMD5
-- [✅]  isSHA1
-- [✅]  isSHA256
-- [✅]  isSSN
-- [✅]  isBinary
-- [✅]  isIPv4
-- [✅]  isIPv6
-- [✅]  isHexadecimal
-- [✅]  isLowerThan
-- [✅]  isGreaterThan
-- [✅]  isCnpj
-- [✅]  isCpf
-- [✅]  isRG
-- [✅]  isUUID
-- [✅]  isJSON
-- [✅]  isCreditCard
-- [✅]  isLowercase
-- [✅]  isUppercase
-- [✅]  isInt
-- [✅]  isEqual
-- [✅]  isValidBRZip
-- [✅]  isPDF
-- [✅]  isTxt
-- [✅]  isChm
-- [✅]  isVector
-- [✅]  isHTML
-- [✅]  removeCaracteres
-- [✅]  isMediumPassword
-- [✅]  isStrongPassword
-- [✅]  removeAccents
-- [✅]  isPalindrome
-- [✅]  isName
-- [✅]  isMapExists
+- [✅]  isNull           - [✅]  isNum
+- [✅]  isNumericOnly    - [✅]  isNumericFloat
+- [✅]  isAlphabetOnly   - [✅]  isVideo
+- [✅]  isImage          - [✅]  isURL
+- [✅]  isEmail          - [✅]  isPhoneNumber
+- [✅]  isDateTime       - [✅]  isMD5
+- [✅]  isSHA1           - [✅]  isSHA256
+- [✅]  isSSN            - [✅]  isBinary
+- [✅]  isIPv4           - [✅]  isIPv6
+- [✅]  isHexadecimal    - [✅]  isLowerThan
+- [✅]  isGreaterThan    - [✅]  isCnpj
+- [✅]  isCpf            - [✅]  isRG
+- [✅]  isUUID           - [✅]  isJSON
+- [✅]  isCreditCard     - [✅]  isLowercase
+- [✅]  isUppercase      - [✅]  isInt
+- [✅]  isEqual          - [✅]  isValidBRZip
+- [✅]  isPDF            - [✅]  isTxt
+- [✅]  isChm            - [✅]  isVector
+- [✅]  isHTML           - [✅]  removeCaracteres
+- [✅]  isMediumPassword - [✅]  isStrongPassword
+- [✅]  removeAccents    - [✅]  isPalindrome
+- [✅]  isName           - [✅]  isMapExists
 
 
-### 🧪 testes
-- [✅]  isNull
-- [✅]  isNum
-- [✅]  isNumericOnly
-- [✅]  isNumericFloat
-- [✅]  isAlphabetOnly
-- [✅]  isVideo
-- [✅]  isImage
-- [✅]  isURL
-- [✅]  isEmail
-- [✅]  isPhoneNumber
-- [✅]  isEqual
-- [✅]  isLowerThan
-- [✅]  isGreaterThan
-- [✅]  isCnpj
-- [✅]  isCpf
-- [✅]  isRG
-- [✅]  removeCaracteres
-- [✅]  isUUID
-- [✅]  isLowercase
-- [✅]  isUppercase
-- [✅]  isInt
-- [✅]  isValidBRZip
-- [✅]  isMediumPassword
-- [✅]  isStrongPassword
-- [✅]  removeAccents
-- [✅]  isPalindrome
-- [✅]  isName
-- [✅]  isMapExists
+### 🧪 Contracts
+```dart
+class TestParameters extends ValidationNotifiable {
+  final String name;
+  final String email;
 
+  TestParameters({
+    required this.name,
+    required this.email,
+  }) {
+    addNotifications(Contract()
+        .hasMinLen(name, 2, 'TestParameters.Name',
+            "Nome deve ter no mínimo 2 caracteres!")
+        .isEmail(email, "TestParameters.Email", "Email deve ser preenchido!"));
+  }
+}
 
-### 🛠 Tecnologias
-- [Flutter](https://flutter.dev/)
-
+main() {
+      final testParameters =
+          TestParameters(email: "exemplo@teste.com", name: "c");
+      // print(testParameters.notifications.length);
+     // 1;
+      if(testParameters.isValid){
+        print("Valido");
+      }else{
+        print("Invalido");
+      }
+      //print all erros
+      testParameters.notifications.forEach((f) => print(f.message));
+}
+//this return false
+```
 
 #### 🎲 exemplo de validação CPF
 
 ```dart
 var isCpf = AllValidations.isCpf(000.000.000.00); 
 //this return false
-```
 
-#### 🎲 exemplos de validação String é bool 
-
-```dart
-var isBool = AllValidations.isBool('true'); 
-//this return true
-```
 #### 🎲 exemplos de Remoção caracteres  
 ```dart
 //(ex: `/`, `-`, `.`)
 var remover = AllValidations.removeCharacters('000.000.000-00'); 
 //this return 00000000000
 ```
-
 #### 🎲 exemplos de comparação de senha ou frases  
 ```dart
 //(ex: `/`, `-`, `.`)
@@ -120,7 +88,7 @@ var remover = AllValidations.isPhraseEqual('123456789', '123456789');
 var remover = AllValidationsGetWeek.listDaysWeekAbvr;
 //this return ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo']
 ```
-Você também pode retorna meses, regiões , estados tudo atraveis do AllValidationsGet
+Você também pode retornar meses, regiões, estados tudo através do AllValidationsGet
 
 
 #### 🎲 exemplos de remoção acentos e caracters de um texto
@@ -139,21 +107,10 @@ var remover = AllValidations.removeAccents( 'áãé');
         AllValidations.isMapExists(map: map1, key: ['status']);
 
     expect(sut, true);
-//this return aae
+//this return is log in your console
 ```
 
-### Autor
----
-Feito com ❤️ por 
 
-<a href="###">
- <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/14837643?s=96&v=4" width="100px;" alt=""/>
- <br />
-
-  <sub><b>Carlos Castro</b></sub></a> <a href="https://www.linkedin.com/in/carlos-castro-07031692/" title="">🚀</a>
-
-
-  
   ## 📝 Licença
 
 Este projeto esta sobe a licença [MIT](./LICENSE).

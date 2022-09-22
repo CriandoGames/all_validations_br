@@ -241,11 +241,7 @@ class ContractValidations extends ValidationNotifiable {
   }
 
   ContractValidations isEmail(String email, String property, String message) {
-    bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
-
-    if (!emailValid)
+    if (!AllValidations.isCpf(email))
       addNotifications(
           ValidationNotification(property: property, message: message));
 
@@ -253,7 +249,7 @@ class ContractValidations extends ValidationNotifiable {
   }
 
   ContractValidations isValidCPF(String cpf, String property, String message) {
-    if (!_isValid(cpf))
+    if (!AllValidations.isCpf(cpf))
       addNotifications(
           ValidationNotification(property: property, message: message));
 
@@ -262,20 +258,10 @@ class ContractValidations extends ValidationNotifiable {
 
   ContractValidations isValidCNPJ(
       String cnpj, String property, String message) {
-    if (!_isValidCNPJ(cnpj))
+    if (!AllValidations.isCnpj(cnpj))
       addNotifications(
           ValidationNotification(property: property, message: message));
 
     return this;
   }
-}
-
-bool _isValid(String? cpf) {
-  if (cpf == null) return false;
-  return AllValidations.isCpf(cpf);
-}
-
-bool _isValidCNPJ(String? cnpj) {
-  if (cnpj == null) return false;
-  return AllValidations.isCpf(cnpj);
 }
