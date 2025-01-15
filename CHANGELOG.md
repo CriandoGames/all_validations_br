@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.1
+## 3.1.2
 
 * Atualização para Contratos 
 * isStrongPassword: Verifica a força de uma senha.
