@@ -1,36 +1,52 @@
 <h1 align="center">All Validations BR</h1>
 
-## Descrição do Projeto
+<p align="center">💡 Uma solução leve e poderosa para Flutter, facilitando a validação e manipulação de dados no desenvolvimento de projetos.</p>
 
-- AllValidations é uma solução extra leve e poderosa para Flutter. Combine validações para agilizar seu desenvolvimento. esperamos que ajude você com seus projetos.
+---
+
+## 🚀 Descrição do Projeto
+
+**AllValidations BR** é uma biblioteca leve e eficiente para Flutter, projetada para agilizar a validação de dados e facilitar manipulações. Combinando diversas funcionalidades, ela é ideal para melhorar a produtividade no desenvolvimento de aplicativos.
+
+---
 
 ## ⚙️ Funcionalidades
 
-- [✅]  isNull           - [✅]  isNum
-- [✅]  isNumericOnly    - [✅]  isNumericFloat
-- [✅]  isAlphabetOnly   - [✅]  isVideo
-- [✅]  isImage          - [✅]  isURL
-- [✅]  isEmail          - [✅]  isPhoneNumber
-- [✅]  isDateTime       - [✅]  isMD5
-- [✅]  isSHA1           - [✅]  isSHA256
-- [✅]  isSSN            - [✅]  isBinary
-- [✅]  isIPv4           - [✅]  isIPv6
-- [✅]  isHexadecimal    - [✅]  isLowerThan
-- [✅]  isGreaterThan    - [✅]  isCnpj
-- [✅]  isCpf            - [✅]  isRG
-- [✅]  isUUID           - [✅]  isJSON
-- [✅]  isCreditCard     - [✅]  isLowercase
-- [✅]  isUppercase      - [✅]  isInt
-- [✅]  isEqual          - [✅]  isValidBRZip
-- [✅]  isPDF            - [✅]  isTxt
-- [✅]  isChm            - [✅]  isVector
-- [✅]  isHTML           - [✅]  removeCaracteres
-- [✅]  isMediumPassword - [✅]  isStrongPassword
-- [✅]  removeAccents    - [✅]  isPalindrome
-- [✅]  isName           - [✅]  isMapExists
+- **Validações Gerais**
+  - `isNull`                  | `isNum`
+  - `isNumericOnly`           | `isNumericFloat`
+  - `isAlphabetOnly`          | `isImage`
+  - `isURL`                   | `isEmail`
+  - `isBrazilianCellPhone`    | `isDateTime`
+  - `isIPv4`                  | `isIPv6`
+  - `isHexadecimal`           | `isJSON`
+  - `isCreditCard`            | `isStrongPassword`
+  - `isLowercase`             | `isUppercase`
+  - `isPalindrome`            | `isName`
+  - `isUUID`                  | `isValidBRZip`
+  - `isValidDDD`              | `isBrazilianLandline`
 
+- **Validações Específicas**
+  - `isCnpj`           | `isCpf` 
+  - `isRG`             | `isSSN`
+  - `isMD5`            | `isSHA1`
+  - `isSHA256`
 
-### 🧪 Contracts
+- **Manipulações de Texto**
+  - `removeCaracteres` | `removeAccents`
+  - `isEqual`          | `isPhraseEqual`
+
+- **Outros Recursos**
+  - Retorno de listas de dias da semana e meses.
+  - Verificação de chaves em mapas JSON.
+  - Funções auxiliares como `isMapExists`.
+
+---
+
+## 🧪 Exemplos de Uso
+
+### Validação de Parâmetros
+
 ```dart
 class TestParameters extends ValidationNotifiable {
   final String name;
@@ -47,70 +63,77 @@ class TestParameters extends ValidationNotifiable {
   }
 }
 
-main() {
-      final testParameters =
-          TestParameters(email: "exemplo@teste.com", name: "c");
-      // print(testParameters.notifications.length);
-     // 1;
-      if(testParameters.isValid){
-        print("Valido");
-      }else{
-        print("Invalido");
-      }
-      //print all erros
-      testParameters.notifications.forEach((f) => print(f.message));
+void main() {
+  final testParameters = TestParameters(email: "exemplo@teste.com", name: "c");
+
+  if (testParameters.isValid) {
+    print("Válido");
+  } else {
+    print("Inválido");
+    testParameters.notifications.forEach((f) => print(f.message));
+  }
 }
-//this return false
-```
 
-#### 🎲 exemplo de validação CPF
+
+## Validação de CPF
 
 ```dart
-var isCpf = AllValidations.isCpf(000.000.000.00); 
-//this return false
+var isCpf = AllValidations.isCpf("000.000.000-00"); 
+// Retorna false
+``` 
 
-#### 🎲 exemplos de Remoção caracteres  
+## Remoção de Caracteres
+
 ```dart
-//(ex: `/`, `-`, `.`)
-var remover = AllValidations.removeCharacters('000.000.000-00'); 
-//this return 00000000000
-```
-#### 🎲 exemplos de comparação de senha ou frases  
+var remover = AllValidations.removeCharacters("000.000.000-00"); 
+// Retorna: 00000000000
+``` 
+
+## Comparação de Senhas ou Frases
+
 ```dart
-//(ex: `/`, `-`, `.`)
-var remover = AllValidations.isPhraseEqual('123456789', '123456789');
-//this return true
-```
+var comparacao = AllValidations.isPhraseEqual("123456789", "123456789");
+// Retorna: true
+``` 
 
-#### 🎲 exemplos de retorno de lista de dias da semana  
+## Lista de Dias da Semana
+
 ```dart
-//(ex: `/`, `-`, `.`)
-var remover = AllValidationsGetWeek.listDaysWeekAbvr;
-//this return ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo']
-```
-Você também pode retornar meses, regiões, estados tudo através do AllValidationsGet
+var diasDaSemana = AllValidationsGetWeek.listDaysWeekAbvr;
+// Retorna: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
+``` 
 
+## Remoção de Acentos e Caracteres Especiais
 
-#### 🎲 exemplos de remoção acentos e caracters de um texto
 ```dart
-//(ex: `/`, `-`, `.`)
-var remover = AllValidations.removeAccents( 'áãé');
-//this return aae
-```
+var texto = AllValidations.removeAccents("áãé");
+// Retorna: aae
+``` 
 
-#### 🎲 exemplos para check se um key existe e se seu valor e nullo ou vazio -  map(json)
+## Função para Retornar o Estado pelo DDD
+
 ```dart
-//(ex: `/`, `-`, `.`)
- Map map1 = {"status": "success", "message": "successfully logged out"};
+print(AllValidations.getStateByDDD("11")); 
+// Saída: BrazilianState.SP
+``` 
 
-    final sut =
-        AllValidations.isMapExists(map: map1, key: ['status']);
+## Verificação de Chaves em Mapas JSON
 
-    expect(sut, true);
-//this return is log in your console
-```
+```dart
+Map<String, dynamic> map1 = {"status": "success", "message": "successfully logged out"};
 
+bool existe = AllValidations.isMapExists(map: map1, key: ['status']);
+// Retorna: true
+``` 
 
-  ## 📝 Licença
+📦 Instalação
+## Adicione a dependência ao seu arquivo pubspec.yaml:
 
-Este projeto esta sobe a licença [MIT](./LICENSE).
+dependencies:
+  all_validations_br: 
+
+📜 Licença
+Este projeto está sob a licença MIT.
+
+<p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> ```
+Essa versão está devidamente formatada, com divisões claras e blocos de código para facilitar a leitura e o uso no formato Markdown.

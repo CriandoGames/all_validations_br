@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:all_validations_br/all_validations_br.dart';
+
 import '../helpers/constants.dart';
 import 'dart:developer' as developer;
 
@@ -108,16 +110,205 @@ class AllValidations {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
   }
 
-  /// Checks if string is phone number.
-  static bool isPhoneNumber(String s) {
-    if (s.length > 16 || s.length < 9) {
-      return false;
-    } else if (s.length > 9 &&
-        !ddds.contains(removeCharacters(s).substring(0, 2))) {
-      return false;
-    } else {
-      return hasMatch(s, r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$');
+  /// Checks if string is phone Cell Phone Brazilian.
+  static bool isBrazilianCellPhone(String s) {
+    // Remove caracteres não numéricos
+    if (s.isEmpty) return false;
+
+    String cleanedNumber = removeCharacters(s);
+
+    // Verifica se o número contém o código de país (+55) e o remove
+    if (cleanedNumber.startsWith("55")) {
+      cleanedNumber = cleanedNumber.substring(2);
     }
+
+    // Verifica o tamanho do número (11 dígitos para celular)
+    if (cleanedNumber.length != 11) return false;
+
+    // Extrai o DDD e valida contra a lista de DDDs válidos
+    String ddd = cleanedNumber.substring(0, 2);
+    if (!isValidDDD(ddd)) return false;
+
+    // Verifica se o número começa com "9" (celular)
+    String celularInicio = cleanedNumber.substring(2, 3);
+    if (celularInicio != "9") return false;
+
+    // Valida o formato geral do número
+    return hasMatch(cleanedNumber, r'^[0-9]{11}$');
+  }
+
+  /// Valida se o número é um telefone fixo brasileiro com DDD.
+  static bool isBrazilianLandline(String s) {
+    // Remove caracteres não numéricos
+    String cleanedNumber = removeCharacters(s);
+
+    // Verifica se o número contém o código de país (+55) e o remove
+    if (cleanedNumber.startsWith("55")) {
+      cleanedNumber = cleanedNumber.substring(2);
+    }
+
+    // Verifica o tamanho do número (10 dígitos para fixo)
+    if (cleanedNumber.length != 10) return false;
+
+    // Extrai o DDD e valida contra a lista de DDDs válidos
+    String ddd = cleanedNumber.substring(0, 2);
+    if (!isValidDDD(ddd)) return false;
+
+    // Verifica se o número começa com um dígito válido para telefones fixos (2 a 5)
+    String fixoInicio = cleanedNumber.substring(2, 3);
+    if (!['2', '3', '4', '5'].contains(fixoInicio)) return false;
+
+    // Valida o formato geral do número
+    return hasMatch(cleanedNumber, r'^[0-9]{10}$');
+  }
+
+  static bool isValidDDD(String ddd) {
+    const validDDDs = [
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "21",
+      "22",
+      "24",
+      "27",
+      "28",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "37",
+      "38",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "51",
+      "53",
+      "54",
+      "55",
+      "61",
+      "62",
+      "63",
+      "64",
+      "65",
+      "66",
+      "67",
+      "68",
+      "69",
+      "71",
+      "73",
+      "74",
+      "75",
+      "77",
+      "79",
+      "81",
+      "82",
+      "83",
+      "84",
+      "85",
+      "86",
+      "87",
+      "88",
+      "89",
+      "91",
+      "92",
+      "93",
+      "94",
+      "95",
+      "96",
+      "97",
+      "98",
+      "99"
+    ];
+
+    return validDDDs.contains(ddd);
+  }
+
+  /// Retorna o estado correspondente ao DDD informado.
+  BrazilianState getStateByDDD(String ddd) {
+    const dddToStateMap = {
+      "11": BrazilianState.SP,
+      "12": BrazilianState.SP,
+      "13": BrazilianState.SP,
+      "14": BrazilianState.SP,
+      "15": BrazilianState.SP,
+      "16": BrazilianState.SP,
+      "17": BrazilianState.SP,
+      "18": BrazilianState.SP,
+      "19": BrazilianState.SP,
+      "21": BrazilianState.RJ,
+      "22": BrazilianState.RJ,
+      "24": BrazilianState.RJ,
+      "27": BrazilianState.ES,
+      "28": BrazilianState.ES,
+      "31": BrazilianState.MG,
+      "32": BrazilianState.MG,
+      "33": BrazilianState.MG,
+      "34": BrazilianState.MG,
+      "35": BrazilianState.MG,
+      "37": BrazilianState.MG,
+      "38": BrazilianState.MG,
+      "41": BrazilianState.PR,
+      "42": BrazilianState.PR,
+      "43": BrazilianState.PR,
+      "44": BrazilianState.PR,
+      "45": BrazilianState.PR,
+      "46": BrazilianState.PR,
+      "47": BrazilianState.SC,
+      "48": BrazilianState.SC,
+      "49": BrazilianState.SC,
+      "51": BrazilianState.RS,
+      "53": BrazilianState.RS,
+      "54": BrazilianState.RS,
+      "55": BrazilianState.RS,
+      "61": BrazilianState.DF,
+      "62": BrazilianState.GO,
+      "64": BrazilianState.GO,
+      "63": BrazilianState.TO,
+      "65": BrazilianState.MT,
+      "66": BrazilianState.MT,
+      "67": BrazilianState.MS,
+      "68": BrazilianState.AC,
+      "69": BrazilianState.RO,
+      "71": BrazilianState.BA,
+      "73": BrazilianState.BA,
+      "74": BrazilianState.BA,
+      "75": BrazilianState.BA,
+      "77": BrazilianState.BA,
+      "79": BrazilianState.SE,
+      "81": BrazilianState.PE,
+      "87": BrazilianState.PE,
+      "82": BrazilianState.AL,
+      "83": BrazilianState.PB,
+      "84": BrazilianState.RN,
+      "85": BrazilianState.CE,
+      "88": BrazilianState.CE,
+      "86": BrazilianState.PI,
+      "89": BrazilianState.PI,
+      "91": BrazilianState.PA,
+      "93": BrazilianState.PA,
+      "94": BrazilianState.PA,
+      "92": BrazilianState.AM,
+      "97": BrazilianState.AM,
+      "95": BrazilianState.RR,
+      "96": BrazilianState.AP,
+      "98": BrazilianState.MA,
+      "99": BrazilianState.MA
+    };
+
+    return dddToStateMap[ddd] ?? BrazilianState.Unknown;
   }
 
   /// Checks if string is DateTime (UTC or Iso8601).

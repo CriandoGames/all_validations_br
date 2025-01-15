@@ -1,10 +1,10 @@
 name: all_validations_br
 description: String validations and remover char ex ('/', '-', '.'), more than a validation for your best projects. Made with love
-version: 3.0.0
+version: 3.1.0
 homepage: https://github.com/CriandoGames/all_validations_br
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.16.0 <3.20.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -16,5 +16,5 @@ dev_dependencies:
     sdk: flutter
 
 
-flutter:
+
 
