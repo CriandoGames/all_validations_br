@@ -1,6 +1,6 @@
 name: all_validations_br
-description: String validations and remover char ex ('/', '-', '.'), more than a validation for your best projects. Made with love
-version: 3.1.0
+description: A powerful library for string validations, including the removal of special characters (e.g., '/', '-', '.'), and advanced validation features to enhance your projects. Designed with precision and crafted with love.
+version: 3.1.1
 homepage: https://github.com/CriandoGames/all_validations_br
 
 environment:
