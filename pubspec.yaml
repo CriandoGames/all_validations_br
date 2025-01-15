@@ -1,5 +1,5 @@
 name: all_validations_br
-description: A powerful library for string validations, including the removal of special characters (e.g., '/', '-', '.'), and advanced validation features to enhance your projects. Designed with precision and crafted with love.
+description: "A powerful library Dart library for advanced validations: CPF, CNPJ, URLs, passwords, string checks, and character removal. Simplify your Dart and Flutter projects."
 version: 3.1.1
 homepage: https://github.com/CriandoGames/all_validations_br
 
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
 
 dev_dependencies:
   flutter_test:
