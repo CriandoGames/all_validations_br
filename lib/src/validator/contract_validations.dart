@@ -122,15 +122,18 @@ class ContractValidations extends ValidationNotifiable {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
-      if ((value as DateTime).isAfter((comparer as DateTime)))
+      if ((value as DateTime).isAfter((comparer as DateTime))) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if (value > comparer)
+    if (value > comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -140,15 +143,18 @@ class ContractValidations extends ValidationNotifiable {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
-      if ((value as DateTime).isAfter((comparer as DateTime)))
+      if ((value as DateTime).isAfter((comparer as DateTime))) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if (value >= comparer)
+    if (value >= comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -158,15 +164,18 @@ class ContractValidations extends ValidationNotifiable {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
-      if ((value as DateTime).isBefore((comparer as DateTime)))
+      if ((value as DateTime).isBefore((comparer as DateTime))) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if (value < comparer)
+    if (value < comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -176,15 +185,18 @@ class ContractValidations extends ValidationNotifiable {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
-      if ((value as DateTime).isBefore((comparer as DateTime)))
+      if ((value as DateTime).isBefore((comparer as DateTime))) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if (value <= comparer)
+    if (value <= comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -194,15 +206,18 @@ class ContractValidations extends ValidationNotifiable {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
-      if ((value as DateTime).difference((comparer as DateTime)).inDays == 0)
+      if ((value as DateTime).difference((comparer as DateTime)).inDays == 0) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if (value == comparer)
+    if (value == comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -212,15 +227,18 @@ class ContractValidations extends ValidationNotifiable {
     bool hasDatetime = ((value is DateTime) || (comparer is DateTime));
 
     if (hasDatetime) {
-      if ((value as DateTime).difference((comparer as DateTime)).inDays != 0)
+      if ((value as DateTime).difference((comparer as DateTime)).inDays != 0) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if (value != comparer)
+    if (value != comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -232,15 +250,18 @@ class ContractValidations extends ValidationNotifiable {
 
     if (hasDatetime) {
       if ((value as DateTime).isAfter((from as DateTime)) ||
-          (value).isBefore((into as DateTime)))
+          (value).isBefore((into as DateTime))) {
         addNotifications(
             ValidationNotification(property: property, message: message));
+      }
+
       return this;
     }
 
-    if ((value >= from && value <= into))
+    if ((value >= from && value <= into)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -286,54 +307,60 @@ class ContractValidations extends ValidationNotifiable {
 
   ContractValidations isNotNullOrEmpty(
       dynamic val, String property, String message) {
-    if (val == null || val.isEmpty)
+    if (val == null || val.isEmpty) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations isNullOrEmpty(
       String val, String property, String message) {
-    if (val.isEmpty)
+    if (val.isEmpty) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations hasMinLen(
       String val, int min, String property, String message) {
-    if (val.isEmpty || val.length < min)
+    if (val.isEmpty || val.length < min) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations hasMaxLen(
       String val, int max, String property, String message) {
-    if (val.isEmpty || val.length > max)
+    if (val.isEmpty || val.length > max) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations hasLen(
       String val, int len, String property, String message) {
-    if (val.isEmpty || val.length != len)
+    if (val.isEmpty || val.length != len) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations contains(
       String val, String text, String property, String message) {
-    if (!val.contains(text))
+    if (!val.contains(text)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
@@ -355,52 +382,58 @@ class ContractValidations extends ValidationNotifiable {
 
   ContractValidations hasMinLengthIfNotNullOrEmpty(
       String text, int min, String property, String message) {
-    if (text.isNotEmpty && text.length < min)
+    if (text.isNotEmpty && text.length < min) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations hasMaxLengthIfNotNullOrEmpty(
       String text, int max, String property, String message) {
-    if (text.isNotEmpty && text.length > max)
+    if (text.isNotEmpty && text.length > max) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations hasExactLengthIfNotNullOrEmpty(
       String text, int len, String property, String message) {
-    if (text.isNotEmpty && text.length != len)
+    if (text.isNotEmpty && text.length != len) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations isEmail(String email, String property, String message) {
-    if (!AllValidations.isEmail(email))
+    if (!AllValidations.isEmail(email)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations isValidCPF(String cpf, String property, String message) {
-    if (!AllValidations.isCpf(cpf))
+    if (!AllValidations.isCpf(cpf)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }
 
   ContractValidations isValidCNPJ(
       String cnpj, String property, String message) {
-    if (!AllValidations.isCnpj(cnpj))
+    if (!AllValidations.isCnpj(cnpj)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
+    }
 
     return this;
   }

@@ -1,7 +1,26 @@
 # Changelog
 
-## 3.1.2
+## 3.2.0
+### 🆕 Novas Funcionalidades
+* **Criptografia e Validação de Senhas**
+  - `encryptPassword`: Gera uma senha criptografada utilizando uma chave de segurança personalizada.
+  - `validatePassword`: Valida se uma senha corresponde ao hash gerado.
 
+* **Utilidades Adicionais**
+  - `formatCurrency`: Formata números para o padrão de moeda brasileiro (`R$`).
+  - `calculatePercentage`: Calcula a porcentagem de um valor em relação a um total.
+  - `generateRandomString`: Gera strings aleatórias de tamanho personalizado.
+
+* **Manipulações de Texto**
+  - `capitalizeWords`: Converte a primeira letra de cada palavra para maiúscula.
+  - `removeNonNumeric`: Remove todos os caracteres não numéricos de uma string.
+
+* **Utilidades de Datas**
+  - `businessDaysBetween`: Calcula o número de dias úteis entre duas datas.
+  - `daysBetween`: Calcula a diferença em dias entre duas datas.
+
+---
+## 3.1.2
 * Atualização para Contratos 
 * isStrongPassword: Verifica a força de uma senha.
 * isURL: Valida URLs.

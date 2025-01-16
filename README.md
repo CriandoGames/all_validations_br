@@ -13,35 +13,53 @@
 ## ⚙️ Funcionalidades
 
 - **Validações Gerais**
-  - `isNull`                  | `isNum`
-  - `isNumericOnly`           | `isNumericFloat`
-  - `isAlphabetOnly`          | `isImage`
-  - `isURL`                   | `isEmail`
-  - `isBrazilianCellPhone`    | `isDateTime`
-  - `isIPv4`                  | `isIPv6`
-  - `isHexadecimal`           | `isJSON`
-  - `isCreditCard`            | `isStrongPassword`
-  - `isLowercase`             | `isUppercase`
-  - `isPalindrome`            | `isName`
-  - `isUUID`                  | `isValidBRZip`
-  - `isValidDDD`              | `isBrazilianLandline`
-
-- **Validações Específicas**
-  - `isCnpj`           | `isCpf` 
-  - `isRG`             | `isSSN`
-  - `isMD5`            | `isSHA1`
-  - `isSHA256`
-
-- **Manipulações de Texto**
-  - `removeCaracteres` | `removeAccents`
-  - `isEqual`          | `isPhraseEqual`
-
-- **Outros Recursos**
-  - Retorno de listas de dias da semana e meses.
-  - Verificação de chaves em mapas JSON.
-  - Funções auxiliares como `isMapExists`.
+- Verificação de tipos e formatos:
+  - `isNull`, `isNum`, `isNumericOnly`, `isNumericFloat`
+  - `isAlphabetOnly`, `isLowercase`, `isUppercase`
+  - `isUUID`, `isJSON`, `isHexadecimal`
+  - `isEmail`, `isURL`
+- Validações específicas:
+  - `isCpf`, `isCnpj`, `isRG`, `isValidBRZip`
+  - `isBrazilianCellPhone`, `isBrazilianLandline`
+  - `isLeapYear`, `isValidBrazilianLicensePlate`
+  - Validação de chaves PIX: CPF, e-mail, celular e chave aleatória
 
 ---
+### **Manipulação de Texto**
+- **Remoção de caracteres especiais:**
+  - `removeCharacters`, `removeNonNumeric`, `removeAccents`
+- **Formatação de dados:**
+  - CPF: `123.456.789-09`
+  - CNPJ: `12.345.678/0001-95`
+  - Celular: `(11) 99999-9999`
+  - Moeda: `R$ 1.234,56`
+  - Data e hora: `01/01/2023`, `12:30:45`
+- **Outras manipulações:**
+  - Comparação de frases: `isPhraseEqual`
+  - Capitalização de palavras: `capitalizeWords`
+  
+---
+### **Utilidades para Datas**
+- **Conversões de horário:**
+  - UTC para local: `convertUtcToLocal`
+  - Local para UTC: `convertLocalToUtc`
+- **Cálculos com datas:**
+  - Diferença entre duas datas: `daysBetween`
+  - Dias úteis entre duas datas: `businessDaysBetween`
+  - Cálculo de idade: `calculateAge`
+
+---
+### **Funções Avançadas**
+- **Validações por Regex:**
+  - E-mails, URLs, UUIDs, senhas fortes
+- **Geração e manipulação:**
+  - Strings aleatórias: `generateRandomString`
+  - Números aleatórios: `generateRandomInt`
+  - Formatação de moeda: `formatCurrency`
+- **Informações do dispositivo:**
+  - Sistema operacional e versão do Dart: `getDeviceInfo`
+- **Criptografia**
+  - Criptografa senhas e realiza validações com as funções `encryptPassword e validatePassword `   
 
 ## 🧪 Exemplos de Uso
 
@@ -126,6 +144,13 @@ bool existe = AllValidations.isMapExists(map: map1, key: ['status']);
 // Retorna: true
 ``` 
 
+## 📖 Documentação e Wiki
+
+Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github.com/CriandoGames/all_validations_br/wiki).
+
+---
+
+
 📦 Instalação
 ## Adicione a dependência ao seu arquivo pubspec.yaml:
 
@@ -134,6 +159,8 @@ dependencies:
 
 📜 Licença
 Este projeto está sob a licença MIT.
+
+---
 
 <p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> ```
 Essa versão está devidamente formatada, com divisões claras e blocos de código para facilitar a leitura e o uso no formato Markdown.
