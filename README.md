@@ -160,7 +160,4 @@ dependencies:
 📜 Licença
 Este projeto está sob a licença MIT.
 
----
-
 <p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> ```
-Essa versão está devidamente formatada, com divisões claras e blocos de código para facilitar a leitura e o uso no formato Markdown.
