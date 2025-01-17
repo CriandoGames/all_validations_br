@@ -1,4 +1,4 @@
-import 'package:all_validations_br/src/helper_util.dart';
+import 'package:all_validations_br/all_validations_br.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -152,6 +152,64 @@ void main() {
       final isValid =
           HelperUtil.validatePassword(password, securityKey, 'hash_invalido');
       expect(isValid, isFalse);
+    });
+  });
+
+  group('HelperUtil.removeHtmlTags', () {
+    test('Remove tags HTML simples', () {
+      final input = "<p>Olá, mundo!</p>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Olá, mundo!"));
+    });
+
+    test('Remove tags HTML aninhadas', () {
+      final input =
+          "<div><p>Texto com <strong>tags</strong> aninhadas.</p></div>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Texto com tags aninhadas."));
+    });
+
+    test('Remove múltiplas tags HTML diferentes', () {
+      final input =
+          "<header>Header</header><main>Conteúdo</main><footer>Rodapé</footer>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("HeaderConteúdoRodapé"));
+    });
+
+    test('Remove tags HTML com atributos', () {
+      final input = "<a href='https://example.com'>Link</a>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Link"));
+    });
+
+    test('Texto sem tags HTML permanece inalterado', () {
+      final input = "Texto simples sem HTML.";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Texto simples sem HTML."));
+    });
+
+    test('Texto vazio retorna vazio', () {
+      final input = "";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals(""));
+    });
+
+    test('Remove tags HTML não convencionais', () {
+      final input = "<custom-tag>Custom Content</custom-tag>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Custom Content"));
+    });
+
+    test('Remove tags HTML com maiúsculas', () {
+      final input = "<DIV><P>Texto em maiúsculas</P></DIV>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Texto em maiúsculas"));
+    });
+
+    test('Remove tags HTML com conteúdo vazio', () {
+      final input = "<p></p><div></div>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals(""));
     });
   });
 }

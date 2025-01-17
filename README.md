@@ -56,6 +56,7 @@
   - Strings aleatórias: `generateRandomString`
   - Números aleatórios: `generateRandomInt`
   - Formatação de moeda: `formatCurrency`
+  - Removedor Tags Html: `removeHtmlTags`
 - **Informações do dispositivo:**
   - Sistema operacional e versão do Dart: `getDeviceInfo`
 - **Criptografia**
@@ -148,6 +149,16 @@ bool existe = AllValidations.isMapExists(map: map1, key: ['status']);
 
 Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github.com/CriandoGames/all_validations_br/wiki).
 
+---
+
+## 🧪 Classes para uso 
+`HelperUtil`
+`AllValidations`
+`Contract`
+`AllValidationsGetMonth`
+`AllValidationsGetRegions`
+`AllValidationsGetStates`
+`AllValidationsGetWeek`
 ---
 
 

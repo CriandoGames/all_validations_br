@@ -5,3 +5,4 @@ export 'src/models/models.dart';
 export './src/Notifications/notifiable.dart';
 export './src/validator/contract.dart';
 export './src/validator/contract_validations.dart';
+export './src/helper_utils/helper_util.dart';

@@ -7,7 +7,9 @@ class HelperUtil {
   static Map<String, dynamic>? decodeJWT(String token) {
     try {
       final parts = token.split('.');
-      if (parts.length != 3) return null;
+      if (parts.length != 3) {
+        return null;
+      }
 
       final payload =
           utf8.decode(base64Url.decode(base64Url.normalize(parts[1])));
@@ -34,12 +36,23 @@ class HelperUtil {
 
   /// Valida uma chave PIX (CPF, e-mail, celular, chave aleatória).
   static String? validatePixKey(String key) {
-    if (RegExp(r'^\d{11}$').hasMatch(key)) return 'CPF'; // CPF
-    if (RegExp(r'^\+55\d{11}$').hasMatch(key)) return 'Celular'; // Celular
+    if (RegExp(r'^\d{11}$').hasMatch(key)) {
+      return 'CPF'; // CPF
+    }
+
+    if (RegExp(r'^\+55\d{11}$').hasMatch(key)) {
+      return 'Celular';
+    } // Celular
     if (RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-        .hasMatch(key)) return 'Email'; // Email
-    if (key.length == 32 && RegExp(r'^[a-f0-9]{32}$').hasMatch(key))
+        .hasMatch(key)) {
+      return 'Email';
+    }
+    ; // Email
+
+    if (key.length == 32 && RegExp(r'^[a-f0-9]{32}$').hasMatch(key)) {
       return 'Chave Aleatória'; // Chave Aleatória
+    }
+
     return null; // Chave inválida
   }
 
@@ -115,28 +128,27 @@ class HelperUtil {
     return input.replaceAll(regex, '');
   }
 
-  /// Formata um número para o padrão de moeda brasileiro 
-static String formatCurrency(double value) {
-  // Arredonda o valor para duas casas decimais
-  String formattedValue = value.toStringAsFixed(2);
+  /// Formata um número para o padrão de moeda brasileiro
+  static String formatCurrency(double value) {
+    // Arredonda o valor para duas casas decimais
+    String formattedValue = value.toStringAsFixed(2);
 
-  // Divide o número em parte inteira e decimal
-  List<String> parts = formattedValue.split('.');
+    // Divide o número em parte inteira e decimal
+    List<String> parts = formattedValue.split('.');
 
-  // Adiciona separador de milhares
-  String integerPart = parts[0];
-  String formattedIntegerPart = '';
-  for (int i = integerPart.length - 1, j = 0; i >= 0; i--, j++) {
-    if (j > 0 && j % 3 == 0) {
-      formattedIntegerPart = '.' + formattedIntegerPart;
+    // Adiciona separador de milhares
+    String integerPart = parts[0];
+    String formattedIntegerPart = '';
+    for (int i = integerPart.length - 1, j = 0; i >= 0; i--, j++) {
+      if (j > 0 && j % 3 == 0) {
+        formattedIntegerPart = '.' + formattedIntegerPart;
+      }
+      formattedIntegerPart = integerPart[i] + formattedIntegerPart;
     }
-    formattedIntegerPart = integerPart[i] + formattedIntegerPart;
+
+    // Retorna o número formatado com o símbolo de moeda
+    return 'R\$ $formattedIntegerPart,${parts[1]}';
   }
-
-  // Retorna o número formatado com o símbolo de moeda
-  return 'R\$ $formattedIntegerPart,${parts[1]}';
-}
-
 
   /// Calcula a diferença em dias entre duas datas.
   static int daysBetween(DateTime start, DateTime end) {
@@ -187,11 +199,12 @@ static String formatCurrency(double value) {
     return false;
   }
 
-
   /// Criptografa uma senha usando chave de segurança e salt.
-  static String encryptPassword(String password, String securityKey, String salt) {
+  static String encryptPassword(
+      String password, String securityKey, String salt) {
     if (password.isEmpty || securityKey.isEmpty || salt.isEmpty) {
-      throw ArgumentError("A senha, chave de segurança e salt não podem estar vazios.");
+      throw ArgumentError(
+          "A senha, chave de segurança e salt não podem estar vazios.");
     }
 
     // Combina salt, chave de segurança e senha
@@ -205,7 +218,8 @@ static String formatCurrency(double value) {
   }
 
   /// Valida a senha comparando com o hash armazenado.
-  static bool validatePassword(String password, String securityKey, String encryptedPassword) {
+  static bool validatePassword(
+      String password, String securityKey, String encryptedPassword) {
     final parts = encryptedPassword.split(':');
     if (parts.length != 2) return false;
 
@@ -233,4 +247,17 @@ static String formatCurrency(double value) {
     return hash.toRadixString(16).padLeft(8, '0');
   }
 
+  /// Remove todas as tags HTML de um texto e retorna o texto limpo.
+  static String removeHtmlTags(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+
+    // Usando uma expressão regular para remover as tags HTML
+    final RegExp htmlTagRegex =
+        RegExp(r'<[^>]*>', multiLine: true, caseSensitive: false);
+
+    // Substitui todas as tags encontradas por uma string vazia
+    return input.replaceAll(htmlTagRegex, '').trim();
+  }
 }
