@@ -1,6 +1,6 @@
 name: all_validations_br
 description: "A powerful library Dart library for advanced validations: CPF, CNPJ, URLs, passwords, string checks, and character removal. Simplify your Dart and Flutter projects."
-version: 3.2.1
+version: 3.2.2
 homepage: https://github.com/CriandoGames/all_validations_br
 
 environment:

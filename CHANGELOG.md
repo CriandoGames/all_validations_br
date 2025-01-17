@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.1
+## 3.2.2
 ### 🆕 Novas Funcionalidades
 * **Remoção de Tags HTML**
   - `removeHtmlTags`: Remove todas as tags HTML de um texto, retornando apenas o conteúdo limpo. Método robusto e performático para sanitização de entradas.
