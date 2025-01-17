@@ -82,5 +82,4 @@ class Contract extends ContractValidations {
       "notifications": notifications.map((n) => n.toMap()).toList(),
     };
   }
-  
 }
