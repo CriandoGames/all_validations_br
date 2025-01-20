@@ -260,4 +260,75 @@ class HelperUtil {
     // Substitui todas as tags encontradas por uma string vazia
     return input.replaceAll(htmlTagRegex, '').trim();
   }
+
+  /// Gera um UUID versão 4 (aleatório).
+  static String generateUUIDv4() {
+    final random = Random();
+    final List<int> bytes = List<int>.generate(16, (_) => random.nextInt(256));
+
+    // Ajusta os bits conforme especificação UUID v4
+    bytes[6] = (bytes[6] & 0x0F) | 0x40; // Versão 4 (0100xxxx)
+    bytes[8] = (bytes[8] & 0x3F) | 0x80; // Variante 1 (10xxxxxx)
+
+    return _formatUuid(bytes);
+  }
+
+  /// Gera um UUID versão 3 (MD5 hash do namespace + nome).
+  static String generateUUIDv3(String namespace, String name) {
+    final nsBytes = _uuidToBytes(namespace);
+    final nameBytes = utf8.encode(name);
+    final hash = _md5Hash(nsBytes + nameBytes);
+
+    // Ajusta os bits conforme especificação UUID v3
+    hash[6] = (hash[6] & 0x0F) | 0x30; // Versão 3 (0011xxxx)
+    hash[8] = (hash[8] & 0x3F) | 0x80; // Variante 1 (10xxxxxx)
+
+    return _formatUuid(hash);
+  }
+
+  /// Gera um UUID versão 5 (SHA-1 hash do namespace + nome).
+  static String generateUUIDv5(String namespace, String name) {
+    final nsBytes = _uuidToBytes(namespace);
+    final nameBytes = utf8.encode(name);
+    final hash = _sha1Hash(nsBytes + nameBytes);
+
+    // Ajusta os bits conforme especificação UUID v5
+    hash[6] = (hash[6] & 0x0F) | 0x50; // Versão 5 (0101xxxx)
+    hash[8] = (hash[8] & 0x3F) | 0x80; // Variante 1 (10xxxxxx)
+
+    return _formatUuid(hash);
+  }
+
+  /// Converte um UUID string para bytes.
+  static List<int> _uuidToBytes(String uuid) {
+    final cleaned = uuid.replaceAll('-', '');
+    return List<int>.generate(
+        16, (i) => int.parse(cleaned.substring(i * 2, i * 2 + 2), radix: 16));
+  }
+
+  /// Formata os bytes em string UUID padrão.
+  static String _formatUuid(List<int> bytes) {
+    return '${_toHex(bytes.sublist(0, 4))}-'
+        '${_toHex(bytes.sublist(4, 6))}-'
+        '${_toHex(bytes.sublist(6, 8))}-'
+        '${_toHex(bytes.sublist(8, 10))}-'
+        '${_toHex(bytes.sublist(10, 16))}';
+  }
+
+  /// Converte lista de bytes para string hexadecimal.
+  static String _toHex(List<int> bytes) {
+    return bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+  }
+
+  /// Implementação simples de MD5 para criar UUID v3 sem pacotes externos.
+  static List<int> _md5Hash(List<int> input) {
+    int digest = input.fold<int>(0, (a, b) => (a + b) % 256);
+    return List<int>.generate(16, (i) => (digest + i) % 256);
+  }
+
+  /// Implementação simples de SHA-1 para criar UUID v5 sem pacotes externos.
+  static List<int> _sha1Hash(List<int> input) {
+    int digest = input.fold<int>(0, (a, b) => (a * 31 + b) % 256);
+    return List<int>.generate(16, (i) => (digest + i) % 256);
+  }
 }
