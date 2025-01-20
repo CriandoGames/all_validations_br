@@ -57,6 +57,10 @@
   - Números aleatórios: `generateRandomInt`
   - Formatação de moeda: `formatCurrency`
   - Removedor Tags Html: `removeHtmlTags`
+- **Geração de UUID:**  
+  - `generateUUIDv3` - Baseado em namespace e nome com MD5  
+  - `generateUUIDv4` - UUID gerado aleatoriamente  
+  - `generateUUIDv5` - Baseado em namespace e nome com SHA-1
 - **Informações do dispositivo:**
   - Sistema operacional e versão do Dart: `getDeviceInfo`
 - **Criptografia**
@@ -151,14 +155,62 @@ Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github
 
 ---
 
-## 🧪 Classes para uso 
-`HelperUtil`
-`AllValidations`
-`Contract`
-`AllValidationsGetMonth`
-`AllValidationsGetRegions`
-`AllValidationsGetStates`
-`AllValidationsGetWeek`
+## 🆘 Classes para Uso
+
+Aqui estão as principais classes disponíveis na biblioteca **AllValidations BR**, juntamente com suas funcionalidades para facilitar a validação e manipulação de dados em seus projetos Flutter.
+
+### `HelperUtil`  
+Utilitários diversos para manipulação e formatação de dados, incluindo:  
+- Decodificação de JWT  
+- Geração de strings e números aleatórios  
+- Conversão de datas entre UTC e horário local  
+- Formatação de valores para moeda brasileira  
+- Remoção de tags HTML de strings  
+- Geração de UUIDs (v3, v4 e v5)  
+- Criptografia e validação de senhas  
+
+---
+
+### `AllValidations`  
+Conjunto de funções para validar diferentes tipos de dados, como:  
+- CPF e CNPJ  
+- E-mail e URL  
+- Telefone brasileiro (fixo e celular)  
+- CEP, RG e outras identificações  
+- Formatos de data, IP e JSON  
+
+---
+
+### `Contract`  
+Classe para gerenciamento de contratos de validação, permitindo a criação de regras flexíveis e reutilizáveis para validar dados com notificações de erro detalhadas.  
+- Definição de regras de validação personalizada  
+- Verificação de requisitos obrigatórios e condições específicas  
+- Emissão de notificações de erro em propriedades inválidas  
+
+---
+
+### `AllValidationsGetMonth`  
+Fornece listas de nomes dos meses do ano para fácil acesso e manipulação.  
+- Exemplo de uso: `AllValidationsGetMonth.list` → `[Janeiro, Fevereiro, ...]`  
+
+---
+
+### `AllValidationsGetRegions`  
+Retorna as regiões do Brasil, útil para aplicações que necessitam de categorização geográfica.  
+- Exemplo de uso: `AllValidationsGetRegions.list` → `[Norte, Nordeste, ...]`  
+
+---
+
+### `AllValidationsGetStates`  
+Disponibiliza os estados brasileiros e suas siglas.  
+- Exemplo de uso: `AllValidationsGetStates.list` → `[SP, RJ, MG, ...]`  
+
+---
+
+### `AllValidationsGetWeek`  
+Fornece listas de dias da semana em formato abreviado e completo.  
+- Exemplo de uso: `AllValidationsGetWeek.listDaysWeekAbvr` → `[Seg, Ter, Qua, ...]`  
+
 ---
 
 
