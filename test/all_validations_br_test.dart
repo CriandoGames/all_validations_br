@@ -330,11 +330,11 @@ void main() {
     });
   });
 
-   test('isValidBrazilianLicensePlate', () {
-      expect(AllValidations.isValidBrazilianLicensePlate('ABC-1234'), isTrue);
-      expect(AllValidations.isValidBrazilianLicensePlate('ABC1D23'), isTrue);
-      expect(AllValidations.isValidBrazilianLicensePlate('INVALID'), isFalse);
-    });
+  test('isValidBrazilianLicensePlate', () {
+    expect(AllValidations.isValidBrazilianLicensePlate('ABC-1234'), isTrue);
+    expect(AllValidations.isValidBrazilianLicensePlate('ABC1D23'), isTrue);
+    expect(AllValidations.isValidBrazilianLicensePlate('INVALID'), isFalse);
+  });
   group('Validação de Celulares Brasileiros', () {
     test('Números de celular válidos', () {
       expect(AllValidations.isBrazilianCellPhone("(11) 91234-5678"), true);

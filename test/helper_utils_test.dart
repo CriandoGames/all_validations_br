@@ -155,26 +155,31 @@ void main() {
     });
   });
 
-  
-    group('HelperUtil UUID Tests', () {
+  group('HelperUtil UUID Tests', () {
     test('Generate UUID v4 should produce valid format', () {
       final uuidV4 = HelperUtil.generateUUIDv4();
-      expect(uuidV4, matches(RegExp(
-          r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')));
+      expect(
+          uuidV4,
+          matches(RegExp(
+              r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')));
     });
 
     test('Generate UUID v3 should produce valid format', () {
       final namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
       final uuidV3 = HelperUtil.generateUUIDv3(namespace, 'test');
-      expect(uuidV3, matches(RegExp(
-          r'^[0-9a-f]{8}-[0-9a-f]{4}-3[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')));
+      expect(
+          uuidV3,
+          matches(RegExp(
+              r'^[0-9a-f]{8}-[0-9a-f]{4}-3[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')));
     });
 
     test('Generate UUID v5 should produce valid format', () {
       final namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
       final uuidV5 = HelperUtil.generateUUIDv5(namespace, 'test');
-      expect(uuidV5, matches(RegExp(
-          r'^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')));
+      expect(
+          uuidV5,
+          matches(RegExp(
+              r'^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')));
     });
 
     test('Generated UUIDs should be unique', () {
@@ -197,8 +202,7 @@ void main() {
       expect(uuid1, equals(uuid2));
     });
   });
-  
-  
+
   group('HelperUtil.removeHtmlTags', () {
     test('Remove tags HTML simples', () {
       final input = "<p>Olá, mundo!</p>";
