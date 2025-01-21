@@ -22,6 +22,8 @@
   - `isCpf`, `isCnpj`, `isRG`, `isValidBRZip`
   - `isBrazilianCellPhone`, `isBrazilianLandline`
   - `isLeapYear`, `isValidBrazilianLicensePlate`
+  - Validação de código de barras EAN-13: `isValidEAN13`
+  - Validação de cores hexadecimais: `isValidHexColor`
   - Validação de chaves PIX: CPF, e-mail, celular e chave aleatória
 
 ---
@@ -52,17 +54,27 @@
 ### **Funções Avançadas**
 - **Validações por Regex:**
   - E-mails, URLs, UUIDs, senhas fortes
+
 - **Geração e manipulação:**
   - Strings aleatórias: `generateRandomString`
   - Números aleatórios: `generateRandomInt`
   - Formatação de moeda: `formatCurrency`
   - Removedor Tags Html: `removeHtmlTags`
+
 - **Geração de UUID:**  
   - `generateUUIDv3` - Baseado em namespace e nome com MD5  
   - `generateUUIDv4` - UUID gerado aleatoriamente  
   - `generateUUIDv5` - Baseado em namespace e nome com SHA-1
+
+  - **Manipulação de JWT:**  
+  - `decodeJWT` - Decodifica um JSON Web Token (JWT) e retorna o payload  
+  - `isJwtExpired` - Verifica se o token JWT está expirado  
+  - `hasJwtClaim` - Verifica se uma chave específica existe no JWT  
+  - `getJwtClaim` - Obtém o valor de uma chave específica no JWT  
+
 - **Informações do dispositivo:**
   - Sistema operacional e versão do Dart: `getDeviceInfo`
+
 - **Criptografia**
   - Criptografa senhas e realiza validações com as funções `encryptPassword e validatePassword `   
 
@@ -97,12 +109,31 @@ void main() {
   }
 }
 
+````
 
 ## Validação de CPF
 
 ```dart
 var isCpf = AllValidations.isCpf("000.000.000-00"); 
 // Retorna false
+``` 
+
+## Validação de Cores Hexadecimais
+```dart
+bool isValidColor = AllValidations.isValidHexColor('#FF5733');
+// Retorna: true; 
+``` 
+
+## Contagem de Palavras em uma String
+```dart
+int totalWords = HelperUtil.countWords('Flutter é incrível');
+// Retorna: 3
+``` 
+
+## Remoção de Tags HTML
+```dart
+String cleanText = HelperUtil.removeHtmlTags('<p>Hello <b>World</b></p>');
+// Retorna: Hello World
 ``` 
 
 ## Remoção de Caracteres
@@ -117,6 +148,12 @@ var remover = AllValidations.removeCharacters("000.000.000-00");
 ```dart
 var comparacao = AllValidations.isPhraseEqual("123456789", "123456789");
 // Retorna: true
+``` 
+
+## Geração de UUIDs
+```dart
+String uuid4 = HelperUtil.generateUUIDv4();
+// Exemplo de saída: '550e8400-e29b-41d4-a716-446655440000'
 ``` 
 
 ## Lista de Dias da Semana
@@ -213,14 +250,22 @@ Fornece listas de dias da semana em formato abreviado e completo.
 
 ---
 
+### 🤝 Contribuições
+  Encontrou algum problema ou tem sugestões para melhorar a biblioteca?
+ Contribua abrindo uma issue no nosso repositório oficial do GitHub!
+- 🔗 All Validations BR -  [GitHub](https://github.com/CriandoGames/all_validations_br/)
 
-📦 Instalação
+--- 
+
+### 📦 Instalação
 ## Adicione a dependência ao seu arquivo pubspec.yaml:
 
 dependencies:
   all_validations_br: 
 
-📜 Licença
+### 📜 Licença
 Este projeto está sob a licença MIT.
 
-<p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> ```
+
+<p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> 
+

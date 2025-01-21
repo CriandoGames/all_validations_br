@@ -19,6 +19,44 @@ class HelperUtil {
     }
   }
 
+  /// Decodifica um JWT (Valida se está expirado) e retorna seu payload.
+  static bool isJwtExpired(String token) {
+    final payload = decodeJWT(token);
+    if (payload == null || !payload.containsKey('exp')) {
+      return true; // Considera expirado se não houver data de expiração
+    }
+
+    final expTimestamp = payload['exp'] as int;
+    final currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    return currentTimestamp > expTimestamp;
+  }
+
+  /// Decodifica um JWT e verifica se contém uma reivindicação específica.
+  static bool hasJwtClaim(String token, String claim) {
+    final payload = decodeJWT(token);
+    if (payload == null) {
+      return false;
+    }
+    return payload.containsKey(claim);
+  }
+
+  /// Decodifica um JWT e retorna uma reivindicação específica.
+  static dynamic getJwtClaim(String token, String claim) {
+    final payload = decodeJWT(token);
+    if (payload == null || !payload.containsKey(claim)) {
+      return null;
+    }
+    return payload[claim];
+  }
+
+  /// Conta o número de palavras em uma string.
+  static int countWords(String text) {
+    if (text.isEmpty) return 0;
+    final words = text.trim().split(RegExp(r'\s+'));
+    return words.length;
+  }
+
   /// Obtém informações sobre o dispositivo.
   static Map<String, dynamic> getDeviceInfo() {
     return {

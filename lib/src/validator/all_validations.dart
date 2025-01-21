@@ -521,6 +521,34 @@ class AllValidations {
     return oldModel.hasMatch(plate) || newModel.hasMatch(plate);
   }
 
+  /// Valida se uma string é uma cor hexadecimal válida (#RRGGBB ou #RGB).
+  static bool isValidHexColor(String color) {
+    final RegExp hexColorRegex = RegExp(r'^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$');
+    return hexColorRegex.hasMatch(color);
+  }
+
+  /// Valida se um código de barras EAN-13 é válido.
+  static bool isValidEAN13(String code) {
+    if (code.length != 13 || !RegExp(r'^\d{13}$').hasMatch(code)) {
+      return false;
+    }
+
+    List<int> digits = code.split('').map(int.parse).toList();
+    int checksum = 0;
+
+    for (int i = 0; i < 12; i++) {
+      if (i % 2 == 0) {
+        checksum += digits[i];
+      } else {
+        checksum += digits[i] * 3;
+      }
+    }
+
+    int checkDigit = (10 - (checksum % 10)) % 10;
+
+    return checkDigit == digits.last;
+  }
+
   ///check if password is equal to confirm password or pharse is equal to confirm phrase
   static bool isPhraseEqual(String phase1, String phase2) {
     return phase1 == phase2;

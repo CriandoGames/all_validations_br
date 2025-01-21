@@ -718,4 +718,34 @@ void main() {
     sut = AllValidations.isName('Çiç@');
     expect(sut, false);
   });
+
+  group('HelperUtil - isValidEAN13', () {
+    test('EAN-13 válido deve retornar true', () {
+      expect(AllValidations.isValidEAN13('4006381333931'), isTrue);
+    });
+
+    test('EAN-13 inválido deve retornar false', () {
+      expect(AllValidations.isValidEAN13('1234567890123'), isFalse);
+    });
+
+    test('EAN-13 com caracteres inválidos deve retornar false', () {
+      expect(AllValidations.isValidEAN13('400638133393A'), isFalse);
+    });
+
+    test('EAN-13 com tamanho incorreto deve retornar false', () {
+      expect(AllValidations.isValidEAN13('12345678901'), isFalse);
+    });
+  });
+
+  test('Hexadecimal válido deve retornar true', () {
+    expect(AllValidations.isValidHexColor('#FFF'), isTrue);
+    expect(AllValidations.isValidHexColor('#ffffff'), isTrue);
+    expect(AllValidations.isValidHexColor('#000000'), isTrue);
+  });
+
+  test('Hexadecimal inválido deve retornar false', () {
+    expect(AllValidations.isValidHexColor('FFF'), isFalse);
+    expect(AllValidations.isValidHexColor('#12345'), isFalse);
+    expect(AllValidations.isValidHexColor('#GGGGGG'), isFalse);
+  });
 }

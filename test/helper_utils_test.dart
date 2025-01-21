@@ -260,4 +260,22 @@ void main() {
       expect(result, equals(""));
     });
   });
+
+  group('HelperUtil - countWords', () {
+    test('Contagem de palavras com espaços normais', () {
+      expect(HelperUtil.countWords('Flutter é incrível'), equals(3));
+    });
+
+    test('Contagem de palavras com múltiplos espaços', () {
+      expect(HelperUtil.countWords('  Dart  é  ótimo  '), equals(3));
+    });
+
+    test('String vazia deve retornar 0', () {
+      expect(HelperUtil.countWords(''), equals(0));
+    });
+
+    test('Contagem de palavras com caracteres especiais', () {
+      expect(HelperUtil.countWords('Olá, mundo! Vamos codar.'), equals(4));
+    });
+  });
 }

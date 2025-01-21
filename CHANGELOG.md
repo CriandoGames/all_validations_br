@@ -1,14 +1,32 @@
 # Changelog
 
-## 3.2.2
+## 3.2.3
 ### 🆕 Novas Funcionalidades
+* **Validação de Código de Barras (EAN-13)**
+  - `isValidEAN13`: Valida se um código de barras EAN-13 é válido, garantindo conformidade com o padrão oficial.
+
+* **Validação de Cores Hexadecimais**
+  - `isValidHexColor`: Verifica se uma string representa uma cor em formato hexadecimal válido.
+
+* **Contagem de Palavras**
+  - `countWords`: Conta o número de palavras em uma string, útil para análise de textos e validações de preenchimento.
+
+* **Geração de UUIDs**
+  - `generateUUIDv3`: Gera um UUID versão 3 baseado em namespace e nome usando MD5.
+  - `generateUUIDv4`: Gera um UUID versão 4 aleatório.
+  - `generateUUIDv5`: Gera um UUID versão 5 baseado em namespace e nome usando SHA-1.
+
+---
+
+## 3.2.2
+###  Novas Funcionalidades
 * **Remoção de Tags HTML**
   - `removeHtmlTags`: Remove todas as tags HTML de um texto, retornando apenas o conteúdo limpo. Método robusto e performático para sanitização de entradas.
 
 ---
 
 ## 3.2.0
-### 🆕 Novas Funcionalidades
+###  Novas Funcionalidades
 * **Criptografia e Validação de Senhas**
   - `encryptPassword`: Gera uma senha criptografada utilizando uma chave de segurança personalizada.
   - `validatePassword`: Valida se uma senha corresponde ao hash gerado.
