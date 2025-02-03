@@ -266,6 +266,7 @@ dependencies:
 ### 📜 Licença
 Este projeto está sob a licença MIT.
 
+---
 
 <p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> 
 
