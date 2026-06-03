@@ -215,6 +215,45 @@ HelperUtil.validatePixKey('123e4567-e89b-4d3a-a456-426614174000'); // 'Chave Ale
 HelperUtil.validatePixKey('12345678901'); // null
 ```
 
+## Mascaramento de Chave PIX
+
+```dart
+HelperUtil.maskPixKey('99286479174');                        // '992.***.***-74'
+HelperUtil.maskPixKey('+5511912345678');                     // '+5511*****678'
+HelperUtil.maskPixKey('user@example.com');                   // 'us**@example.com'
+HelperUtil.maskPixKey('123e4567-e89b-4d3a-a456-426614174000'); // '123e4567-****-****-****-426614174000'
+```
+
+## Validação de Documentos Brasileiros
+
+```dart
+// CNH
+AllValidations.isCnh('84718735264'); // true
+
+// RENAVAM (aceita 9 ou 11 dígitos)
+AllValidations.isRenavam('95606520941'); // true
+
+// PIS/PASEP
+AllValidations.isPisPasep('12345678919'); // true
+
+// Título de Eleitor
+AllValidations.isTituloEleitor('006000610949'); // true
+```
+
+## Validação de Data e Maioridade
+
+```dart
+// Verifica se a data existe de verdade
+HelperUtil.isValidDate('31/02/2023'); // false
+HelperUtil.isValidDate('15/06/2023'); // true
+HelperUtil.isValidDate('2023-06-15'); // true
+
+// Verifica maioridade (padrão 18 anos, customizável)
+HelperUtil.isAdult(DateTime(2000, 1, 1));           // true
+HelperUtil.isAdult(DateTime(2010, 1, 1));           // false
+HelperUtil.isAdult(DateTime(2002, 1, 1), minAge: 21); // false
+```
+
 ---
 
 ## 📖 Documentação e Wiki

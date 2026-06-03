@@ -2,17 +2,38 @@
 
 ## 3.3.0
 ### 🆕 Novas Funcionalidades
+
 * **Validação de Chaves PIX** (`HelperUtil.validatePixKey`)
   - Identifica o tipo da chave PIX: CPF, Celular, E-mail ou Chave Aleatória.
   - Segue a ordem de validação definida pelo BACEN.
   - Otimização: descarta e-mail e chave aleatória imediatamente quando o input contém apenas dígitos.
 
+* **Mascaramento de Chave PIX** (`HelperUtil.maskPixKey`)
+  - Mascara a chave PIX para exibição segura ao usuário.
+  - Ex: CPF `99286479174` → `992.***.***-74`, Celular `+5511912345678` → `+5511*****678`.
+
+* **Validação de Documentos Brasileiros**
+  - `isCnh`: Valida CNH com cálculo dos dois dígitos verificadores.
+  - `isRenavam`: Valida RENAVAM de 9 ou 11 dígitos com dígito verificador.
+  - `isPisPasep`: Valida PIS/PASEP com dígito verificador.
+  - `isTituloEleitor`: Valida Título de Eleitor com dois dígitos verificadores e estado.
+
+* **Utilitários de data e idade** (`HelperUtil`)
+  - `isAdult`: Verifica se uma data de nascimento corresponde a maior de idade (padrão 18 anos, customizável).
+  - `isValidDate`: Verifica se uma data realmente existe (ex: `31/02` retorna `false`). Aceita `dd/MM/yyyy` e `yyyy-MM-dd`.
+
 ### 🔧 Correções
+
 * **`validatePixKey`** — CPF agora valida dígitos verificadores via `AllValidations.isCpf` (antes aceitava qualquer 11 dígitos).
 * **`validatePixKey`** — Celular corrigido para exigir formato E.164 com `9` após o DDD (`+55XXXXXXXXXXX`).
 * **`validatePixKey`** — Chave aleatória corrigida para UUID v4 com hífens (`xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx`), conforme padrão BACEN.
 * **`validatePixKey`** — Removido `;` solto após bloco de e-mail.
-* **`isDigit`** — Corrigida referência a `cleanedText` (inexistente) para `text`.
+* **`isDigit`** — Removida declaração duplicada de variável e corrigida referência `cleanedText` → `text`.
+* **`isGreaterThan`, `isLowerThan`, `isGreaterOrEqualsThan`, `isLowerOrEqualsThan`** — Lógica invertida corrigida: agora notificam quando a condição **falha**, não quando é verdadeira.
+* **`areEquals`** — Corrigido para notificar quando os valores são **diferentes**.
+* **`areNotEquals`** — Corrigido para notificar quando os valores são **iguais**.
+* **`isBetween`** — Corrigido para notificar quando o valor está **fora** do intervalo.
+* **`all_validations_br.dart`** — Corrigido casing do path `Notifications` (causava erro em Linux/CI).
 
 ---
 

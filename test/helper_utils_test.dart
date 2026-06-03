@@ -306,4 +306,94 @@ void main() {
       expect(HelperUtil.countWords('Olá, mundo! Vamos codar.'), equals(4));
     });
   });
+
+    test('Remove tags HTML com maiúsculas', () {
+      final input = "<DIV><P>Texto em maiúsculas</P></DIV>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals("Texto em maiúsculas"));
+    });
+
+    test('Remove tags HTML com conteúdo vazio', () {
+      final input = "<p></p><div></div>";
+      final result = HelperUtil.removeHtmlTags(input);
+      expect(result, equals(""));
+    });
+
+  group('HelperUtil - countWords', () {
+    test('Contagem de palavras com espaços normais', () {
+      expect(HelperUtil.countWords('Flutter é incrível'), equals(3));
+    });
+
+    test('Contagem de palavras com múltiplos espaços', () {
+      expect(HelperUtil.countWords('  Dart  é  ótimo  '), equals(3));
+    });
+
+    test('String vazia deve retornar 0', () {
+      expect(HelperUtil.countWords(''), equals(0));
+    });
+
+    test('Contagem de palavras com caracteres especiais', () {
+      expect(HelperUtil.countWords('Olá, mundo! Vamos codar.'), equals(4));
+    });
+  });
+
+  group('HelperUtil - maskPixKey', () {
+    test('Mascara CPF', () {
+      expect(HelperUtil.maskPixKey('99286479174'), '992.***.***-74');
+    });
+
+    test('Mascara Celular', () {
+      expect(HelperUtil.maskPixKey('+5511912345678'), '+5511*****678');
+    });
+
+    test('Mascara Email', () {
+      expect(HelperUtil.maskPixKey('user@example.com'), 'us**@example.com');
+    });
+
+    test('Mascara Chave Aleatória (UUID v4)', () {
+      expect(
+        HelperUtil.maskPixKey('123e4567-e89b-4d3a-a456-426614174000'),
+        '123e4567-****-****-****-426614174000',
+      );
+    });
+  });
+
+  group('HelperUtil - isAdult', () {
+    test('Maior de 18 anos retorna true', () {
+      expect(HelperUtil.isAdult(DateTime(2000, 1, 1)), isTrue);
+    });
+
+    test('Menor de 18 anos retorna false', () {
+      final future = DateTime.now().subtract(const Duration(days: 365 * 10));
+      expect(HelperUtil.isAdult(future), isFalse);
+    });
+
+    test('Suporta idade mínima customizada', () {
+      final birthDate = DateTime(DateTime.now().year - 20);
+      expect(HelperUtil.isAdult(birthDate, minAge: 21), isFalse);
+      expect(HelperUtil.isAdult(birthDate, minAge: 18), isTrue);
+    });
+  });
+
+  group('HelperUtil - isValidDate', () {
+    test('Data válida dd/MM/yyyy', () {
+      expect(HelperUtil.isValidDate('15/06/2023'), isTrue);
+    });
+
+    test('Data válida yyyy-MM-dd', () {
+      expect(HelperUtil.isValidDate('2023-06-15'), isTrue);
+    });
+
+    test('Data inexistente retorna false', () {
+      expect(HelperUtil.isValidDate('31/02/2023'), isFalse);
+    });
+
+    test('Mês inválido retorna false', () {
+      expect(HelperUtil.isValidDate('01/13/2023'), isFalse);
+    });
+
+    test('Formato inválido retorna false', () {
+      expect(HelperUtil.isValidDate('abc'), isFalse);
+    });
+  });
 }

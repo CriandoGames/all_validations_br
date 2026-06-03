@@ -748,4 +748,61 @@ void main() {
     expect(AllValidations.isValidHexColor('#12345'), isFalse);
     expect(AllValidations.isValidHexColor('#GGGGGG'), isFalse);
   });
+
+  group('Validação de CNH', () {
+    test('CNH válida', () {
+      // CNH gerada com dígitos verificadores corretos
+      expect(AllValidations.isCnh('84718735264'), isTrue);
+    });
+
+    test('CNH com todos dígitos iguais retorna false', () {
+      expect(AllValidations.isCnh('11111111111'), isFalse);
+    });
+
+    test('CNH com tamanho errado retorna false', () {
+      expect(AllValidations.isCnh('1234567890'), isFalse);
+      expect(AllValidations.isCnh('123456789012'), isFalse);
+    });
+  });
+
+  group('Validação de RENAVAM', () {
+    test('RENAVAM válido (11 dígitos)', () {
+      expect(AllValidations.isRenavam('95606520941'), isTrue);
+    });
+
+    test('RENAVAM válido (9 dígitos)', () {
+      expect(AllValidations.isRenavam('956065209'), isTrue);
+    });
+
+    test('RENAVAM inválido', () {
+      expect(AllValidations.isRenavam('11111111111'), isFalse);
+      expect(AllValidations.isRenavam('00000000000'), isFalse);
+    });
+  });
+
+  group('Validação de PIS/PASEP', () {
+    test('PIS válido', () {
+      expect(AllValidations.isPisPasep('12345678919'), isTrue);
+    });
+
+    test('PIS com todos dígitos iguais retorna false', () {
+      expect(AllValidations.isPisPasep('11111111111'), isFalse);
+    });
+
+    test('PIS com tamanho errado retorna false', () {
+      expect(AllValidations.isPisPasep('1234567890'), isFalse);
+    });
+  });
+
+  group('Validação de Título de Eleitor', () {
+    test('Título inválido por estado fora do range', () {
+      // Estado 00 é inválido
+      expect(AllValidations.isTituloEleitor('000000000000'), isFalse);
+    });
+
+    test('Título com tamanho errado retorna false', () {
+      expect(AllValidations.isTituloEleitor('1234567890'), isFalse);
+      expect(AllValidations.isTituloEleitor('1234567890123'), isFalse);
+    });
+  });
 }
