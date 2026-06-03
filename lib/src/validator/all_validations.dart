@@ -450,7 +450,7 @@ class AllValidations {
   }
 
   /// Check if the string is valid JSON
-  static bool isJSON(str) {
+  static bool isJSON(String str) {
     try {
       jsonDecode(str);
     } catch (e) {
