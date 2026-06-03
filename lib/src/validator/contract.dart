@@ -1,4 +1,4 @@
-import '../Notifications/notifiable.dart';
+import '../notifications/notifiable.dart';
 import 'contract_validations.dart';
 
 class Contract extends ContractValidations {

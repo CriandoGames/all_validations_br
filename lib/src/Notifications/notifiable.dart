@@ -16,7 +16,9 @@ class ValidationNotifiable {
     } else if (r is List<ValidationNotification>) {
       _notifications.addAll(r);
     } else if (r is Contract) {
-      r.notifications.forEach((f) => _notifications.add(f));
+      for (var f in r.notifications) {
+        _notifications.add(f as ValidationNotification);
+      }
     } else if (r is List) {
       if (r.length > 1) {
         _notifications
@@ -36,7 +38,7 @@ class ValidationNotifiable {
     }
   }
 
-  bool get invalid => _notifications.length != 0;
+  bool get invalid => _notifications.isNotEmpty;
   bool get isValid => !invalid;
 }
 
