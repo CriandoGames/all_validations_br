@@ -7,15 +7,16 @@ class Contract extends ContractValidations {
 
   /// Junta notificações de múltiplos objetos que implementam [ValidationNotifiable].
   Contract join(List<ValidationNotifiable> itens) {
-    itens.forEach((f) {
+    for (var f in itens) {
       if (f.invalid) {
         addNotifications(f.notifications);
       }
-    });
+    }
     return this;
   }
 
   /// Verifica se todas as notificações são válidas.
+  @override
   bool get isValid => notifications.isEmpty;
 
   /// Adiciona notificações de outra instância de [Contract].
@@ -40,12 +41,12 @@ class Contract extends ContractValidations {
   /// Verifica múltiplos contratos, adicionando todas as falhas.
   Contract checkAllStrict(
       List<bool Function()> validations, String property, String message) {
-    validations.forEach((validation) {
+    for (var validation in validations) {
       if (!validation()) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
-    });
+    }
     return this;
   }
 
@@ -78,8 +79,8 @@ class Contract extends ContractValidations {
   /// Exporta todas as notificações para um JSON.
   Map<String, dynamic> toJson() {
     return {
-      "isValid": isValid,
-      "notifications": notifications.map((n) => n.toMap()).toList(),
+      'isValid': isValid,
+      'notifications': notifications.map((n) => n.toMap()).toList(),
     };
   }
 }

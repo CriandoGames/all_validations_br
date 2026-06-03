@@ -17,7 +17,7 @@ class ValidationNotifiable {
       _notifications.addAll(r);
     } else if (r is Contract) {
       for (var f in r.notifications) {
-        _notifications.add(f as ValidationNotification);
+        _notifications.add(f);
       }
     } else if (r is List) {
       if (r.length > 1 && r[0] is String && r[1] is String) {
@@ -52,11 +52,11 @@ class ValidationNotification {
   /// Converte a notificação para um mapa (JSON).
   Map<String, dynamic> toMap() {
     return {
-      "property": property,
-      "message": message,
+      'property': property,
+      'message': message,
     };
   }
 
   @override
-  String toString() => "Property: $property , Message: $message";
+  String toString() => 'Property: $property , Message: $message';
 }

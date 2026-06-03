@@ -14,7 +14,7 @@ class ContractValidations extends ValidationNotifiable {
     // Verifica se a senha é nula ou vazia
     if (password.isEmpty) {
       addNotifications(ValidationNotification(
-          property: property, message: "A senha não pode estar vazia."));
+          property: property, message: 'A senha não pode estar vazia.'));
       return this;
     }
 
@@ -251,8 +251,9 @@ class ContractValidations extends ValidationNotifiable {
 
     if (hasDatetime) {
       final dt = value as DateTime;
-      final isInRange = (dt.isAfter(from as DateTime) || dt.isAtSameMomentAs(from)) &&
-          (dt.isBefore(into as DateTime) || dt.isAtSameMomentAs(into));
+      final isInRange =
+          (dt.isAfter(from as DateTime) || dt.isAtSameMomentAs(from)) &&
+              (dt.isBefore(into as DateTime) || dt.isAtSameMomentAs(into));
       if (!isInRange) {
         addNotifications(
             ValidationNotification(property: property, message: message));
