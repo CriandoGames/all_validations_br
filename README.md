@@ -186,6 +186,37 @@ bool existe = AllValidations.isMapExists(map: map1, key: ['status']);
 // Retorna: true
 ``` 
 
+## Validação de Chaves PIX
+
+`HelperUtil.validatePixKey` identifica o tipo da chave PIX informada, seguindo a ordem de validação definida pelo BACEN:
+
+1. **CPF** — 11 dígitos com dígitos verificadores válidos (aceita formato com ou sem máscara)
+2. **Celular** — formato E.164: `+55` + DDD + número começando com `9` (ex: `+5511912345678`)
+3. **E-mail** — endereço de e-mail válido
+4. **Chave aleatória** — UUID v4 (ex: `123e4567-e89b-4d3a-a456-426614174000`)
+
+> **Otimização:** se o valor contiver apenas dígitos, e-mail e chave aleatória são descartados imediatamente.
+
+```dart
+// CPF (com ou sem máscara)
+HelperUtil.validatePixKey('992.864.791-74'); // 'CPF'
+HelperUtil.validatePixKey('99286479174');    // 'CPF'
+
+// Celular — obrigatório formato E.164
+HelperUtil.validatePixKey('+5511912345678'); // 'Celular'
+
+// E-mail
+HelperUtil.validatePixKey('user@example.com'); // 'Email'
+
+// Chave aleatória — UUID v4
+HelperUtil.validatePixKey('123e4567-e89b-4d3a-a456-426614174000'); // 'Chave Aleatória'
+
+// Inválido
+HelperUtil.validatePixKey('12345678901'); // null
+```
+
+---
+
 ## 📖 Documentação e Wiki
 
 Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github.com/CriandoGames/all_validations_br/wiki).
@@ -205,6 +236,7 @@ Utilitários diversos para manipulação e formatação de dados, incluindo:
 - Remoção de tags HTML de strings  
 - Geração de UUIDs (v3, v4 e v5)  
 - Criptografia e validação de senhas  
+- Validação de chaves PIX (CPF, Celular, E-mail, Chave Aleatória)  
 
 ---
 

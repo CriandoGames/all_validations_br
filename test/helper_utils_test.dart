@@ -28,13 +28,41 @@ void main() {
       expect(utcDate.isUtc, isTrue);
     });
 
-    test('validatePixKey', () {
-      expect(HelperUtil.validatePixKey('12345678909'), 'CPF');
-      expect(HelperUtil.validatePixKey('+5511999999999'), 'Celular');
+    test('validatePixKey - CPF', () {
+      // CPF válido (com e sem formatação)
+      expect(HelperUtil.validatePixKey('992.864.791-74'), 'CPF');
+      expect(HelperUtil.validatePixKey('99286479174'), 'CPF');
+      // CPF inválido (11 dígitos mas dígitos verificadores errados)
+      expect(HelperUtil.validatePixKey('12345678909'), isNull);
+    });
+
+    test('validatePixKey - Celular', () {
+      // Formato E.164 exigido pelo BACEN: +55 + DDD + 9XXXXXXXX
+      expect(HelperUtil.validatePixKey('+5511912345678'), 'Celular');
+      expect(HelperUtil.validatePixKey('+5521987654321'), 'Celular');
+      // Sem o prefixo +55 não é chave PIX de celular válida
+      expect(HelperUtil.validatePixKey('11912345678'), isNull);
+    });
+
+    test('validatePixKey - Email', () {
       expect(HelperUtil.validatePixKey('email@domain.com'), 'Email');
-      expect(HelperUtil.validatePixKey('123e4567e89b12d3a456426614174000'),
+      expect(HelperUtil.validatePixKey('user.name+tag@example.org'), 'Email');
+    });
+
+    test('validatePixKey - Chave Aleatória (UUID v4)', () {
+      // UUID v4 conforme padrão BACEN
+      expect(HelperUtil.validatePixKey('123e4567-e89b-4d3a-a456-426614174000'),
           'Chave Aleatória');
+      // Formato hex sem hífens não é válido
+      expect(HelperUtil.validatePixKey('123e4567e89b12d3a456426614174000'),
+          isNull);
+    });
+
+    test('validatePixKey - Inválido', () {
       expect(HelperUtil.validatePixKey('invalid'), isNull);
+      expect(HelperUtil.validatePixKey(''), isNull);
+      // Só dígitos mas não é CPF válido nem celular E.164
+      expect(HelperUtil.validatePixKey('12345678901'), isNull);
     });
 
     test('formatText', () {

@@ -330,11 +330,9 @@ class ContractValidations extends ValidationNotifiable {
   }
 
   ContractValidations isDigit(String text, String property, String message) {
-    final numeric = RegExp(r'^\d+$');
-
     // Verifica se o texto contém apenas dígitos
-    var numeric = RegExp(r'^\d+$');
-    if (!numeric.hasMatch(cleanedText)) {
+    final numeric = RegExp(r'^\d+$');
+    if (!numeric.hasMatch(text)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }

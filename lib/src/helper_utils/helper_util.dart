@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:all_validations_br/all_validations_br.dart';
+
 class HelperUtil {
   /// Decodifica um JWT (JSON Web Token) e retorna seu payload.
   static Map<String, dynamic>? decodeJWT(String token) {
@@ -72,24 +74,40 @@ class HelperUtil {
   /// Converte horário local para UTC.
   static DateTime convertLocalToUtc(DateTime localDate) => localDate.toUtc();
 
-  /// Valida uma chave PIX (CPF, e-mail, celular, chave aleatória).
+  /// Valida uma chave PIX e retorna o tipo identificado, ou null se inválida.
+  ///
+  /// Ordem de validação:
+  /// 1. CPF (11 dígitos com dígitos verificadores válidos)
+  /// 2. Celular (formato E.164: +55 + DDD + 9XXXXXXXX)
+  /// 3. E-mail
+  /// 4. Chave aleatória (UUID v4)
+  ///
+  /// Otimização: se a chave contiver apenas dígitos (após limpeza), e-mail e
+  /// chave aleatória são descartados imediatamente.
   static String? validatePixKey(String key) {
-    if (RegExp(r'^\d{11}$').hasMatch(key)) {
-      return 'CPF'; // CPF
-    }
+    if (key.trim().isEmpty) return null;
 
-    if (RegExp(r'^\+55\d{11}$').hasMatch(key)) {
-      return 'Celular';
-    } // Celular
-    if (RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-        .hasMatch(key)) {
-      return 'Email';
-    }
-    ; // Email
+    final onlyDigits = RegExp(r'^\d+$').hasMatch(
+      key.replaceAll(RegExp(r'[\s.\-]'), ''),
+    );
 
-    if (key.length == 32 && RegExp(r'^[a-f0-9]{32}$').hasMatch(key)) {
-      return 'Chave Aleatória'; // Chave Aleatória
-    }
+    // 1. CPF — valida dígitos verificadores via AllValidations.isCpf
+    if (AllValidations.isCpf(key)) return 'CPF';
+
+    // 2. Celular — formato E.164 exigido pelo BACEN: +55 + DDD (2) + 9XXXXXXXX (9 dígitos)
+    if (RegExp(r'^\+55\d{2}9\d{8}$').hasMatch(key)) return 'Celular';
+
+    // Se só tem dígitos, não pode ser e-mail nem chave aleatória
+    if (onlyDigits) return null;
+
+    // 3. E-mail
+    if (AllValidations.isEmail(key)) return 'Email';
+
+    // 4. Chave aleatória — UUID v4 conforme padrão BACEN
+    if (RegExp(
+      r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+      caseSensitive: false,
+    ).hasMatch(key)) return 'Chave Aleatória';
 
     return null; // Chave inválida
   }

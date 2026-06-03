@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.3.0
+### 🆕 Novas Funcionalidades
+* **Validação de Chaves PIX** (`HelperUtil.validatePixKey`)
+  - Identifica o tipo da chave PIX: CPF, Celular, E-mail ou Chave Aleatória.
+  - Segue a ordem de validação definida pelo BACEN.
+  - Otimização: descarta e-mail e chave aleatória imediatamente quando o input contém apenas dígitos.
+
+### 🔧 Correções
+* **`validatePixKey`** — CPF agora valida dígitos verificadores via `AllValidations.isCpf` (antes aceitava qualquer 11 dígitos).
+* **`validatePixKey`** — Celular corrigido para exigir formato E.164 com `9` após o DDD (`+55XXXXXXXXXXX`).
+* **`validatePixKey`** — Chave aleatória corrigida para UUID v4 com hífens (`xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx`), conforme padrão BACEN.
+* **`validatePixKey`** — Removido `;` solto após bloco de e-mail.
+* **`isDigit`** — Corrigida referência a `cleanedText` (inexistente) para `text`.
+
+---
+
 ## 3.2.3
 ### 🆕 Novas Funcionalidades
 * **Validação de Código de Barras (EAN-13)**
