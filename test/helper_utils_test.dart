@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('HelperUtil', () {
     test('decodeJWT', () {
-      final jwt =
+      const jwt =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
       final payload = HelperUtil.decodeJWT(jwt);
       expect(payload, isNotNull);
@@ -13,7 +13,8 @@ void main() {
 
     test('getDeviceInfo', () {
       final info = HelperUtil.getDeviceInfo();
-      expect(info['os'], isNotEmpty);
+      expect(info['platform'], isNotNull);
+      expect(info.containsKey('isWeb'), isTrue);
     });
 
     test('convertUtcToLocal', () {
@@ -193,7 +194,7 @@ void main() {
     });
 
     test('Generate UUID v3 should produce valid format', () {
-      final namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+      const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
       final uuidV3 = HelperUtil.generateUUIDv3(namespace, 'test');
       expect(
           uuidV3,
@@ -202,7 +203,7 @@ void main() {
     });
 
     test('Generate UUID v5 should produce valid format', () {
-      final namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+      const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
       final uuidV5 = HelperUtil.generateUUIDv5(namespace, 'test');
       expect(
           uuidV5,
@@ -217,14 +218,14 @@ void main() {
     });
 
     test('UUIDs generated from the same inputs should be equal (UUIDv3)', () {
-      final namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+      const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
       final uuid1 = HelperUtil.generateUUIDv3(namespace, 'test');
       final uuid2 = HelperUtil.generateUUIDv3(namespace, 'test');
       expect(uuid1, equals(uuid2));
     });
 
     test('UUIDs generated from the same inputs should be equal (UUIDv5)', () {
-      final namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+      const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
       final uuid1 = HelperUtil.generateUUIDv5(namespace, 'test');
       final uuid2 = HelperUtil.generateUUIDv5(namespace, 'test');
       expect(uuid1, equals(uuid2));
@@ -233,59 +234,59 @@ void main() {
 
   group('HelperUtil.removeHtmlTags', () {
     test('Remove tags HTML simples', () {
-      final input = "<p>Olá, mundo!</p>";
+      const input = '<p>Olá, mundo!</p>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Olá, mundo!"));
+      expect(result, equals('Olá, mundo!'));
     });
 
     test('Remove tags HTML aninhadas', () {
-      final input =
-          "<div><p>Texto com <strong>tags</strong> aninhadas.</p></div>";
+      const input =
+          '<div><p>Texto com <strong>tags</strong> aninhadas.</p></div>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Texto com tags aninhadas."));
+      expect(result, equals('Texto com tags aninhadas.'));
     });
 
     test('Remove múltiplas tags HTML diferentes', () {
-      final input =
-          "<header>Header</header><main>Conteúdo</main><footer>Rodapé</footer>";
+      const input =
+          '<header>Header</header><main>Conteúdo</main><footer>Rodapé</footer>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("HeaderConteúdoRodapé"));
+      expect(result, equals('HeaderConteúdoRodapé'));
     });
 
     test('Remove tags HTML com atributos', () {
-      final input = "<a href='https://example.com'>Link</a>";
+      const input = "<a href='https://example.com'>Link</a>";
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Link"));
+      expect(result, equals('Link'));
     });
 
     test('Texto sem tags HTML permanece inalterado', () {
-      final input = "Texto simples sem HTML.";
+      const input = 'Texto simples sem HTML.';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Texto simples sem HTML."));
+      expect(result, equals('Texto simples sem HTML.'));
     });
 
     test('Texto vazio retorna vazio', () {
-      final input = "";
+      const input = '';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals(""));
+      expect(result, equals(''));
     });
 
     test('Remove tags HTML não convencionais', () {
-      final input = "<custom-tag>Custom Content</custom-tag>";
+      const input = '<custom-tag>Custom Content</custom-tag>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Custom Content"));
+      expect(result, equals('Custom Content'));
     });
 
     test('Remove tags HTML com maiúsculas', () {
-      final input = "<DIV><P>Texto em maiúsculas</P></DIV>";
+      const input = '<DIV><P>Texto em maiúsculas</P></DIV>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Texto em maiúsculas"));
+      expect(result, equals('Texto em maiúsculas'));
     });
 
     test('Remove tags HTML com conteúdo vazio', () {
-      final input = "<p></p><div></div>";
+      const input = '<p></p><div></div>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals(""));
+      expect(result, equals(''));
     });
   });
 
@@ -308,15 +309,15 @@ void main() {
   });
 
     test('Remove tags HTML com maiúsculas', () {
-      final input = "<DIV><P>Texto em maiúsculas</P></DIV>";
+      const input = '<DIV><P>Texto em maiúsculas</P></DIV>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals("Texto em maiúsculas"));
+      expect(result, equals('Texto em maiúsculas'));
     });
 
     test('Remove tags HTML com conteúdo vazio', () {
-      final input = "<p></p><div></div>";
+      const input = '<p></p><div></div>';
       final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals(""));
+      expect(result, equals(''));
     });
 
   group('HelperUtil - countWords', () {

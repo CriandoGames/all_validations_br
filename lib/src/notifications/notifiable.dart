@@ -17,12 +17,13 @@ class ValidationNotifiable {
       _notifications.addAll(r);
     } else if (r is Contract) {
       for (var f in r.notifications) {
-        _notifications.add(f);
+        _notifications.add(f as ValidationNotification);
       }
     } else if (r is List) {
       if (r.length > 1 && r[0] is String && r[1] is String) {
         _notifications.add(
-          ValidationNotification(property: r[0], message: r[1]),
+          ValidationNotification(
+              property: r[0] as String, message: r[1] as String),
         );
       }
     }

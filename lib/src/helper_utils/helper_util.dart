@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:all_validations_br/all_validations_br.dart';
+import 'package:flutter/foundation.dart';
 
 class HelperUtil {
   /// Decodifica um JWT (JSON Web Token) e retorna seu payload.
@@ -59,12 +59,11 @@ class HelperUtil {
     return words.length;
   }
 
-  /// Obtém informações sobre o dispositivo.
+  /// Obtém informações sobre a plataforma do dispositivo.
   static Map<String, dynamic> getDeviceInfo() {
     return {
-      'os': Platform.operatingSystem,
-      'osVersion': Platform.operatingSystemVersion,
-      'dartVersion': Platform.version,
+      'platform': defaultTargetPlatform.name,
+      'isWeb': kIsWeb,
     };
   }
 
@@ -107,7 +106,9 @@ class HelperUtil {
     if (RegExp(
       r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
       caseSensitive: false,
-    ).hasMatch(key)) return 'Chave Aleatória';
+    ).hasMatch(key)) {
+      return 'Chave Aleatória';
+    }
 
     return null; // Chave inválida
   }
@@ -247,7 +248,7 @@ class HelperUtil {
   }
 
   static double calculatePercentage(double value, double total) {
-    if (total == 0) throw ArgumentError("O total não pode ser zero.");
+    if (total == 0) throw ArgumentError('O total não pode ser zero.');
     return (value / total) * 100;
   }
 
@@ -281,7 +282,7 @@ class HelperUtil {
     String formattedIntegerPart = '';
     for (int i = integerPart.length - 1, j = 0; i >= 0; i--, j++) {
       if (j > 0 && j % 3 == 0) {
-        formattedIntegerPart = '.' + formattedIntegerPart;
+        formattedIntegerPart = '.$formattedIntegerPart';
       }
       formattedIntegerPart = integerPart[i] + formattedIntegerPart;
     }
@@ -323,7 +324,7 @@ class HelperUtil {
           current.weekday != DateTime.sunday) {
         count++;
       }
-      current = current.add(Duration(days: 1));
+      current = current.add(const Duration(days: 1));
     }
     return count;
   }
@@ -344,7 +345,7 @@ class HelperUtil {
       String password, String securityKey, String salt) {
     if (password.isEmpty || securityKey.isEmpty || salt.isEmpty) {
       throw ArgumentError(
-          "A senha, chave de segurança e salt não podem estar vazios.");
+          'A senha, chave de segurança e salt não podem estar vazios.');
     }
 
     // Combina salt, chave de segurança e senha

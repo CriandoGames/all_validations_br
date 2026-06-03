@@ -49,50 +49,50 @@ class AllValidations {
   static bool isVideo(String filePath) {
     var ext = filePath.toLowerCase();
 
-    return ext.endsWith(".mp4") ||
-        ext.endsWith(".wmv") ||
-        ext.endsWith(".mpg") ||
-        ext.endsWith(".3gp") ||
-        ext.endsWith(".m4v") ||
-        ext.endsWith(".mgv") ||
-        ext.endsWith(".mov") ||
-        ext.endsWith(".mkv") ||
-        ext.endsWith(".ogv") ||
-        ext.endsWith(".qtm") ||
-        ext.endsWith(".srt") ||
-        ext.endsWith(".amc") ||
-        ext.endsWith(".dvx") ||
-        ext.endsWith(".flv") ||
-        ext.endsWith(".evo") ||
-        ext.endsWith(".avi") ||
-        ext.endsWith("rmvb") ||
-        ext.endsWith(".mpg") ||
-        ext.endsWith("mpeg");
+    return ext.endsWith('.mp4') ||
+        ext.endsWith('.wmv') ||
+        ext.endsWith('.mpg') ||
+        ext.endsWith('.3gp') ||
+        ext.endsWith('.m4v') ||
+        ext.endsWith('.mgv') ||
+        ext.endsWith('.mov') ||
+        ext.endsWith('.mkv') ||
+        ext.endsWith('.ogv') ||
+        ext.endsWith('.qtm') ||
+        ext.endsWith('.srt') ||
+        ext.endsWith('.amc') ||
+        ext.endsWith('.dvx') ||
+        ext.endsWith('.flv') ||
+        ext.endsWith('.evo') ||
+        ext.endsWith('.avi') ||
+        ext.endsWith('rmvb') ||
+        ext.endsWith('.mpg') ||
+        ext.endsWith('mpeg');
   }
 
   /// Checks if string is an image file.
   static bool isImage(String filePath) {
     final ext = filePath.toLowerCase();
 
-    return ext.endsWith(".jpg") ||
-        ext.endsWith(".jpeg") ||
-        ext.endsWith(".png") ||
-        ext.endsWith(".gif") ||
-        ext.endsWith(".ico") ||
-        ext.endsWith(".svg") ||
-        ext.endsWith(".raw") ||
-        ext.endsWith(".bmp");
+    return ext.endsWith('.jpg') ||
+        ext.endsWith('.jpeg') ||
+        ext.endsWith('.png') ||
+        ext.endsWith('.gif') ||
+        ext.endsWith('.ico') ||
+        ext.endsWith('.svg') ||
+        ext.endsWith('.raw') ||
+        ext.endsWith('.bmp');
   }
 
   /// Checks if string is an audio file.
   static bool isAudio(String filePath) {
     final ext = filePath.toLowerCase();
 
-    return ext.endsWith(".mp3") ||
-        ext.endsWith(".wav") ||
-        ext.endsWith(".wma") ||
-        ext.endsWith(".amr") ||
-        ext.endsWith(".ogg");
+    return ext.endsWith('.mp3') ||
+        ext.endsWith('.wav') ||
+        ext.endsWith('.wma') ||
+        ext.endsWith('.amr') ||
+        ext.endsWith('.ogg');
   }
 
   /// Checks if string is URL.
@@ -120,7 +120,7 @@ class AllValidations {
     String cleanedNumber = removeCharacters(s);
 
     // Verifica se o número contém o código de país (+55) e o remove
-    if (cleanedNumber.startsWith("55")) {
+    if (cleanedNumber.startsWith('55')) {
       cleanedNumber = cleanedNumber.substring(2);
     }
 
@@ -133,7 +133,7 @@ class AllValidations {
 
     // Verifica se o número começa com "9" (celular)
     String celularInicio = cleanedNumber.substring(2, 3);
-    if (celularInicio != "9") return false;
+    if (celularInicio != '9') return false;
 
     // Valida o formato geral do número
     return hasMatch(cleanedNumber, r'^[0-9]{11}$');
@@ -146,7 +146,7 @@ class AllValidations {
     String cleanedNumber = removeCharacters(s);
 
     // Verifica se o número contém o código de país (+55) e o remove
-    if (cleanedNumber.startsWith("55")) {
+    if (cleanedNumber.startsWith('55')) {
       cleanedNumber = cleanedNumber.substring(2);
     }
 
@@ -172,73 +172,73 @@ class AllValidations {
   /// Retorna o estado correspondente ao DDD informado.
   BrazilianState getStateByDDD(String ddd) {
     const dddToStateMap = {
-      "11": BrazilianState.SP,
-      "12": BrazilianState.SP,
-      "13": BrazilianState.SP,
-      "14": BrazilianState.SP,
-      "15": BrazilianState.SP,
-      "16": BrazilianState.SP,
-      "17": BrazilianState.SP,
-      "18": BrazilianState.SP,
-      "19": BrazilianState.SP,
-      "21": BrazilianState.RJ,
-      "22": BrazilianState.RJ,
-      "24": BrazilianState.RJ,
-      "27": BrazilianState.ES,
-      "28": BrazilianState.ES,
-      "31": BrazilianState.MG,
-      "32": BrazilianState.MG,
-      "33": BrazilianState.MG,
-      "34": BrazilianState.MG,
-      "35": BrazilianState.MG,
-      "37": BrazilianState.MG,
-      "38": BrazilianState.MG,
-      "41": BrazilianState.PR,
-      "42": BrazilianState.PR,
-      "43": BrazilianState.PR,
-      "44": BrazilianState.PR,
-      "45": BrazilianState.PR,
-      "46": BrazilianState.PR,
-      "47": BrazilianState.SC,
-      "48": BrazilianState.SC,
-      "49": BrazilianState.SC,
-      "51": BrazilianState.RS,
-      "53": BrazilianState.RS,
-      "54": BrazilianState.RS,
-      "55": BrazilianState.RS,
-      "61": BrazilianState.DF,
-      "62": BrazilianState.GO,
-      "64": BrazilianState.GO,
-      "63": BrazilianState.TO,
-      "65": BrazilianState.MT,
-      "66": BrazilianState.MT,
-      "67": BrazilianState.MS,
-      "68": BrazilianState.AC,
-      "69": BrazilianState.RO,
-      "71": BrazilianState.BA,
-      "73": BrazilianState.BA,
-      "74": BrazilianState.BA,
-      "75": BrazilianState.BA,
-      "77": BrazilianState.BA,
-      "79": BrazilianState.SE,
-      "81": BrazilianState.PE,
-      "87": BrazilianState.PE,
-      "82": BrazilianState.AL,
-      "83": BrazilianState.PB,
-      "84": BrazilianState.RN,
-      "85": BrazilianState.CE,
-      "88": BrazilianState.CE,
-      "86": BrazilianState.PI,
-      "89": BrazilianState.PI,
-      "91": BrazilianState.PA,
-      "93": BrazilianState.PA,
-      "94": BrazilianState.PA,
-      "92": BrazilianState.AM,
-      "97": BrazilianState.AM,
-      "95": BrazilianState.RR,
-      "96": BrazilianState.AP,
-      "98": BrazilianState.MA,
-      "99": BrazilianState.MA
+      '11': BrazilianState.SP,
+      '12': BrazilianState.SP,
+      '13': BrazilianState.SP,
+      '14': BrazilianState.SP,
+      '15': BrazilianState.SP,
+      '16': BrazilianState.SP,
+      '17': BrazilianState.SP,
+      '18': BrazilianState.SP,
+      '19': BrazilianState.SP,
+      '21': BrazilianState.RJ,
+      '22': BrazilianState.RJ,
+      '24': BrazilianState.RJ,
+      '27': BrazilianState.ES,
+      '28': BrazilianState.ES,
+      '31': BrazilianState.MG,
+      '32': BrazilianState.MG,
+      '33': BrazilianState.MG,
+      '34': BrazilianState.MG,
+      '35': BrazilianState.MG,
+      '37': BrazilianState.MG,
+      '38': BrazilianState.MG,
+      '41': BrazilianState.PR,
+      '42': BrazilianState.PR,
+      '43': BrazilianState.PR,
+      '44': BrazilianState.PR,
+      '45': BrazilianState.PR,
+      '46': BrazilianState.PR,
+      '47': BrazilianState.SC,
+      '48': BrazilianState.SC,
+      '49': BrazilianState.SC,
+      '51': BrazilianState.RS,
+      '53': BrazilianState.RS,
+      '54': BrazilianState.RS,
+      '55': BrazilianState.RS,
+      '61': BrazilianState.DF,
+      '62': BrazilianState.GO,
+      '64': BrazilianState.GO,
+      '63': BrazilianState.TO,
+      '65': BrazilianState.MT,
+      '66': BrazilianState.MT,
+      '67': BrazilianState.MS,
+      '68': BrazilianState.AC,
+      '69': BrazilianState.RO,
+      '71': BrazilianState.BA,
+      '73': BrazilianState.BA,
+      '74': BrazilianState.BA,
+      '75': BrazilianState.BA,
+      '77': BrazilianState.BA,
+      '79': BrazilianState.SE,
+      '81': BrazilianState.PE,
+      '87': BrazilianState.PE,
+      '82': BrazilianState.AL,
+      '83': BrazilianState.PB,
+      '84': BrazilianState.RN,
+      '85': BrazilianState.CE,
+      '88': BrazilianState.CE,
+      '86': BrazilianState.PI,
+      '89': BrazilianState.PI,
+      '91': BrazilianState.PA,
+      '93': BrazilianState.PA,
+      '94': BrazilianState.PA,
+      '92': BrazilianState.AM,
+      '97': BrazilianState.AM,
+      '95': BrazilianState.RR,
+      '96': BrazilianState.AP,
+      '98': BrazilianState.MA,
+      '99': BrazilianState.MA
     };
 
     return dddToStateMap[ddd] ?? BrazilianState.Unknown;
@@ -378,8 +378,8 @@ class AllValidations {
 
   /// Check if the string [str] is an integer
   static bool isInt(String str) {
-    RegExp _int = new RegExp(r'^(?:-?(?:0|[1-9][0-9]*))$');
-    return _int.hasMatch(str);
+    RegExp int = RegExp(r'^(?:-?(?:0|[1-9][0-9]*))$');
+    return int.hasMatch(str);
   }
 
   /// Check if the string [str] is lowercase
@@ -412,11 +412,11 @@ class AllValidations {
 
   /// Check if the string is a credit card
   static bool isCreditCard(String str) {
-    RegExp _creditCard = new RegExp(
+    RegExp creditCard = RegExp(
         r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$');
 
-    String sanitized = str.replaceAll(new RegExp(r'[^0-9]+'), '');
-    if (!_creditCard.hasMatch(sanitized)) {
+    String sanitized = str.replaceAll(RegExp(r'[^0-9]+'), '');
+    if (!creditCard.hasMatch(sanitized)) {
       return false;
     } else {
       return true;
@@ -425,14 +425,14 @@ class AllValidations {
 
   /// Check if the string is a UUID (version 3, 4 or 5).
   static bool isUUID(String? str, [version]) {
-    Map _uuid = {
-      '3': new RegExp(
+    Map uuid = {
+      '3': RegExp(
           r'^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$'),
-      '4': new RegExp(
+      '4': RegExp(
           r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'),
-      '5': new RegExp(
+      '5': RegExp(
           r'^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'),
-      'all': new RegExp(
+      'all': RegExp(
           r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$')
     };
 
@@ -442,7 +442,7 @@ class AllValidations {
       version = version.toString();
     }
 
-    RegExp? pat = _uuid[version];
+    RegExp? pat = uuid[version];
 
     return (pat != null && pat.hasMatch(str!.toUpperCase()));
   }
@@ -475,34 +475,34 @@ class AllValidations {
 
   /// Checks if string is an pdf file.
   static bool isPDF(String filePath) {
-    return filePath.toLowerCase().endsWith(".pdf");
+    return filePath.toLowerCase().endsWith('.pdf');
   }
 
   /// Checks if string is an txt file.
   static bool isTxt(String filePath) {
-    return filePath.toLowerCase().endsWith(".txt");
+    return filePath.toLowerCase().endsWith('.txt');
   }
 
   /// Checks if string is an chm file.
   static bool isChm(String filePath) {
-    return filePath.toLowerCase().endsWith(".chm");
+    return filePath.toLowerCase().endsWith('.chm');
   }
 
   /// Checks if string is a vector file.
   static bool isVector(String filePath) {
-    return filePath.toLowerCase().endsWith(".svg");
+    return filePath.toLowerCase().endsWith('.svg');
   }
 
   /// Checks if string is an html file.
   static bool isHTML(String filePath) {
-    return filePath.toLowerCase().endsWith(".html");
+    return filePath.toLowerCase().endsWith('.html');
   }
 
   static bool isMediumPassword(String password) => hasMatch(password,
-      r"^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+      r'^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
   static bool isStrongPassword(String password) => hasMatch(password,
-      r"^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=|\\{}[\]:;<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,99}$");
+      r'^(?=.*\d)(?=.*[~!@#$%^&*()_\-+=|\\{}[\]:;<>?/])(?=.*[A-Z])(?=.*[a-z])\S{8,99}$');
 
   /// Checks if string is Palindrome.
   static bool isPalindrome(String string) {
@@ -566,18 +566,18 @@ class AllValidations {
         if (map[currentKey] != null) {
           if (map[currentKey].toString() == '') {
             developer.log(
-              currentKey + ' is empty value',
+              '$currentKey is empty value',
             );
           }
           developer.log(
-            currentKey + ' has value $map[currentKey]',
+            '$currentKey has value $map[currentKey]',
           );
         } else {
-          developer.log('Error', error: currentKey + ' is null value');
+          developer.log('Error', error: '$currentKey is null value');
           return false;
         }
       } else {
-        developer.log('Error', error: currentKey + ' is not found');
+        developer.log('Error', error: '$currentKey is not found');
         return false;
       }
     }
