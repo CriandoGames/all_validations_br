@@ -33,7 +33,7 @@ void main() {
       expect(HelperUtil.validatePixKey('992.864.791-74'), 'CPF');
       expect(HelperUtil.validatePixKey('99286479174'), 'CPF');
       // CPF inválido (11 dígitos mas dígitos verificadores errados)
-      expect(HelperUtil.validatePixKey('12345678909'), isNull);
+      expect(HelperUtil.validatePixKey('12345678900'), isNull);
     });
 
     test('validatePixKey - Celular', () {

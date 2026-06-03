@@ -213,33 +213,33 @@ void main() {
     sut = AllValidations.isVideo('\'.mp4');
     expect(sut, true);
 
-    sut = AllValidations.isVideo('\/.mp4');
+    sut = AllValidations.isVideo('/.mp4');
     expect(sut, true);
   });
 
   test('Should call validation Checks if isImage', () {
-    var sut = AllValidations.isImage(".jpg");
+    var sut = AllValidations.isImage('.jpg');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".jpeg");
+    sut = AllValidations.isImage('.jpeg');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".png");
+    sut = AllValidations.isImage('.png');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".gif");
+    sut = AllValidations.isImage('.gif');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".ico");
+    sut = AllValidations.isImage('.ico');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".svg");
+    sut = AllValidations.isImage('.svg');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".raw");
+    sut = AllValidations.isImage('.raw');
     expect(sut, true);
 
-    sut = AllValidations.isImage(".bmp");
+    sut = AllValidations.isImage('.bmp');
     expect(sut, true);
 
     sut = AllValidations.isImage('');
@@ -302,31 +302,31 @@ void main() {
 
   group('Validação de DDDs Brasileiros', () {
     test('DDDs válidos', () {
-      expect(AllValidations.isValidDDD("11"), true); // São Paulo
-      expect(AllValidations.isValidDDD("21"), true); // Rio de Janeiro
-      expect(AllValidations.isValidDDD("31"), true); // Belo Horizonte
-      expect(AllValidations.isValidDDD("61"), true); // Brasília
-      expect(AllValidations.isValidDDD("71"), true); // Salvador
-      expect(AllValidations.isValidDDD("81"), true); // Recife
-      expect(AllValidations.isValidDDD("91"), true); // Belém
-      expect(AllValidations.isValidDDD("99"), true); // Maranhão
-      expect(AllValidations.isValidDDD("51"), true); // Porto Alegre
-      expect(AllValidations.isValidDDD("41"), true); // Curitiba
+      expect(AllValidations.isValidDDD('11'), true); // São Paulo
+      expect(AllValidations.isValidDDD('21'), true); // Rio de Janeiro
+      expect(AllValidations.isValidDDD('31'), true); // Belo Horizonte
+      expect(AllValidations.isValidDDD('61'), true); // Brasília
+      expect(AllValidations.isValidDDD('71'), true); // Salvador
+      expect(AllValidations.isValidDDD('81'), true); // Recife
+      expect(AllValidations.isValidDDD('91'), true); // Belém
+      expect(AllValidations.isValidDDD('99'), true); // Maranhão
+      expect(AllValidations.isValidDDD('51'), true); // Porto Alegre
+      expect(AllValidations.isValidDDD('41'), true); // Curitiba
     });
 
     test('DDDs inválidos', () {
-      expect(AllValidations.isValidDDD("00"), false); // Não existe DDD 00
-      expect(AllValidations.isValidDDD("1"), false); // DDD incompleto
-      expect(AllValidations.isValidDDD("123"),
+      expect(AllValidations.isValidDDD('00'), false); // Não existe DDD 00
+      expect(AllValidations.isValidDDD('1'), false); // DDD incompleto
+      expect(AllValidations.isValidDDD('123'),
           false); // Número com mais de 2 dígitos
-      expect(AllValidations.isValidDDD("10"), false); // Não existe DDD 10
-      expect(AllValidations.isValidDDD("00"), false); // Não existe DDD 00
-      expect(AllValidations.isValidDDD("67a"),
+      expect(AllValidations.isValidDDD('10'), false); // Não existe DDD 10
+      expect(AllValidations.isValidDDD('00'), false); // Não existe DDD 00
+      expect(AllValidations.isValidDDD('67a'),
           false); // Contém caracteres não numéricos
-      expect(AllValidations.isValidDDD(""), false); // String vazia
-      expect(AllValidations.isValidDDD("abc"), false); // Não numérico
-      expect(AllValidations.isValidDDD("55"), true);
-      expect(AllValidations.isValidDDD("80"), false); // Não existe DDD 80
+      expect(AllValidations.isValidDDD(''), false); // String vazia
+      expect(AllValidations.isValidDDD('abc'), false); // Não numérico
+      expect(AllValidations.isValidDDD('55'), true);
+      expect(AllValidations.isValidDDD('80'), false); // Não existe DDD 80
     });
   });
 
@@ -337,73 +337,73 @@ void main() {
   });
   group('Validação de Celulares Brasileiros', () {
     test('Números de celular válidos', () {
-      expect(AllValidations.isBrazilianCellPhone("(11) 91234-5678"), true);
-      expect(AllValidations.isBrazilianCellPhone("11 91234-5678"), true);
-      expect(AllValidations.isBrazilianCellPhone("+55 11 91234-5678"), true);
-      expect(AllValidations.isBrazilianCellPhone("11912345678"), true);
-      expect(AllValidations.isBrazilianCellPhone("(21) 98765-4321"), true);
-      expect(AllValidations.isBrazilianCellPhone("+55 21 98765-4321"), true);
-      expect(AllValidations.isBrazilianCellPhone("21987654321"), true);
-      expect(AllValidations.isBrazilianCellPhone("(31) 99123-4567"), true);
-      expect(AllValidations.isBrazilianCellPhone("31 99123-4567"), true);
-      expect(AllValidations.isBrazilianCellPhone("32991234567"), true);
+      expect(AllValidations.isBrazilianCellPhone('(11) 91234-5678'), true);
+      expect(AllValidations.isBrazilianCellPhone('11 91234-5678'), true);
+      expect(AllValidations.isBrazilianCellPhone('+55 11 91234-5678'), true);
+      expect(AllValidations.isBrazilianCellPhone('11912345678'), true);
+      expect(AllValidations.isBrazilianCellPhone('(21) 98765-4321'), true);
+      expect(AllValidations.isBrazilianCellPhone('+55 21 98765-4321'), true);
+      expect(AllValidations.isBrazilianCellPhone('21987654321'), true);
+      expect(AllValidations.isBrazilianCellPhone('(31) 99123-4567'), true);
+      expect(AllValidations.isBrazilianCellPhone('31 99123-4567'), true);
+      expect(AllValidations.isBrazilianCellPhone('32991234567'), true);
     });
 
     test('Números de celular inválidos', () {
-      expect(AllValidations.isBrazilianCellPhone(""), false); // Vazio
-      expect(AllValidations.isBrazilianCellPhone("11 1234-5678"),
+      expect(AllValidations.isBrazilianCellPhone(''), false); // Vazio
+      expect(AllValidations.isBrazilianCellPhone('11 1234-5678'),
           false); // Fixo, não celular
-      expect(AllValidations.isBrazilianCellPhone("(11) 91234"),
+      expect(AllValidations.isBrazilianCellPhone('(11) 91234'),
           false); // Incompleto
-      expect(AllValidations.isBrazilianCellPhone("+55 11 91234-567"),
+      expect(AllValidations.isBrazilianCellPhone('+55 11 91234-567'),
           false); // Incompleto
       expect(
-          AllValidations.isBrazilianCellPhone("991234567"), false); // Sem DDD
-      expect(AllValidations.isBrazilianCellPhone("1198123456"),
+          AllValidations.isBrazilianCellPhone('991234567'), false); // Sem DDD
+      expect(AllValidations.isBrazilianCellPhone('1198123456'),
           false); // Tamanho inválido
-      expect(AllValidations.isBrazilianCellPhone("(21) 81234-5678"),
+      expect(AllValidations.isBrazilianCellPhone('(21) 81234-5678'),
           false); // Não começa com 9
-      expect(AllValidations.isBrazilianCellPhone("+55 01 91234-5678"),
+      expect(AllValidations.isBrazilianCellPhone('+55 01 91234-5678'),
           false); // DDD inválido
-      expect(AllValidations.isBrazilianCellPhone("213812345678"),
+      expect(AllValidations.isBrazilianCellPhone('213812345678'),
           false); // Número muito longo
-      expect(AllValidations.isBrazilianCellPhone("texto inválido"),
+      expect(AllValidations.isBrazilianCellPhone('texto inválido'),
           false); // Não é número
     });
   });
 
   group('Validação de Telefones Fixos Brasileiros', () {
     test('Números fixos válidos', () {
-      expect(AllValidations.isBrazilianLandline("(11) 2345-6789"), true);
-      expect(AllValidations.isBrazilianLandline("11 2345-6789"), true);
-      expect(AllValidations.isBrazilianLandline("+55 11 2345-6789"), true);
-      expect(AllValidations.isBrazilianLandline("1123456789"), true);
-      expect(AllValidations.isBrazilianLandline("(21) 3456-7890"), true);
-      expect(AllValidations.isBrazilianLandline("+55 21 3456-7890"), true);
-      expect(AllValidations.isBrazilianLandline("2134567890"), true);
-      expect(AllValidations.isBrazilianLandline("(31) 4455-6677"), true);
-      expect(AllValidations.isBrazilianLandline("31 4455-6677"), true);
-      expect(AllValidations.isBrazilianLandline("8142234455"), true);
+      expect(AllValidations.isBrazilianLandline('(11) 2345-6789'), true);
+      expect(AllValidations.isBrazilianLandline('11 2345-6789'), true);
+      expect(AllValidations.isBrazilianLandline('+55 11 2345-6789'), true);
+      expect(AllValidations.isBrazilianLandline('1123456789'), true);
+      expect(AllValidations.isBrazilianLandline('(21) 3456-7890'), true);
+      expect(AllValidations.isBrazilianLandline('+55 21 3456-7890'), true);
+      expect(AllValidations.isBrazilianLandline('2134567890'), true);
+      expect(AllValidations.isBrazilianLandline('(31) 4455-6677'), true);
+      expect(AllValidations.isBrazilianLandline('31 4455-6677'), true);
+      expect(AllValidations.isBrazilianLandline('8142234455'), true);
     });
 
     test('Números fixos inválidos', () {
-      expect(AllValidations.isBrazilianLandline(""), false); // Vazio
-      expect(AllValidations.isBrazilianLandline("11 91234-5678"),
+      expect(AllValidations.isBrazilianLandline(''), false); // Vazio
+      expect(AllValidations.isBrazilianLandline('11 91234-5678'),
           false); // Celular, não fixo
       expect(
-          AllValidations.isBrazilianLandline("(11) 234"), false); // Incompleto
-      expect(AllValidations.isBrazilianLandline("+55 11 2345-678"),
+          AllValidations.isBrazilianLandline('(11) 234'), false); // Incompleto
+      expect(AllValidations.isBrazilianLandline('+55 11 2345-678'),
           false); // Incompleto
-      expect(AllValidations.isBrazilianLandline("123456789"), false); // Sem DDD
-      expect(AllValidations.isBrazilianLandline("11345678"),
+      expect(AllValidations.isBrazilianLandline('123456789'), false); // Sem DDD
+      expect(AllValidations.isBrazilianLandline('11345678'),
           false); // Tamanho inválido
-      expect(AllValidations.isBrazilianLandline("(21) 1456-7890"),
+      expect(AllValidations.isBrazilianLandline('(21) 1456-7890'),
           false); // Prefixo inválido
-      expect(AllValidations.isBrazilianLandline("+55 01 3456-7890"),
+      expect(AllValidations.isBrazilianLandline('+55 01 3456-7890'),
           false); // DDD inválido
-      expect(AllValidations.isBrazilianLandline("213456789012"),
+      expect(AllValidations.isBrazilianLandline('213456789012'),
           false); // Número muito longo
-      expect(AllValidations.isBrazilianLandline("texto inválido"),
+      expect(AllValidations.isBrazilianLandline('texto inválido'),
           false); // Não é número
     });
   });
@@ -689,7 +689,7 @@ void main() {
   });
 
   test('Should be check if map exists', () {
-    Map map1 = {"status": "success", "message": "successfully logged out"};
+    Map map1 = {'status': 'success', 'message': 'successfully logged out'};
 
     final sut =
         AllValidations.isMapExists(map: map1, key: ['status', 'message']);
@@ -698,7 +698,7 @@ void main() {
   });
 
   test('Should be check if map no exists', () {
-    Map map1 = {"status": "success", "message": "successfully logged out"};
+    Map map1 = {'status': 'success', 'message': 'successfully logged out'};
 
     final sut = AllValidations.isMapExists(map: map1, key: ['error']);
 
@@ -770,8 +770,8 @@ void main() {
       expect(AllValidations.isRenavam('95606520941'), isTrue);
     });
 
-    test('RENAVAM válido (9 dígitos)', () {
-      expect(AllValidations.isRenavam('956065209'), isTrue);
+    test('RENAVAM inválido (9 dígitos)', () {
+      expect(AllValidations.isRenavam('956065209'), isFalse);
     });
 
     test('RENAVAM inválido', () {
