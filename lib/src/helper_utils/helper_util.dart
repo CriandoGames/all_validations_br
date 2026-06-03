@@ -112,6 +112,90 @@ class HelperUtil {
     return null; // Chave inválida
   }
 
+  /// Mascara uma chave PIX para exibição segura, ocultando parte dos dados.
+  ///
+  /// Exemplos:
+  /// - CPF `99286479174` → `992.***.***-74`
+  /// - Celular `+5511912345678` → `+5511*****678`
+  /// - Email `user@example.com` → `us**@example.com`
+  /// - Chave aleatória UUID → `123e4567-****-****-****-426614174000`
+  static String maskPixKey(String key) {
+    final type = validatePixKey(key);
+
+    if (type == 'CPF') {
+      final n = key.replaceAll(RegExp(r'[^0-9]'), '');
+      return '${n.substring(0, 3)}.***.***-${n.substring(9)}';
+    }
+
+    if (type == 'Celular') {
+      // +5511912345678 → +5511*****678
+      return '${key.substring(0, 5)}*****${key.substring(key.length - 3)}';
+    }
+
+    if (type == 'Email') {
+      final parts = key.split('@');
+      final local = parts[0];
+      final masked = local.length <= 2
+          ? local
+          : '${local.substring(0, 2)}${'*' * (local.length - 2)}';
+      return '$masked@${parts[1]}';
+    }
+
+    if (type == 'Chave Aleatória') {
+      final segments = key.split('-');
+      if (segments.length == 5) {
+        return '${segments[0]}-****-****-****-${segments[4]}';
+      }
+    }
+
+    return key; // Tipo desconhecido: retorna sem mascarar
+  }
+
+  /// Verifica se a data de nascimento corresponde a uma pessoa maior de [minAge] anos (padrão: 18).
+  static bool isAdult(DateTime birthDate, {int minAge = 18}) {
+    final today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+    return age >= minAge;
+  }
+
+  /// Verifica se uma data realmente existe (ex: 31/02 retorna false).
+  ///
+  /// Aceita os formatos: `dd/MM/yyyy`, `yyyy-MM-dd` ou um [DateTime] como string ISO.
+  static bool isValidDate(String date) {
+    // Tenta formato dd/MM/yyyy
+    final ddmmyyyy = RegExp(r'^(\d{2})/(\d{2})/(\d{4})$');
+    // Tenta formato yyyy-MM-dd
+    final yyyymmdd = RegExp(r'^(\d{4})-(\d{2})-(\d{2})$');
+
+    int day, month, year;
+
+    if (ddmmyyyy.hasMatch(date)) {
+      final m = ddmmyyyy.firstMatch(date)!;
+      day = int.parse(m.group(1)!);
+      month = int.parse(m.group(2)!);
+      year = int.parse(m.group(3)!);
+    } else if (yyyymmdd.hasMatch(date)) {
+      final m = yyyymmdd.firstMatch(date)!;
+      year = int.parse(m.group(1)!);
+      month = int.parse(m.group(2)!);
+      day = int.parse(m.group(3)!);
+    } else {
+      return false;
+    }
+
+    if (month < 1 || month > 12) return false;
+    if (day < 1) return false;
+
+    // DateTime normaliza datas inválidas (ex: 31/02 vira 03/03).
+    // Se os campos mudarem após construção, a data não existe.
+    final parsed = DateTime(year, month, day);
+    return parsed.year == year && parsed.month == month && parsed.day == day;
+  }
+
   /// Formata texto para diferentes padrões.
   static String? formatText(String input, String type) {
     switch (type.toLowerCase()) {

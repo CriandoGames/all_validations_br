@@ -117,19 +117,20 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations isTrue(bool value, String property, String message) =>
       isFalse(!value, property, message);
 
+  /// Notifica se [value] NÃO for maior que [comparer].
   ContractValidations isGreaterThan(
       dynamic value, dynamic comparer, String property, String message) {
     final hasDatetime = (value is DateTime) || (comparer is DateTime);
 
     if (hasDatetime) {
-      if ((value as DateTime).isAfter(comparer as DateTime)) {
+      if (!(value as DateTime).isAfter(comparer as DateTime)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
       return this;
     }
 
-    if (value > comparer) {
+    if (value <= comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }
@@ -137,27 +138,8 @@ class ContractValidations extends ValidationNotifiable {
     return this;
   }
 
+  /// Notifica se [value] NÃO for maior ou igual a [comparer].
   ContractValidations isGreaterOrEqualsThan(
-      dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
-
-    if (hasDatetime) {
-      if ((value as DateTime).isAfter(comparer as DateTime)) {
-        addNotifications(
-            ValidationNotification(property: property, message: message));
-      }
-      return this;
-    }
-
-    if (value >= comparer) {
-      addNotifications(
-          ValidationNotification(property: property, message: message));
-    }
-
-    return this;
-  }
-
-  ContractValidations isLowerThan(
       dynamic value, dynamic comparer, String property, String message) {
     final hasDatetime = (value is DateTime) || (comparer is DateTime);
 
@@ -177,19 +159,41 @@ class ContractValidations extends ValidationNotifiable {
     return this;
   }
 
+  /// Notifica se [value] NÃO for menor que [comparer].
+  ContractValidations isLowerThan(
+      dynamic value, dynamic comparer, String property, String message) {
+    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+
+    if (hasDatetime) {
+      if (!(value as DateTime).isBefore(comparer as DateTime)) {
+        addNotifications(
+            ValidationNotification(property: property, message: message));
+      }
+      return this;
+    }
+
+    if (value >= comparer) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+
+    return this;
+  }
+
+  /// Notifica se [value] NÃO for menor ou igual a [comparer].
   ContractValidations isLowerOrEqualsThan(
       dynamic value, dynamic comparer, String property, String message) {
     final hasDatetime = (value is DateTime) || (comparer is DateTime);
 
     if (hasDatetime) {
-      if ((value as DateTime).isBefore(comparer as DateTime)) {
+      if ((value as DateTime).isAfter(comparer as DateTime)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
       return this;
     }
 
-    if (value <= comparer) {
+    if (value > comparer) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }
@@ -197,27 +201,8 @@ class ContractValidations extends ValidationNotifiable {
     return this;
   }
 
+  /// Notifica se [value] NÃO for igual a [comparer].
   ContractValidations areEquals(
-      dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
-
-    if (hasDatetime) {
-      if ((value as DateTime).difference(comparer as DateTime).inDays == 0) {
-        addNotifications(
-            ValidationNotification(property: property, message: message));
-      }
-      return this;
-    }
-
-    if (value == comparer) {
-      addNotifications(
-          ValidationNotification(property: property, message: message));
-    }
-
-    return this;
-  }
-
-  ContractValidations areNotEquals(
       dynamic value, dynamic comparer, String property, String message) {
     final hasDatetime = (value is DateTime) || (comparer is DateTime);
 
@@ -237,21 +222,45 @@ class ContractValidations extends ValidationNotifiable {
     return this;
   }
 
-  ContractValidations isBetween(dynamic value, dynamic from, dynamic into,
-      String property, String message) {
-    final hasDatetime =
-        (value is DateTime) || (from is DateTime) || (into is DateTime);
+  /// Notifica se [value] FOR igual a [comparer].
+  ContractValidations areNotEquals(
+      dynamic value, dynamic comparer, String property, String message) {
+    final hasDatetime = (value is DateTime) || (comparer is DateTime);
 
     if (hasDatetime) {
-      if ((value as DateTime).isAfter(from as DateTime) ||
-          value.isBefore(into as DateTime)) {
+      if ((value as DateTime).difference(comparer as DateTime).inDays == 0) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
       return this;
     }
 
-    if (value >= from && value <= into) {
+    if (value == comparer) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+
+    return this;
+  }
+
+  /// Notifica se [value] NÃO estiver entre [from] e [into] (inclusivo).
+  ContractValidations isBetween(dynamic value, dynamic from, dynamic into,
+      String property, String message) {
+    final hasDatetime =
+        (value is DateTime) || (from is DateTime) || (into is DateTime);
+
+    if (hasDatetime) {
+      final dt = value as DateTime;
+      final isInRange = (dt.isAfter(from as DateTime) || dt.isAtSameMomentAs(from)) &&
+          (dt.isBefore(into as DateTime) || dt.isAtSameMomentAs(into));
+      if (!isInRange) {
+        addNotifications(
+            ValidationNotification(property: property, message: message));
+      }
+      return this;
+    }
+
+    if (value < from || value > into) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }

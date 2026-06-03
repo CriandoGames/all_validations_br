@@ -581,4 +581,136 @@ class AllValidations {
     }
     return true;
   }
+
+  /// Valida CNH (Carteira Nacional de Habilitação) — 11 dígitos com dois dígitos verificadores.
+  static bool isCnh(String cnh) {
+    final numbers = cnh.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (numbers.length != 11) return false;
+
+    // Rejeita sequências iguais
+    if (RegExp(r'^(\d)\1*$').hasMatch(numbers)) return false;
+
+    final digits = numbers.split('').map(int.parse).toList();
+
+    // Primeiro dígito verificador
+    int sum1 = 0;
+    int secondDvFlag = 0;
+    for (int i = 0; i < 9; i++) {
+      sum1 += digits[i] * (9 - i);
+    }
+    int dv1 = sum1 % 11;
+    if (dv1 >= 10) {
+      dv1 = 0;
+      secondDvFlag = 2;
+    }
+
+    if (digits[9] != dv1) return false;
+
+    // Segundo dígito verificador
+    int sum2 = 0;
+    for (int i = 0; i < 9; i++) {
+      sum2 += digits[i] * (1 + i);
+    }
+    int dv2 = (sum2 % 11);
+    if (secondDvFlag == 2) {
+      dv2 = (sum2 % 11 == 0) ? 0 : 11 - (sum2 % 11);
+    } else {
+      dv2 = dv2 >= 10 ? 0 : dv2;
+    }
+
+    return digits[10] == dv2;
+  }
+
+  /// Valida RENAVAM (Registro Nacional de Veículos Automotores) — 9 ou 11 dígitos.
+  static bool isRenavam(String renavam) {
+    final numbers = renavam.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (numbers.length < 9 || numbers.length > 11) return false;
+
+    // Normaliza para 11 dígitos com zeros à esquerda
+    final padded = numbers.padLeft(11, '0');
+
+    if (RegExp(r'^(\d)\1*$').hasMatch(padded)) return false;
+
+    final digits = padded.split('').map(int.parse).toList();
+
+    const weights = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    int sum = 0;
+    for (int i = 0; i < 10; i++) {
+      sum += digits[i] * weights[i];
+    }
+
+    final remainder = sum % 11;
+    final dv = remainder < 2 ? 0 : 11 - remainder;
+
+    return digits[10] == dv;
+  }
+
+  /// Valida PIS/PASEP — 11 dígitos com dígito verificador.
+  static bool isPisPasep(String pis) {
+    final numbers = pis.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (numbers.length != 11) return false;
+
+    if (RegExp(r'^(\d)\1*$').hasMatch(numbers)) return false;
+
+    const weights = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    final digits = numbers.split('').map(int.parse).toList();
+
+    int sum = 0;
+    for (int i = 0; i < 10; i++) {
+      sum += digits[i] * weights[i];
+    }
+
+    final remainder = sum % 11;
+    final dv = remainder < 2 ? 0 : 11 - remainder;
+
+    return digits[10] == dv;
+  }
+
+  /// Valida Título de Eleitor brasileiro.
+  static bool isTituloEleitor(String titulo) {
+    final numbers = titulo.replaceAll(RegExp(r'[^0-9]'), '');
+
+    if (numbers.length != 12) return false;
+
+    if (RegExp(r'^(\d)\1*$').hasMatch(numbers)) return false;
+
+    final digits = numbers.split('').map(int.parse).toList();
+
+    // Estado (posições 8-9): 01–28
+    final estado = int.parse(numbers.substring(8, 10));
+    if (estado < 1 || estado > 28) return false;
+
+    // Primeiro dígito verificador (posições 0–7)
+    const weights1 = [2, 3, 4, 5, 6, 7, 8, 9];
+    int sum1 = 0;
+    for (int i = 0; i < 8; i++) {
+      sum1 += digits[i] * weights1[i];
+    }
+    int dv1 = sum1 % 11;
+    if (estado == 1 || estado == 2) {
+      if (dv1 == 0) dv1 = 1;
+    } else {
+      if (dv1 >= 10) dv1 = 0;
+    }
+
+    if (digits[10] != dv1) return false;
+
+    // Segundo dígito verificador (posições 8–10)
+    const weights2 = [7, 8, 9];
+    int sum2 = 0;
+    for (int i = 0; i < 3; i++) {
+      sum2 += digits[8 + i] * weights2[i];
+    }
+    int dv2 = sum2 % 11;
+    if (estado == 1 || estado == 2) {
+      if (dv2 == 0) dv2 = 1;
+    } else {
+      if (dv2 >= 10) dv2 = 0;
+    }
+
+    return digits[11] == dv2;
+  }
 }
