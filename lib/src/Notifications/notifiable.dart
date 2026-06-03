@@ -1,5 +1,5 @@
-import '../validator/contract.dart';
 import 'dart:developer' as dev;
+import 'package:all_validations_br/all_validations_br.dart';
 
 class ValidationNotifiable {
   late List<ValidationNotification> _notifications;
@@ -20,15 +20,16 @@ class ValidationNotifiable {
         _notifications.add(f as ValidationNotification);
       }
     } else if (r is List) {
-      if (r.length > 1) {
-        _notifications
-            .add(ValidationNotification(property: r[0], message: r[1]));
+      if (r.length > 1 && r[0] is String && r[1] is String) {
+        _notifications.add(
+          ValidationNotification(property: r[0], message: r[1]),
+        );
       }
     }
   }
 
-  ///print all errors
-  void printMessageErros() {
+  /// Imprime todas as mensagens de erro.
+  void printMessageErrors() {
     if (_notifications.isEmpty) {
       dev.log('Não existe Erro');
     } else {
@@ -43,17 +44,19 @@ class ValidationNotifiable {
 }
 
 class ValidationNotification {
-  late String _property;
-  late String _message;
+  final String property;
+  final String message;
 
-  ValidationNotification({required String property, required String message}) {
-    _property = property;
-    _message = message;
+  ValidationNotification({required this.property, required this.message});
+
+  /// Converte a notificação para um mapa (JSON).
+  Map<String, dynamic> toMap() {
+    return {
+      "property": property,
+      "message": message,
+    };
   }
 
-  String get property => _property;
-  String get message => _message;
-
   @override
-  String toString() => "Property: $_property , Message: $_message";
+  String toString() => "Property: $property , Message: $message";
 }

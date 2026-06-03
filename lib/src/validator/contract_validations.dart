@@ -9,6 +9,111 @@ class ContractValidations extends ValidationNotifiable {
     return this;
   }
 
+  ContractValidations isStrongPassword(
+      String password, String property, String message) {
+    // Verifica se a senha é nula ou vazia
+    if (password.isEmpty) {
+      addNotifications(ValidationNotification(
+          property: property, message: "A senha não pode estar vazia."));
+      return this;
+    }
+
+    // Regex corrigida para validar senha forte
+    final strongPasswordRegex =
+        RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$');
+
+    if (!strongPasswordRegex.hasMatch(password)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+
+    return this;
+  }
+
+  ContractValidations isURL(String url, String property, String message) {
+    if (!RegExp(r'^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$').hasMatch(url)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isPhoneNumber(
+      String phone, String property, String message) {
+    if (!AllValidations.isBrazilianCellPhone(phone) &&
+        !AllValidations.isBrazilianLandline(phone)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isValidBRZip(
+      String zip, String property, String message) {
+    if (!RegExp(r'^\d{5}-?\d{3}$').hasMatch(zip)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isUUID(String value, String property, String message) {
+    if (!RegExp(
+            r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+        .hasMatch(value)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isPalindrome(
+      String value, String property, String message) {
+    String cleanedValue = value.replaceAll(RegExp(r'[\W_]+'), '').toLowerCase();
+    String reversedValue = cleanedValue.split('').reversed.join();
+    if (cleanedValue != reversedValue) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations customValidation(
+      bool Function() validator, String property, String message) {
+    if (!validator()) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isEnum<T>(
+      dynamic value, List<T> enumValues, String property, String message) {
+    if (!enumValues.contains(value)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isBefore(
+      DateTime startDate, DateTime endDate, String property, String message) {
+    if (!startDate.isBefore(endDate)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
+  ContractValidations isUnique(
+      dynamic value, List<dynamic> list, String property, String message) {
+    if (list.contains(value)) {
+      addNotifications(
+          ValidationNotification(property: property, message: message));
+    }
+    return this;
+  }
+
   ContractValidations isTrue(bool value, String property, String message) =>
       isFalse(!value, property, message);
 
@@ -227,10 +332,13 @@ class ContractValidations extends ValidationNotifiable {
   ContractValidations isDigit(String text, String property, String message) {
     final numeric = RegExp(r'^\d+$');
 
-    if (!numeric.hasMatch(text)) {
+    // Verifica se o texto contém apenas dígitos
+    var numeric = RegExp(r'^\d+$');
+    if (!numeric.hasMatch(cleanedText)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }
+
     return this;
   }
 
