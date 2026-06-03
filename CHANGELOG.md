@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.3.1
+### 🔧 Correções
+* Corrigido casing da pasta `Notifications` → `notifications` para compatibilidade com sistemas Linux (pub.dev).
+* Removido `dart:io` do `HelperUtil` — substituído por `flutter/foundation.dart`, habilitando suporte a todas as plataformas (iOS, Android, Web, Windows, macOS, Linux).
+
+---
+
 ## 3.3.0
 ### 🆕 Novas Funcionalidades
 

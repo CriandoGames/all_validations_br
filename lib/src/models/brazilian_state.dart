@@ -1,3 +1,6 @@
+// ignore_for_file: constant_identifier_names
+// Os valores do enum representam siglas oficiais de estados brasileiros (ex: SP, RJ).
+// Renomear para lowerCamelCase seria uma breaking change e tornaria as siglas ilegíveis.
 enum BrazilianState {
   AC,
   AL,

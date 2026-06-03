@@ -400,13 +400,15 @@ class AllValidations {
 
   /// Remove Accents from Strings
   static String removeAccents(String phrase) {
-    phrase.split('').forEach((value) => Constants.accents.forEach((acc) {
-          if (value == acc) {
-            int indexOfAccentChar = Constants.accents.indexOf(value);
-            phrase = phrase.replaceFirst(
-                value, Constants.noAccents[indexOfAccentChar]);
-          }
-        }));
+    for (final value in phrase.split('')) {
+      for (final acc in Constants.accents) {
+        if (value == acc) {
+          final indexOfAccentChar = Constants.accents.indexOf(value);
+          phrase = phrase.replaceFirst(
+              value, Constants.noAccents[indexOfAccentChar]);
+        }
+      }
+    }
     return phrase;
   }
 

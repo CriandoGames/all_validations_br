@@ -16,8 +16,10 @@ class ValidationNotifiable {
     } else if (r is List<ValidationNotification>) {
       _notifications.addAll(r);
     } else if (r is Contract) {
-      for (var f in r.notifications) {
-        _notifications.add(f as ValidationNotification);
+      for (final f in r.notifications) {
+        ValidationNotification tempNotification =
+            ValidationNotification(property: f.property, message: f.message);
+        _notifications.add(tempNotification);
       }
     } else if (r is List) {
       if (r.length > 1 && r[0] is String && r[1] is String) {
