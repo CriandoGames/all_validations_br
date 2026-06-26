@@ -66,14 +66,19 @@ void main() {
       expect(HelperUtil.validatePixKey('12345678901'), isNull);
     });
 
-    test('formatText', () {
-      expect(
-          HelperUtil.formatText('11999999999', 'celular'), '(11) 99999-9999');
+    // Testa a API moderna que substituiu HelperUtil.formatText (deprecated).
+    test('formatText — equivalentes nas novas APIs', () {
+      expect(BrFormatter.formatPhone('11999999999'), '(11) 99999-9999');
+      expect(BrFormatter.formatCpf('12345678909'), '123.456.789-09');
+      expect(BrFormatter.formatCnpj('12345678000195'), '12.345.678/0001-95');
+    });
+
+    test('formatText — comportamento legado (deprecated)', () {
+      // ignore: deprecated_member_use_from_same_package
       expect(HelperUtil.formatText('2023-01-01', 'data'), '01/01/2023');
+      // ignore: deprecated_member_use_from_same_package
       expect(HelperUtil.formatText('1234.56', 'dinheiro'), 'R\$ 1234,56');
-      expect(HelperUtil.formatText('12345678909', 'cpf'), '123.456.789-09');
-      expect(HelperUtil.formatText('12345678000195', 'cnpj'),
-          '12.345.678/0001-95');
+      // ignore: deprecated_member_use_from_same_package
       expect(HelperUtil.formatText(' EMAIL@DOMAIN.COM ', 'email'),
           'email@domain.com');
     });
@@ -101,8 +106,8 @@ void main() {
     });
 
     test('Formatar número para moeda brasileira', () {
-      expect(HelperUtil.formatCurrency(1234.56), 'R\$ 1.234,56');
-      expect(HelperUtil.formatCurrency(0.1), 'R\$ 0,10');
+      expect(BrFormatter.formatCurrency(1234.56), 'R\$ 1.234,56');
+      expect(BrFormatter.formatCurrency(0.1), 'R\$ 0,10');
     });
 
     test('Calcular diferença em dias entre datas', () {

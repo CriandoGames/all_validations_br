@@ -52,13 +52,17 @@ class BrFormatter {
 
     // Primeiro DV — pesos 10 a 2
     int sum = 0;
-    for (int i = 0; i < 9; i++) sum += d[i] * (10 - i);
+    for (int i = 0; i < 9; i++) {
+      sum += d[i] * (10 - i);
+    }
     int dv1 = 11 - (sum % 11);
     d.add(dv1 >= 10 ? 0 : dv1);
 
     // Segundo DV — pesos 11 a 2
     sum = 0;
-    for (int i = 0; i < 10; i++) sum += d[i] * (11 - i);
+    for (int i = 0; i < 10; i++) {
+      sum += d[i] * (11 - i);
+    }
     int dv2 = 11 - (sum % 11);
     d.add(dv2 >= 10 ? 0 : dv2);
 
@@ -106,14 +110,18 @@ class BrFormatter {
     // Pesos do 1º DV: 5,4,3,2,9,8,7,6,5,4,3,2
     const w1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     int sum = 0;
-    for (int i = 0; i < 12; i++) sum += d[i] * w1[i];
+    for (int i = 0; i < 12; i++) {
+      sum += d[i] * w1[i];
+    }
     final dv1 = sum % 11;
     d.add(dv1 < 2 ? 0 : 11 - dv1);
 
     // Pesos do 2º DV: 6,5,4,3,2,9,8,7,6,5,4,3,2
     const w2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     sum = 0;
-    for (int i = 0; i < 13; i++) sum += d[i] * w2[i];
+    for (int i = 0; i < 13; i++) {
+      sum += d[i] * w2[i];
+    }
     final dv2 = sum % 11;
     d.add(dv2 < 2 ? 0 : 11 - dv2);
 

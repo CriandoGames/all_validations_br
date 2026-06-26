@@ -1,5 +1,4 @@
 import 'package:all_validations_br/all_validations_br.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Helper: simula o usuário digitando [text] em um campo limpo.
@@ -78,7 +77,7 @@ void main() {
         const TextEditingValue(),
         const TextEditingValue(text: '12345678901'),
       );
-      final formatted = '123.456.789-01';
+      const formatted = '123.456.789-01';
       expect(result.text, formatted);
       expect(result.selection.baseOffset, formatted.length);
       expect(result.selection.extentOffset, formatted.length);
