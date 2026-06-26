@@ -168,14 +168,14 @@ void main() {
 
   group('either', () {
     test('transforma ambos os lados — Success', () {
-      final r = Result.success<String, int>(1)
-          .either((f) => 'F:$f', (s) => 'S:$s');
+      final r =
+          Result.success<String, int>(1).either((f) => 'F:$f', (s) => 'S:$s');
       expect(r.successValue, 'S:1');
     });
 
     test('transforma ambos os lados — Failure', () {
-      final r = Result.failure<String, int>('x')
-          .either((f) => 'F:$f', (s) => 'S:$s');
+      final r =
+          Result.failure<String, int>('x').either((f) => 'F:$f', (s) => 'S:$s');
       expect(r.failureValue, 'F:x');
     });
   });
@@ -276,7 +276,8 @@ void main() {
 
   group('equality', () {
     test('dois Success com o mesmo valor são iguais', () {
-      expect(Result.success<String, int>(1), equals(Result.success<String, int>(1)));
+      expect(Result.success<String, int>(1),
+          equals(Result.success<String, int>(1)));
     });
 
     test('dois Failure com o mesmo erro são iguais', () {

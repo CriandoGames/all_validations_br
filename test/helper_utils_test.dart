@@ -308,17 +308,17 @@ void main() {
     });
   });
 
-    test('Remove tags HTML com maiúsculas', () {
-      const input = '<DIV><P>Texto em maiúsculas</P></DIV>';
-      final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals('Texto em maiúsculas'));
-    });
+  test('Remove tags HTML com maiúsculas', () {
+    const input = '<DIV><P>Texto em maiúsculas</P></DIV>';
+    final result = HelperUtil.removeHtmlTags(input);
+    expect(result, equals('Texto em maiúsculas'));
+  });
 
-    test('Remove tags HTML com conteúdo vazio', () {
-      const input = '<p></p><div></div>';
-      final result = HelperUtil.removeHtmlTags(input);
-      expect(result, equals(''));
-    });
+  test('Remove tags HTML com conteúdo vazio', () {
+    const input = '<p></p><div></div>';
+    final result = HelperUtil.removeHtmlTags(input);
+    expect(result, equals(''));
+  });
 
   group('HelperUtil - countWords', () {
     test('Contagem de palavras com espaços normais', () {
