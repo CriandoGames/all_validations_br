@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:all_validations_br/all_validations_br.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -134,6 +134,36 @@ class _ExamplesPageState extends State<ExamplesPage> {
               'maskPixKey("99286479174")',
               HelperUtil.maskPixKey('99286479174'),
             ),
+
+            const Divider(height: 32),
+
+            // ── Máscaras de Campo ───────────────────────────────────────────
+            _sectionTitle('Máscaras de Campo — BrInputMask'),
+            const Text(
+              'Digite para ver a máscara aplicada em tempo real:',
+              style: TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+            const SizedBox(height: 12),
+            _maskField('CPF', [const CpfMask()],
+                keyboardType: TextInputType.number),
+            _maskField('CNPJ', [const CnpjMask()],
+                keyboardType: TextInputType.number),
+            _maskField('CNPJ Alfanumérico (2026)', [const CnpjAlfaMask()],
+                keyboardType: TextInputType.text),
+            _maskField('Telefone', [const PhoneMask()],
+                keyboardType: TextInputType.phone),
+            _maskField('CEP', [const CepMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Data (DD/MM/AAAA)', [const DateMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Hora (HH:MM)', [const TimeMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Valor em R\$', [const CurrencyMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Número do Cartão', [const CardMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Validade do Cartão (MM/AA)', [const CardExpiryMask()],
+                keyboardType: TextInputType.number),
 
             const Divider(height: 32),
 
@@ -280,6 +310,27 @@ class _ExamplesPageState extends State<ExamplesPage> {
         child: Text(
           text,
           style: const TextStyle(fontFamily: 'monospace', fontSize: 11),
+        ),
+      );
+
+  Widget _maskField(
+    String label,
+    List<TextInputFormatter> formatters, {
+    TextInputType keyboardType = TextInputType.text,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: TextField(
+          keyboardType: keyboardType,
+          inputFormatters: formatters,
+          decoration: InputDecoration(
+            labelText: label,
+            border: const OutlineInputBorder(),
+            isDense: true,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          ),
+          style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
         ),
       );
 }

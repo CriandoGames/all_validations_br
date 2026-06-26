@@ -1,5 +1,43 @@
 # Changelog
 
+## 4.0.0
+### 🎭 Fase 1 — Máscaras de Campo (`BrInputMask`)
+
+Nova família de `TextInputFormatter` nativos, zero dependências externas, sem necessidade de `FilteringTextInputFormatter.digitsOnly`.
+
+**Classe base:**
+- `BrInputMask` — classe abstrata com helpers estáticos `digits()`, `alphanumeric()` e `collapsed()`. RegExp compilado uma única vez (`static final`) para máxima performance.
+
+**10 formatters prontos para uso:**
+
+| Classe | Máscara | Dígitos máx |
+|---|---|---|
+| `CpfMask` | `999.999.999-99` | 11 |
+| `CnpjMask` | `99.999.999/9999-99` | 14 |
+| `CnpjAlfaMask` | `AA.123.CDE/0001-39` | 14 |
+| `PhoneMask` | `(99) 9999-9999` / `(99) 99999-9999` | 10/11 |
+| `CepMask` | `99999-999` | 8 |
+| `DateMask` | `DD/MM/AAAA` | 8 |
+| `TimeMask` | `HH:MM` | 4 |
+| `CurrencyMask` | `R$ 1.234,56` | 13 |
+| `CardMask` | `9999 9999 9999 9999` | 16 |
+| `CardExpiryMask` | `MM/AA` | 4 |
+
+**Destaques técnicos:**
+- `PhoneMask`: detecta automaticamente fixo vs celular — o traço migra de posição 6 para 7 quando o 11° dígito é inserido.
+- `CnpjAlfaMask`: converte automaticamente para maiúsculas, aceita letras e dígitos, compatível com o novo padrão CNPJ alfanumérico 2026.
+- `CurrencyMask`: abordagem *right-to-left* — sempre mostra `R$ X.XXX,XX`; overflow limitado aos últimos 13 dígitos.
+- Todos os construtores são `const` — instanciação de custo zero.
+- `static final RegExp` — compilado uma única vez, reutilizado em todas as chamadas.
+
+**Testes:** 134+ casos distribuídos em 6 arquivos (`test/masks/`), cobrindo progressão da máscara, truncamento, filtragem de caracteres e posição do cursor.
+
+**Exemplo interativo** adicionado em `example/lib/main.dart` — seção com 10 `TextField`s ao vivo.
+
+> ⚠️ **Breaking change:** nenhum. Toda a API anterior permanece inalterada. Esta versão é major pelo volume e relevância das adições.
+
+---
+
 ## 3.4.0
 ### 🆕 Novas Funcionalidades
 
