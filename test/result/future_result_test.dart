@@ -195,8 +195,9 @@ void main() {
     Result<String, Map<String, dynamic>> parseJson(String raw) {
       try {
         // simula parse simples
-        if (raw.startsWith('{'))
+        if (raw.startsWith('{')) {
           return Result.success({'id': 1, 'name': 'Carlos'});
+        }
         return Result.failure('JSON inválido');
       } catch (_) {
         return Result.failure('JSON inválido');
