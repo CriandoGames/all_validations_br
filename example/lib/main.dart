@@ -172,6 +172,16 @@ class _ExamplesPageState extends State<ExamplesPage> {
                 keyboardType: TextInputType.number),
             _maskField('Centavos (sem R\$)', [const CentavosMask()],
                 keyboardType: TextInputType.number),
+            _maskField('NCM', [const NcmMask()],
+                keyboardType: TextInputType.number),
+            _maskField('CNS (Cartão Nacional de Saúde)', [const CnsMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Altura (m)', [const AlturaMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Peso (kg)', [const PesoMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Temperatura (°C)', [const TemperaturaMask()],
+                keyboardType: TextInputType.number),
 
             const Divider(height: 32),
 

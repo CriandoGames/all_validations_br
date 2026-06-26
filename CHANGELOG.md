@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.0.2
+### 🎭 Novos Formatters 
+
+- **`CardExpiryMask` atualizada** — agora suporta dois formatos de forma dinâmica: `MM/AA` (até 4 dígitos) e `MM/AAAA` (5–6 dígitos). Retrocompatível.
+- **`KmMask`** — quilometragem com separador de milhar (`.`). Máx 7 dígitos (`9.999.999 km`). Remove zeros à esquerda.
+- **`CentavosMask`** — variante da `CurrencyMask` sem prefixo `R$`. Entrada right-to-left em centavos.
+- **`NcmMask`** — Nomenclatura Comum do Mercosul: `1234.56.78` (8 dígitos).
+- **`CnsMask`** — Cartão Nacional de Saúde: `111 2222 3333 4444` (15 dígitos).
+- **`AlturaMask`** — `X,XX` — ex: `175` → `1,75`.
+- **`PesoMask`** — `XXX,X` — ex: `7051` → `705,1`.
+- **`TemperaturaMask`** — `XX,X` — ex: `365` → `36,5`.
+
+**Testes:** 70+ casos adicionados em 5 novos arquivos de teste.
+
+> ⚠️ **Breaking change:** nenhum.
+
+---
 
 ## 4.0.1
 ### 🔧 Correções

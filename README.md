@@ -845,6 +845,51 @@ TextField(
 )
 ```
 
+### NCM
+
+```dart
+// NCM → '1234.56.78'
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [NcmMask()],
+)
+```
+
+### CNS — Cartão Nacional de Saúde
+
+```dart
+// CNS → '111 2222 3333 4444'
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [CnsMask()],
+)
+```
+
+### Medidas — Altura, Peso e Temperatura
+
+```dart
+// Altura → '1,75'  (X,XX — máx 3 dígitos)
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [AlturaMask()],
+  decoration: InputDecoration(suffixText: 'm'),
+)
+
+// Peso → '705,1'  (XXX,X — máx 4 dígitos)
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [PesoMask()],
+  decoration: InputDecoration(suffixText: 'kg'),
+)
+
+// Temperatura → '36,5'  (XX,X — máx 3 dígitos)
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [TemperaturaMask()],
+  decoration: InputDecoration(suffixText: '°C'),
+)
+```
+
 ### CPF ou CNPJ dinâmico
 
 Alterna automaticamente entre CPF e CNPJ conforme o usuário digita — sem necessidade de dois campos separados.
@@ -889,6 +934,11 @@ TextField(
 | `PlacaMask` | `AAA-9999` / `AAA-9A99` | 7 |
 | `KmMask` | `9.999.999` | 7 |
 | `CentavosMask` | `9.999,99` (sem R$) | 13 |
+| `NcmMask` | `1234.56.78` | 8 |
+| `CnsMask` | `111 2222 3333 4444` | 15 |
+| `AlturaMask` | `X,XX` | 3 |
+| `PesoMask` | `XXX,X` | 4 |
+| `TemperaturaMask` | `XX,X` | 3 |
 
 ---
 
@@ -1075,6 +1125,11 @@ Formatters de campo (`TextInputFormatter`) para máscaras brasileiras em tempo r
 | `PlacaMask` | `AAA-9999` / `AAA-9A99` (Mercosul) |
 | `KmMask` | `9.999.999` |
 | `CentavosMask` | `9.999,99` (sem R$) |
+| `NcmMask` | `1234.56.78` |
+| `CnsMask` | `111 2222 3333 4444` |
+| `AlturaMask` | `X,XX` |
+| `PesoMask` | `XXX,X` |
+| `TemperaturaMask` | `XX,X` |
 
 ---
 
