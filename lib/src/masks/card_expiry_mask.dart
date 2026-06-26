@@ -4,8 +4,9 @@ import 'br_input_mask.dart';
 
 /// Formatter de campo para data de validade de cartão.
 ///
-/// Aplica a máscara `MM/AA` à medida que o usuário digita,
-/// aceitando apenas dígitos e limitando a 4 caracteres numéricos.
+/// Suporta dois formatos de forma dinâmica:
+/// - `MM/AA` — até 4 dígitos: `'12/24'`
+/// - `MM/AAAA` — a partir do 5° dígito: `'12/2024'`
 ///
 /// Uso:
 /// ```dart
@@ -16,14 +17,13 @@ import 'br_input_mask.dart';
 /// ```
 ///
 /// Exemplos de transformação:
-/// - `'12'`   → `'12'`
-/// - `'123'`  → `'12/3'`
-/// - `'1224'` → `'12/24'`
+/// - `'1224'`   → `'12/24'`   (MM/AA)
+/// - `'122024'` → `'12/2024'` (MM/AAAA)
 class CardExpiryMask extends BrInputMask {
   const CardExpiryMask();
 
-  /// Comprimento máximo em dígitos: 2 (mês) + 2 (ano).
-  static const int _maxDigits = 4;
+  static const int _maxShort = 4; // MM/AA
+  static const int _maxLong = 6; // MM/AAAA
 
   @override
   TextEditingValue formatEditUpdate(
@@ -31,9 +31,10 @@ class CardExpiryMask extends BrInputMask {
     TextEditingValue newValue,
   ) {
     final d = BrInputMask.digits(newValue.text);
+    final maxDigits = d.length > _maxShort ? _maxLong : _maxShort;
     final buf = StringBuffer();
 
-    final len = d.length < _maxDigits ? d.length : _maxDigits;
+    final len = d.length < maxDigits ? d.length : maxDigits;
     for (int i = 0; i < len; i++) {
       if (i == 2) buf.write('/');
       buf.write(d[i]);

@@ -168,6 +168,10 @@ class _ExamplesPageState extends State<ExamplesPage> {
                 keyboardType: TextInputType.number),
             _maskField('Placa de Veículo', [const PlacaMask()],
                 keyboardType: TextInputType.text),
+            _maskField('Quilometragem', [const KmMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Centavos (sem R\$)', [const CentavosMask()],
+                keyboardType: TextInputType.number),
 
             const Divider(height: 32),
 

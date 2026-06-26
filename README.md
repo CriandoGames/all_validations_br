@@ -812,10 +812,36 @@ TextField(
   inputFormatters: [CardMask()],
 )
 
-// Validade → '12/24'
+// Validade MM/AA  → '12/24'
+// Validade MM/AAAA → '12/2024'  (alterna automaticamente a partir do 5° dígito)
 TextField(
   keyboardType: TextInputType.number,
   inputFormatters: [CardExpiryMask()],
+)
+```
+
+### Quilometragem
+
+```dart
+// KM → '999.999' / '9.999.999'
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [KmMask()],
+)
+```
+
+### Centavos (sem prefixo R$)
+
+Variante da `CurrencyMask` sem o símbolo — útil quando `R$` já aparece como label ou prefixo na `InputDecoration`.
+
+```dart
+// '1'       → '0,01'
+// '7194'    → '71,94'
+// '1234567' → '12.345,67'
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [CentavosMask()],
+  decoration: InputDecoration(prefixText: 'R\$ '),
 )
 ```
 
@@ -859,8 +885,10 @@ TextField(
 | `TimeMask` | `99:99` | 4 |
 | `CurrencyMask` | `R$ 9.999,99` | 13 |
 | `CardMask` | `9999 9999 9999 9999` | 16 |
-| `CardExpiryMask` | `99/99` | 4 |
+| `CardExpiryMask` | `99/99` / `99/9999` | 4/6 |
 | `PlacaMask` | `AAA-9999` / `AAA-9A99` | 7 |
+| `KmMask` | `9.999.999` | 7 |
+| `CentavosMask` | `9.999,99` (sem R$) | 13 |
 
 ---
 
@@ -1043,8 +1071,10 @@ Formatters de campo (`TextInputFormatter`) para máscaras brasileiras em tempo r
 | `TimeMask` | `99:99` |
 | `CurrencyMask` | `R$ 9.999,99` |
 | `CardMask` | `9999 9999 9999 9999` |
-| `CardExpiryMask` | `99/99` |
+| `CardExpiryMask` | `99/99` / `99/9999` (MM/AA ou MM/AAAA) |
 | `PlacaMask` | `AAA-9999` / `AAA-9A99` (Mercosul) |
+| `KmMask` | `9.999.999` |
+| `CentavosMask` | `9.999,99` (sem R$) |
 
 ---
 

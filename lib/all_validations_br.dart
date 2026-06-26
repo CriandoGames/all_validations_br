@@ -16,6 +16,8 @@ export 'src/masks/card_mask.dart';
 export 'src/masks/card_expiry_mask.dart';
 export 'src/masks/cpf_ou_cnpj_mask.dart';
 export 'src/masks/placa_mask.dart';
+export 'src/masks/km_mask.dart';
+export 'src/masks/centavos_mask.dart';
 export 'src/validator/all_validations.dart';
 export 'src/models/models.dart';
 export './src/notifications/notifiable.dart';
