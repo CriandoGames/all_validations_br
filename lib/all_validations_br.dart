@@ -12,6 +12,8 @@ export 'src/masks/cep_mask.dart';
 export 'src/masks/date_mask.dart';
 export 'src/masks/time_mask.dart';
 export 'src/masks/currency_mask.dart';
+export 'src/masks/card_mask.dart';
+export 'src/masks/card_expiry_mask.dart';
 export 'src/validator/all_validations.dart';
 export 'src/models/models.dart';
 export './src/notifications/notifiable.dart';
