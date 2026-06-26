@@ -1,13 +1,12 @@
 # Changelog
 
+
+## 4.0.1
+### 🔧 Correções
+- **Correção de Documentação**
+---
+
 ## 4.0.0
-### 🎭 Fase 1 — Máscaras de Campo (`BrInputMask`)
-
-Nova família de `TextInputFormatter` nativos, zero dependências externas, sem necessidade de `FilteringTextInputFormatter.digitsOnly`.
-
-**Classe base:**
-- `BrInputMask` — classe abstrata com helpers estáticos `digits()`, `alphanumeric()` e `collapsed()`. RegExp compilado uma única vez (`static final`) para máxima performance.
-
 **10 formatters prontos para uso:**
 
 | Classe | Máscara | Dígitos máx |
