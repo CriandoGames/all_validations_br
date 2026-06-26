@@ -164,6 +164,10 @@ class _ExamplesPageState extends State<ExamplesPage> {
                 keyboardType: TextInputType.number),
             _maskField('Validade do Cartão (MM/AA)', [const CardExpiryMask()],
                 keyboardType: TextInputType.number),
+            _maskField('CPF ou CNPJ (dinâmico)', [const CpfOuCnpjMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Placa de Veículo', [const PlacaMask()],
+                keyboardType: TextInputType.text),
 
             const Divider(height: 32),
 
