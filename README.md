@@ -33,7 +33,8 @@ O app está dividido em seções:
 | Seção | O que demonstra |
 |-------|-----------------|
 | **AllValidations — CPF** | Validação de CPFs válidos, inválidos e formatados |
-| **HelperUtil — utilitários gerais** | `countWords`, `removeHtmlTags`, `capitalizeWords`, `formatCurrency`, `daysBetween`, `generateUUIDv4`, `validatePixKey`, `maskPixKey` |
+| **HelperUtil — utilitários gerais** | `countWords`, `removeHtmlTags`, `capitalizeWords`, `BrFormatter.formatCurrency`, `daysBetween`, `generateUUIDv4`, `validatePixKey`, `maskPixKey` |
+| **Máscaras de Campo — BrInputMask** | 12 `TextField`s ao vivo: CPF, CNPJ, CNPJ Alfa, CPF/CNPJ dinâmico, Telefone, CEP, Data, Hora, Moeda, Cartão, Validade, Placa |
 | **CryptUtil — interativo** | Botão "Encriptar / Decriptar" exibe ciphertext em base64 e o texto recuperado; botão "Simular adulteração" demonstra a detecção de `CryptException` |
 | **CryptUtil — estáticos** | Round-trip `encryptText` → `decryptText` com exibição da tag Poly1305 em hex |
 
@@ -87,7 +88,6 @@ O app está dividido em seções:
 - **Geração e manipulação:**
   - Strings aleatórias: `generateRandomString`
   - Números aleatórios: `generateRandomInt`
-  - Formatação de moeda: `formatCurrency`
   - Removedor Tags Html: `removeHtmlTags`
 
 - **Geração de UUID:**  
@@ -134,9 +134,8 @@ O app está dividido em seções:
   - `CurrencyMask` — `R$ 9.999,99` (centavos da direita para a esquerda)
   - `CardMask` — `9999 9999 9999 9999`
   - `CardExpiryMask` — `99/99`
-
-- **Criptografia básica (HelperUtil)**
-  - Criptografa senhas e realiza validações com as funções `encryptPassword e validatePassword`
+  - `CpfOuCnpjMask` — alterna automaticamente entre CPF e CNPJ
+  - `PlacaMask` — `AAA-9999` (antigo) / `AAA-9A99` (Mercosul)
 
 - **Criptografia autenticada — ChaCha20-Poly1305 (`CryptUtil`)**
   - Implementação Dart pura do algoritmo AEAD ChaCha20-Poly1305 (RFC 8439)
@@ -820,13 +819,40 @@ TextField(
 )
 ```
 
+### CPF ou CNPJ dinâmico
+
+Alterna automaticamente entre CPF e CNPJ conforme o usuário digita — sem necessidade de dois campos separados.
+
+```dart
+// ≤ 11 dígitos → '123.456.789-01' (CPF)
+// > 11 dígitos → '11.222.333/0001-81' (CNPJ, máx 14)
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [CpfOuCnpjMask()],
+)
+```
+
+### Placa de Veículo
+
+Aceita os dois formatos brasileiros: antigo (`ABC-1234`) e Mercosul (`ABC-1D23`). Converte automaticamente para maiúsculas.
+
+```dart
+// Formato antigo  → 'ABC-1234'
+// Formato Mercosul → 'ABC-1D23'
+TextField(
+  textCapitalization: TextCapitalization.characters,
+  inputFormatters: [PlacaMask()],
+)
+```
+
 ### Referência rápida
 
-| Classe | Máscara | Dígitos max |
-|--------|---------|-------------|
+| Classe | Máscara | Chars max |
+|--------|---------|-----------|
 | `CpfMask` | `999.999.999-99` | 11 |
 | `CnpjMask` | `99.999.999/9999-99` | 14 |
 | `CnpjAlfaMask` | `AA.BBB.CCC/DDDD-VV` | 14 |
+| `CpfOuCnpjMask` | `999.999.999-99` / `99.999.999/9999-99` | 11/14 |
 | `PhoneMask` | `(99) 9999-9999` / `(99) 99999-9999` | 10/11 |
 | `CepMask` | `99999-999` | 8 |
 | `DateMask` | `99/99/9999` | 8 |
@@ -834,6 +860,7 @@ TextField(
 | `CurrencyMask` | `R$ 9.999,99` | 13 |
 | `CardMask` | `9999 9999 9999 9999` | 16 |
 | `CardExpiryMask` | `99/99` | 4 |
+| `PlacaMask` | `AAA-9999` / `AAA-9A99` | 7 |
 
 ---
 
@@ -960,11 +987,11 @@ Utilitários diversos para manipulação e formatação de dados, incluindo:
 - Decodificação de JWT  
 - Geração de strings e números aleatórios  
 - Conversão de datas entre UTC e horário local  
-- Formatação de valores para moeda brasileira  
 - Remoção de tags HTML de strings  
 - Geração de UUIDs (v3, v4 e v5)  
-- Criptografia e validação de senhas  
 - Validação de chaves PIX (CPF, Celular, E-mail, Chave Aleatória)  
+- Mascaramento de chaves PIX (`maskPixKey`)  
+> 💡 Para formatação de moeda e documentos, use `BrFormatter`. Para criptografia, use `CryptUtil`.  
 
 ---
 
@@ -1009,6 +1036,7 @@ Formatters de campo (`TextInputFormatter`) para máscaras brasileiras em tempo r
 | `CpfMask` | `999.999.999-99` |
 | `CnpjMask` | `99.999.999/9999-99` |
 | `CnpjAlfaMask` | `AA.BBB.CCC/DDDD-VV` (2026) |
+| `CpfOuCnpjMask` | `999.999.999-99` / `99.999.999/9999-99` (dinâmico) |
 | `PhoneMask` | `(99) 9999-9999` / `(99) 99999-9999` |
 | `CepMask` | `99999-999` |
 | `DateMask` | `99/99/9999` |
@@ -1016,6 +1044,7 @@ Formatters de campo (`TextInputFormatter`) para máscaras brasileiras em tempo r
 | `CurrencyMask` | `R$ 9.999,99` |
 | `CardMask` | `9999 9999 9999 9999` |
 | `CardExpiryMask` | `99/99` |
+| `PlacaMask` | `AAA-9999` / `AAA-9A99` (Mercosul) |
 
 ---
 
