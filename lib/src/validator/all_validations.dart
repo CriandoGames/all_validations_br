@@ -329,6 +329,15 @@ class AllValidations {
     return true;
   }
 
+  /// Valida um CNPJ alfanumérico (novo formato IN RFB 2229/2024, vigente a partir de julho/2026).
+  ///
+  /// Aceita tanto o formato numérico legado quanto o novo formato com letras (A–Z).
+  /// Use com ou sem máscara (`AA.BBB.CCC/DDDD-VV` ou `AABBBCCCCDDDDVV`).
+  ///
+  /// Diferença em relação a [isCnpj]: este método suporta letras nos 12 primeiros
+  /// caracteres e usa o algoritmo de dígito verificador corrigido para o novo padrão.
+  static bool isCnpjAlphanumeric(String cnpj) => CnpjAlfanumerico.isValid(cnpj);
+
   /// Checks if the cpf is valid.
   static bool isCpf(String cpf) {
     // get only the numbers

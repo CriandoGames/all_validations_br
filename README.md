@@ -48,7 +48,7 @@ O app está dividido em seções:
   - `isUUID`, `isJSON`, `isHexadecimal`
   - `isEmail`, `isURL`
 - Validações específicas:
-  - `isCpf`, `isCnpj`, `isRG`, `isValidBRZip`
+  - `isCpf`, `isCnpj`, `isCnpjAlphanumeric` (novo formato 2026), `isRG`, `isValidBRZip`
   - `isBrazilianCellPhone`, `isBrazilianLandline`
   - `isLeapYear`, `isValidBrazilianLicensePlate`
   - Validação de código de barras EAN-13: `isValidEAN13`
@@ -591,6 +591,55 @@ HelperUtil.maskPixKey('user@example.com');                   // 'us**@example.co
 HelperUtil.maskPixKey('123e4567-e89b-4d3a-a456-426614174000'); // '123e4567-****-****-****-426614174000'
 ```
 
+## CNPJ Alfanumérico 2026 — `CnpjAlfanumerico`
+
+A partir de julho de 2026, a Receita Federal passa a emitir CNPJs com letras maiúsculas (A–Z) nos 12 primeiros caracteres, conforme a **IN RFB 2229/2024**. Os 2 dígitos verificadores continuam sendo sempre numéricos.
+
+Formato: `AA.BBB.CCC/DDDD-VV`
+
+### Validação
+
+```dart
+// Aceita CNPJ numérico legado (retrocompatível)
+CnpjAlfanumerico.isValid('11.222.333/0001-81'); // true
+
+// Aceita CNPJ alfanumérico 2026 (com ou sem máscara)
+CnpjAlfanumerico.isValid('AB.1CD.2EF/3GHI-45'); // true
+CnpjAlfanumerico.isValid('AB1CD2EF3GHI45');      // true (sem máscara)
+
+// Atalho via AllValidations
+AllValidations.isCnpjAlphanumeric('AB.1CD.2EF/3GHI-45'); // true
+```
+
+### Formatação e strip
+
+```dart
+// Aplica a máscara XX.XXX.XXX/XXXX-VV
+CnpjAlfanumerico.format('AB1CD2EF3GHI45'); // 'AB.1CD.2EF/3GHI-45'
+
+// Remove a máscara (preserva [A-Z0-9], converte para maiúsculas)
+CnpjAlfanumerico.strip('ab.1cd.2ef/3ghi-45'); // 'AB1CD2EF3GHI45'
+```
+
+### Geração (útil para testes)
+
+```dart
+// CNPJ alfanumérico ou numérico aleatório válido
+final cnpj = CnpjAlfanumerico.generate();
+// Ex.: 'K7B3X19QAC0234'
+
+// Com máscara
+final formatado = CnpjAlfanumerico.generate(formatted: true);
+// Ex.: 'K7.B3X.19Q/AC02-34'
+
+// Garante ao menos uma letra nos 12 primeiros caracteres
+final alfanumerico = CnpjAlfanumerico.generate(forceAlphanumeric: true);
+```
+
+> **Correção de bug do brasil_fields:** o brasil_fields usa `codeUnit - 48` para converter todos os caracteres, gerando valores errados para letras (`A → 17` em vez de `10`, `Z → 42` em vez de `35`). Nossa implementação usa `codeUnit - 55` para letras maiúsculas, conforme especificado na IN RFB 2229/2024 — o que produz dígitos verificadores diferentes e corretos.
+
+---
+
 ## Validação de Documentos Brasileiros
 
 ```dart
@@ -606,6 +655,46 @@ AllValidations.isPisPasep('12345678919'); // true
 // Título de Eleitor
 AllValidations.isTituloEleitor('006000610949'); // true
 ```
+
+## TextEditingController com dados pré-formatados
+
+Para inicializar um `TextEditingController` com o texto já formatado, use os métodos de formatação da biblioteca diretamente no atributo `text`:
+
+```dart
+import 'package:all_validations_br/all_validations_br.dart';
+
+// CPF → '111.222.333-44'
+final cpfController = TextEditingController(
+  text: HelperUtil.formatText('11122233344', 'cpf'),
+);
+
+// CNPJ numérico → '11.222.333/0001-81'
+final cnpjController = TextEditingController(
+  text: HelperUtil.formatText('11222333000181', 'cnpj'),
+);
+
+// CNPJ alfanumérico 2026 → 'AB.1CD.2EF/0001-99'
+final cnpjAlfaController = TextEditingController(
+  text: CnpjAlfanumerico.format('AB1CD2EF000199'),
+);
+
+// Data (entrada yyyy-MM-dd) → '31/12/2024'
+final dataController = TextEditingController(
+  text: HelperUtil.formatText('2024-12-31', 'data'),
+);
+
+// Celular → '(11) 99999-8877'
+final celularController = TextEditingController(
+  text: HelperUtil.formatText('11999998877', 'celular'),
+);
+
+// Moeda → 'R$ 1.234,56'
+final valorController = TextEditingController(
+  text: HelperUtil.formatCurrency(1234.56),
+);
+```
+
+---
 
 ## Validação de Data e Maioridade
 
@@ -646,9 +735,18 @@ Utilitários diversos para manipulação e formatação de dados, incluindo:
 
 ---
 
+### `CnpjAlfanumerico`
+Suporte completo ao novo formato de CNPJ alfanumérico (IN RFB 2229/2024, vigência jul/2026).
+- `isValid(cnpj)` — valida CNPJ numérico legado **ou** alfanumérico 2026
+- `format(cnpj)` — aplica a máscara `AA.BBB.CCC/DDDD-VV`
+- `strip(cnpj)` — remove a máscara, preservando `[A-Z0-9]`
+- `generate({formatted, forceAlphanumeric})` — gera CNPJ válido aleatório
+
+---
+
 ### `AllValidations`  
 Conjunto de funções para validar diferentes tipos de dados, como:  
-- CPF e CNPJ  
+- CPF, CNPJ numérico (`isCnpj`) e CNPJ alfanumérico 2026 (`isCnpjAlphanumeric`)
 - E-mail e URL  
 - Telefone brasileiro (fixo e celular)  
 - CEP, RG e outras identificações  
@@ -700,9 +798,14 @@ Fornece listas de dias da semana em formato abreviado e completo.
 ---
 
 ### 🤝 Contribuições
-  Encontrou algum problema ou tem sugestões para melhorar a biblioteca?
- Contribua abrindo uma issue no nosso repositório oficial do GitHub!
-- 🔗 All Validations BR -  [GitHub](https://github.com/CriandoGames/all_validations_br/)
+
+[![Contributors](https://contrib.rocks/image?repo=CriandoGames/all_validations_br)](https://github.com/CriandoGames/all_validations_br/graphs/contributors)
+
+Made with [contrib.rocks](https://contrib.rocks).
+
+Encontrou algum problema ou tem sugestões para melhorar a biblioteca?
+Contribua abrindo uma issue no nosso repositório oficial do GitHub!
+- 🔗 All Validations BR — [GitHub](https://github.com/CriandoGames/all_validations_br/)
 
 --- 
 

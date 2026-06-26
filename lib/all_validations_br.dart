@@ -1,5 +1,6 @@
 library all_validations_br;
 
+export 'src/cnpj/cnpj_alfanumerico.dart';
 export 'src/validator/all_validations.dart';
 export 'src/models/models.dart';
 export './src/notifications/notifiable.dart';
