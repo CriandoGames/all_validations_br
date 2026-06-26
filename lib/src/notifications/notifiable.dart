@@ -1,5 +1,5 @@
 import 'dart:developer' as dev;
-import 'package:all_validations_br/all_validations_br.dart';
+import '../result/result.dart';
 
 class ValidationNotifiable {
   late List<ValidationNotification> _notifications;
@@ -15,7 +15,7 @@ class ValidationNotifiable {
       _notifications.add(r);
     } else if (r is List<ValidationNotification>) {
       _notifications.addAll(r);
-    } else if (r is Contract) {
+    } else if (r is ValidationNotifiable) {
       for (final f in r.notifications) {
         ValidationNotification tempNotification =
             ValidationNotification(property: f.property, message: f.message);
@@ -44,6 +44,23 @@ class ValidationNotifiable {
 
   bool get invalid => _notifications.isNotEmpty;
   bool get isValid => !invalid;
+
+  /// Converte o estado de validação em um [Result].
+  ///
+  /// Retorna [Success] com [value] se não houver notificações, ou
+  /// [Failure] com a lista completa de [ValidationNotification].
+  ///
+  /// ```dart
+  /// final result = myNotifiable.toResult(myDto);
+  /// result.fold(
+  ///   (errors) => print(errors.map((e) => e.message).join(', ')),
+  ///   (dto)    => save(dto),
+  /// );
+  /// ```
+  Result<List<ValidationNotification>, T> toResult<T>(T value) {
+    if (isValid) return Result.success(value);
+    return Result.failure(List.unmodifiable(notifications));
+  }
 }
 
 class ValidationNotification {

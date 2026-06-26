@@ -1,5 +1,35 @@
 # Changelog
 
+## 3.4.0
+### 🆕 Novas Funcionalidades
+
+* **Criptografia autenticada ChaCha20-Poly1305** (`CryptUtil`) — implementação Dart pura, sem dependências externas, conforme RFC 8439.
+  - `CryptUtil.encryptText(text, {key?, nonce?, aad?})` — cifra uma String UTF-8 e retorna `EncryptedPayload`.
+  - `CryptUtil.decryptText(payload)` — decifra e retorna a String original.
+  - `CryptUtil.encryptBytes(bytes, {key?, nonce?, aad?})` — cifra dados binários (`List<int>`).
+  - `CryptUtil.decryptBytes(payload)` — decifra e retorna `List<int>`.
+  - `CryptUtil.encryptToBase64(text, {key?, nonce?, aad?})` — atalho que cifra e serializa o payload como string base64 única.
+  - `CryptUtil.decryptFromBase64(encoded)` — atalho que deserializa e decifra de base64.
+  - `CryptUtil.generateKey()` — gera chave de 32 bytes via `Random.secure`.
+  - `CryptUtil.generateNonce()` — gera nonce de 12 bytes via `Random.secure`.
+
+* **`EncryptedPayload`** — modelo de resultado com suporte a serialização.
+  - `toJson()` / `fromJson()` — serialização como `Map<String, dynamic>` (campos em base64).
+  - `toBase64()` / `fromBase64()` — serialização como string base64 compacta.
+
+* **`CryptException`** — exceção lançada quando a tag de autenticação Poly1305 não confere, indicando dados corrompidos ou chave incorreta.
+
+### 🔧 Outros
+
+* `pubspec.yaml` — descrição atualizada para refletir os três pilares da biblioteca: validações, utilitários e criptografia.
+* `README.md` — nova seção "📱 App de Exemplo" e seção completa "🔒 Criptografia Autenticada" com referência da API, exemplos de uso, serialização, AAD e boas práticas.
+* `example/lib/main.dart` — adicionadas demos interativas de `HelperUtil` e `CryptUtil` (encriptação/decriptação e simulação de adulteração).
+* `test/crypt_util_test.dart` — 21 casos de teste cobrindo round-trip texto/bytes, nonces aleatórios, serialização JSON/base64, detecção de adulteração em ciphertext/tag/nonce, AAD mismatch e parâmetros inválidos.
+
+> ⚠️ **Sem breaking changes.** Toda a API existente permanece inalterada.
+
+---
+
 ## 3.3.1
 ### 🔧 Correções
 * Corrigido casing da pasta `Notifications` → `notifications` para compatibilidade com sistemas Linux (pub.dev).

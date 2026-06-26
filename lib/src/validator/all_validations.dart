@@ -717,4 +717,248 @@ class AllValidations {
 
     return digits[11] == dv2;
   }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // Métodos validate*() — retornam Result<ValidationError, String>
+  //
+  // Complementam os métodos is*() existentes (que continuam disponíveis).
+  // Cada método recebe o valor a validar e uma mensagem de erro customizável.
+  //
+  // Uso:
+  //   AllValidations.validateCPF('123.456.789-09').fold(
+  //     (err) => print(err.message),
+  //     (cpf) => print('CPF ok: $cpf'),
+  //   );
+  // ════════════════════════════════════════════════════════════════════════════
+
+  /// Valida CPF e retorna [Result].
+  ///
+  /// Em caso de sucesso, o [Right] carrega o CPF normalizado (somente dígitos).
+  static Result<ValidationError, String> validateCPF(
+    String cpf, {
+    String property = 'cpf',
+    String message = 'CPF inválido.',
+  }) {
+    final normalized = cpf.replaceAll(RegExp(r'[^0-9]'), '');
+    return isCpf(cpf)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida CNPJ e retorna [Result].
+  ///
+  /// Em caso de sucesso, o [Right] carrega o CNPJ normalizado (somente dígitos).
+  static Result<ValidationError, String> validateCNPJ(
+    String cnpj, {
+    String property = 'cnpj',
+    String message = 'CNPJ inválido.',
+  }) {
+    final normalized = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+    return isCnpj(cnpj)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida e-mail e retorna [Result].
+  static Result<ValidationError, String> validateEmail(
+    String email, {
+    String property = 'email',
+    String message = 'E-mail inválido.',
+  }) {
+    return isEmail(email)
+        ? Result.success(email.trim().toLowerCase())
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida CEP brasileiro e retorna [Result].
+  ///
+  /// Em caso de sucesso, o [Right] carrega o CEP normalizado (somente dígitos).
+  static Result<ValidationError, String> validateCEP(
+    String cep, {
+    String property = 'cep',
+    String message = 'CEP inválido.',
+  }) {
+    final normalized = cep.replaceAll(RegExp(r'[^0-9]'), '');
+    return isValidBRZip(cep)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida celular brasileiro (com DDD) e retorna [Result].
+  static Result<ValidationError, String> validateCellPhone(
+    String phone, {
+    String property = 'celular',
+    String message = 'Número de celular inválido.',
+  }) {
+    return isBrazilianCellPhone(phone)
+        ? Result.success(phone)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida telefone fixo brasileiro (com DDD) e retorna [Result].
+  static Result<ValidationError, String> validateLandline(
+    String phone, {
+    String property = 'telefone',
+    String message = 'Número de telefone fixo inválido.',
+  }) {
+    return isBrazilianLandline(phone)
+        ? Result.success(phone)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida CNH e retorna [Result].
+  ///
+  /// Em caso de sucesso, o [Right] carrega o número de CNH normalizado.
+  static Result<ValidationError, String> validateCNH(
+    String cnh, {
+    String property = 'cnh',
+    String message = 'CNH inválida.',
+  }) {
+    final normalized = cnh.replaceAll(RegExp(r'[^0-9]'), '');
+    return isCnh(cnh)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida RENAVAM e retorna [Result].
+  static Result<ValidationError, String> validateRENAVAM(
+    String renavam, {
+    String property = 'renavam',
+    String message = 'RENAVAM inválido.',
+  }) {
+    final normalized = renavam.replaceAll(RegExp(r'[^0-9]'), '');
+    return isRenavam(renavam)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida PIS/PASEP e retorna [Result].
+  static Result<ValidationError, String> validatePIS(
+    String pis, {
+    String property = 'pis',
+    String message = 'PIS/PASEP inválido.',
+  }) {
+    final normalized = pis.replaceAll(RegExp(r'[^0-9]'), '');
+    return isPisPasep(pis)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida Título de Eleitor e retorna [Result].
+  static Result<ValidationError, String> validateTituloEleitor(
+    String titulo, {
+    String property = 'tituloEleitor',
+    String message = 'Título de Eleitor inválido.',
+  }) {
+    final normalized = titulo.replaceAll(RegExp(r'[^0-9]'), '');
+    return isTituloEleitor(titulo)
+        ? Result.success(normalized)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida RG e retorna [Result].
+  static Result<ValidationError, String> validateRG(
+    String rg, {
+    String property = 'rg',
+    String message = 'RG inválido.',
+  }) {
+    return isRG(rg)
+        ? Result.success(rg)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida placa de veículo brasileira (formatos antigo e Mercosul) e retorna [Result].
+  static Result<ValidationError, String> validateLicensePlate(
+    String plate, {
+    String property = 'placa',
+    String message = 'Placa de veículo inválida.',
+  }) {
+    return isValidBrazilianLicensePlate(plate)
+        ? Result.success(plate.toUpperCase())
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida URL e retorna [Result].
+  static Result<ValidationError, String> validateURL(
+    String url, {
+    String property = 'url',
+    String message = 'URL inválida.',
+  }) {
+    return isURL(url)
+        ? Result.success(url)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida UUID (versão 3, 4 ou 5) e retorna [Result].
+  static Result<ValidationError, String> validateUUID(
+    String uuid, {
+    String property = 'uuid',
+    String message = 'UUID inválido.',
+  }) {
+    return isUUID(uuid)
+        ? Result.success(uuid)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida senha forte e retorna [Result].
+  ///
+  /// Critérios: mínimo 8 caracteres, letras maiúsculas, minúsculas,
+  /// dígitos e caracteres especiais.
+  static Result<ValidationError, String> validateStrongPassword(
+    String password, {
+    String property = 'senha',
+    String message =
+        'A senha deve ter no mínimo 8 caracteres, letras maiúsculas, minúsculas, números e símbolos.',
+  }) {
+    return isStrongPassword(password)
+        ? Result.success(password)
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida número de cartão de crédito (algoritmo de Luhn) e retorna [Result].
+  static Result<ValidationError, String> validateCreditCard(
+    String number, {
+    String property = 'cartao',
+    String message = 'Número de cartão de crédito inválido.',
+  }) {
+    return isCreditCard(number)
+        ? Result.success(number.replaceAll(RegExp(r'[^0-9]'), ''))
+        : Result.failure(ValidationError(property: property, message: message));
+  }
+
+  /// Valida chave PIX e retorna [Result] com o **tipo** identificado.
+  ///
+  /// Os tipos possíveis em caso de sucesso são: `'CPF'`, `'Celular'`,
+  /// `'Email'` ou `'Chave Aleatória'`.
+  ///
+  /// ```dart
+  /// AllValidations.validatePixKey('+5511912345678').fold(
+  ///   (err)  => print('Chave inválida'),
+  ///   (tipo) => print('Tipo: $tipo'),  // 'Celular'
+  /// );
+  /// ```
+  static Result<ValidationError, String> validatePixKey(
+    String key, {
+    String property = 'chavePix',
+    String message = 'Chave PIX inválida.',
+  }) {
+    final onlyDigits =
+        RegExp(r'^\d+$').hasMatch(key.replaceAll(RegExp(r'[\s.\-]'), ''));
+
+    if (isCpf(key)) return Result.success('CPF');
+    if (RegExp(r'^\+55\d{2}9\d{8}$').hasMatch(key)) {
+      return Result.success('Celular');
+    }
+    if (!onlyDigits && isEmail(key)) return Result.success('Email');
+    if (!onlyDigits &&
+        RegExp(
+          r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+          caseSensitive: false,
+        ).hasMatch(key)) {
+      return Result.success('Chave Aleatória');
+    }
+
+    return Result.failure(
+        ValidationError(property: property, message: message));
+  }
 }

@@ -408,4 +408,40 @@ class ContractValidations extends ValidationNotifiable {
 
     return this;
   }
+
+  // ── Result integration ────────────────────────────────────────────────────
+
+  /// Converte o contrato em um [Result] com a lista completa de erros.
+  ///
+  /// ```dart
+  /// Contract()
+  ///   .requires()
+  ///   .isEmail(email, 'email', 'E-mail inválido')
+  ///   .toResult(dto);
+  /// ```
+  @override
+  Result<List<ValidationNotification>, T> toResult<T>(T value) {
+    if (isValid) return Result.success(value);
+    return Result.failure(List.unmodifiable(notifications));
+  }
+
+  /// Converte o contrato em um [Result] com apenas a **primeira** notificação
+  /// como erro — útil quando se quer tratar um erro por vez.
+  Result<ValidationNotification, T> toResultFirst<T>(T value) {
+    if (isValid) return Result.success(value);
+    return Result.failure(notifications.first);
+  }
+
+  /// Versão assíncrona de [toResult] — útil quando [value] é produzido por
+  /// uma função async (ex: parsing, lookup em cache).
+  ///
+  /// ```dart
+  /// final result = await contract.toResultAsync(() => fetchUser(id));
+  /// ```
+  Future<Result<List<ValidationNotification>, T>> toResultAsync<T>(
+    Future<T> Function() valueFn,
+  ) async {
+    if (!isValid) return Result.failure(List.unmodifiable(notifications));
+    return Result.success(await valueFn());
+  }
 }
