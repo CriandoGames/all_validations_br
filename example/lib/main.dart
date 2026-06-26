@@ -116,7 +116,7 @@ class _ExamplesPageState extends State<ExamplesPage> {
             ),
             _labelValue(
               'formatCurrency(1234.56)',
-              HelperUtil.formatCurrency(1234.56),
+              BrFormatter.formatCurrency(1234.56),
             ),
             _labelValue(
               'daysBetween(01/01/2024, 31/12/2024)',

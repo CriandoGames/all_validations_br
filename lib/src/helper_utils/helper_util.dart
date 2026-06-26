@@ -198,6 +198,19 @@ class HelperUtil {
   }
 
   /// Formata texto para diferentes padrões.
+  ///
+  /// **Obsoleto.** Use os métodos dedicados de `BrFormatter`:
+  /// - `'cpf'` → `BrFormatter.formatCpf(input)`
+  /// - `'cnpj'` → `BrFormatter.formatCnpj(input)`
+  /// - `'celular'` → `BrFormatter.formatPhone(input)`
+  /// - `'dinheiro'` → `BrFormatter.formatCurrency(double.parse(input))`
+  ///
+  /// Para datas, use `BrData.format(DateTime)`.
+  @Deprecated(
+    'Use BrFormatter.formatCpf / formatCnpj / formatPhone / formatCurrency '
+    'ou BrData.format em vez deste método. '
+    'Será removido em uma versão futura.',
+  )
   static String? formatText(String input, String type) {
     switch (type.toLowerCase()) {
       case 'celular':
@@ -269,7 +282,14 @@ class HelperUtil {
     return input.replaceAll(regex, '');
   }
 
-  /// Formata um número para o padrão de moeda brasileiro
+  /// Formata um número para o padrão de moeda brasileiro.
+  ///
+  /// **Obsoleto.** Use `BrFormatter.formatCurrency(value)`, que suporta
+  /// controle de símbolo (`symbol`) e casas decimais (`decimals`).
+  @Deprecated(
+    'Use BrFormatter.formatCurrency(value) em vez deste método. '
+    'Será removido em uma versão futura.',
+  )
   static String formatCurrency(double value) {
     // Arredonda o valor para duas casas decimais
     String formattedValue = value.toStringAsFixed(2);
