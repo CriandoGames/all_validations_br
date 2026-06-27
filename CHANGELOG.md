@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.0.4
+### 📚 Documentação
+
+Revisão e enriquecimento completo da documentação técnica. Nenhuma mudança de API ou comportamento.
+
+**Nova estrutura `docs/` — documentação detalhada por classe:**
+
+
+---
+
 ## 4.0.3
 ### 📝 Documentação
 - Refatoração do README: eliminada duplicação de conteúdo entre as seções ⚙️ Funcionalidades e 🆘 Classes para Uso. Nenhuma mudança de API ou comportamento.
