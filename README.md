@@ -4,6 +4,16 @@
   💡 Validações brasileiras, utilitários e criptografia autenticada — tudo em uma única biblioteca Dart/Flutter, sem dependências externas.
 </p>
 
+<p align="center">
+  <a href="https://pub.dev/packages/all_validations_br"><img src="https://img.shields.io/pub/v/all_validations_br.svg?label=pub.dev" alt="pub version"></a>
+  <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/likes/all_validations_br?label=likes" alt="pub likes"></a>
+  <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/points/all_validations_br?label=pub%20points" alt="pub points"></a>
+  <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/popularity/all_validations_br?label=popularity" alt="popularity"></a>
+  <a href="https://github.com/CriandoGames/all_validations_br/blob/main/LICENSE"><img src="https://img.shields.io/github/license/CriandoGames/all_validations_br" alt="license"></a>
+</p>
+
+> **Repositório oficial** · Publicado em [pub.dev/packages/all_validations_br](https://pub.dev/packages/all_validations_br)
+
 ---
 
 ## 🚀 Descrição do Projeto
