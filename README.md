@@ -119,13 +119,13 @@ As classes abaixo têm seção dedicada com exemplos completos mais adiante nest
 
 | Classe | O que faz | Docs detalhados |
 |--------|----------|----------------|
-| [`BrFormatter`](#brformatter--formatação-e-geração-de-documentos-br) | Formata, limpa e gera CPF, CNPJ, CEP, telefone, moeda e KM | [📄 BrFormatter.md](docs/BrFormatter.md) |
-| [`BrData`](#brdata--datas-e-horas-sem-intl) | Formato `DD/MM/AAAA` sem `intl` — parse, formatação e validação | [📄 BrData.md](docs/BrData.md) |
-| [`BrInputMask`](#máscaras-de-campo--brinputmask) | 19 `TextInputFormatter` com `const` constructor | [📄 BrInputMask.md](docs/BrInputMask.md) |
-| [`CnpjAlfanumerico`](#cnpj-alfanumérico-2026--cnpjalfanumerico) | Novo CNPJ com letras — IN RFB 2229/2024 (jul/2026) | [📄 CnpjAlfanumerico.md](docs/CnpjAlfanumerico.md) |
-| [`CryptUtil`](#-criptografia-autenticada--cryptutil) | ChaCha20-Poly1305 (RFC 8439) em Dart puro | [📄 CryptUtil.md](docs/CryptUtil.md) |
-| [`Result<F, S>`](#-result--programação-orientada-a-trilhos) | Tipo funcional Success/Failure com railway operators | [📄 Result.md](docs/Result.md) |
-| [`Contract`](#integração-com-contract) | Contratos de validação com notificações de erro detalhadas | [📄 Result.md#integração-com-contract](docs/Result.md#integração-com-contract) |
+| [`BrFormatter`](#brformatter--formatação-e-geração-de-documentos-br) | Formata, limpa e gera CPF, CNPJ, CEP, telefone, moeda e KM | [📄 BrFormatter.md](doc/BrFormatter.md) |
+| [`BrData`](#brdata--datas-e-horas-sem-intl) | Formato `DD/MM/AAAA` sem `intl` — parse, formatação e validação | [📄 BrData.md](doc/BrData.md) |
+| [`BrInputMask`](#máscaras-de-campo--brinputmask) | 19 `TextInputFormatter` com `const` constructor | [📄 BrInputMask.md](doc/BrInputMask.md) |
+| [`CnpjAlfanumerico`](#cnpj-alfanumérico-2026--cnpjalfanumerico) | Novo CNPJ com letras — IN RFB 2229/2024 (jul/2026) | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) |
+| [`CryptUtil`](#-criptografia-autenticada--cryptutil) | ChaCha20-Poly1305 (RFC 8439) em Dart puro | [📄 CryptUtil.md](doc/CryptUtil.md) |
+| [`Result<F, S>`](#-result--programação-orientada-a-trilhos) | Tipo funcional Success/Failure com railway operators | [📄 Result.md](doc/Result.md) |
+| [`Contract`](#integração-com-contract) | Contratos de validação com notificações de erro detalhadas | [📄 Result.md#integração-com-contract](doc/Result.md#integração-com-contract) |
 
 ## 🧪 Exemplos de Uso
 
@@ -1042,15 +1042,15 @@ Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github
 
 | Classe | Resumo neste arquivo | Documentação detalhada |
 |--------|----------------------|----------------------|
-| `AllValidations` | [⚙️ Funcionalidades › Validações](#validações--allvalidations) | [📄 AllValidations.md](docs/AllValidations.md) |
-| `HelperUtil` | [⚙️ Funcionalidades › Funções Avançadas](#funções-avançadas--helperutil) | [📄 HelperUtil.md](docs/HelperUtil.md) |
-| `BrFormatter` | [BrFormatter](#brformatter--formatação-e-geração-de-documentos-br) | [📄 BrFormatter.md](docs/BrFormatter.md) |
-| `BrData` | [BrData](#brdata--datas-e-horas-sem-intl) | [📄 BrData.md](docs/BrData.md) |
-| `BrInputMask` | [Máscaras de Campo](#máscaras-de-campo--brinputmask) | [📄 BrInputMask.md](docs/BrInputMask.md) |
-| `CnpjAlfanumerico` | [CNPJ Alfanumérico 2026](#cnpj-alfanumérico-2026--cnpjalfanumerico) | [📄 CnpjAlfanumerico.md](docs/CnpjAlfanumerico.md) |
-| `CryptUtil` | [CryptUtil](#-criptografia-autenticada--cryptutil) | [📄 CryptUtil.md](docs/CryptUtil.md) |
-| `Result<F, S>` | [Result](#-result--programação-orientada-a-trilhos) | [📄 Result.md](docs/Result.md) |
-| `Contract` | [Integração com Contract](#integração-com-contract) | [📄 Result.md](docs/Result.md#integração-com-contract) |
+| `AllValidations` | [⚙️ Funcionalidades › Validações](#validações--allvalidations) | [📄 AllValidations.md](doc/AllValidations.md) |
+| `HelperUtil` | [⚙️ Funcionalidades › Funções Avançadas](#funções-avançadas--helperutil) | [📄 HelperUtil.md](doc/HelperUtil.md) |
+| `BrFormatter` | [BrFormatter](#brformatter--formatação-e-geração-de-documentos-br) | [📄 BrFormatter.md](doc/BrFormatter.md) |
+| `BrData` | [BrData](#brdata--datas-e-horas-sem-intl) | [📄 BrData.md](doc/BrData.md) |
+| `BrInputMask` | [Máscaras de Campo](#máscaras-de-campo--brinputmask) | [📄 BrInputMask.md](doc/BrInputMask.md) |
+| `CnpjAlfanumerico` | [CNPJ Alfanumérico 2026](#cnpj-alfanumérico-2026--cnpjalfanumerico) | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) |
+| `CryptUtil` | [CryptUtil](#-criptografia-autenticada--cryptutil) | [📄 CryptUtil.md](doc/CryptUtil.md) |
+| `Result<F, S>` | [Result](#-result--programação-orientada-a-trilhos) | [📄 Result.md](doc/Result.md) |
+| `Contract` | [Integração com Contract](#integração-com-contract) | [📄 Result.md](doc/Result.md#integração-com-contract) |
 
 ---
 
@@ -1074,32 +1074,4 @@ Disponibiliza os estados brasileiros e suas siglas.
 
 ### `AllValidationsGetWeek`  
 Fornece listas de dias da semana em formato abreviado e completo.  
-- Exemplo de uso: `AllValidationsGetWeek.listDaysWeekAbvr` → `[Seg, Ter, Qua, ...]`  
-
----
-
-### 🤝 Contribuições
-
-[![Contributors](https://contrib.rocks/image?repo=CriandoGames/all_validations_br)](https://github.com/CriandoGames/all_validations_br/graphs/contributors)
-
-Made with [contrib.rocks](https://contrib.rocks).
-
-Encontrou algum problema ou tem sugestões para melhorar a biblioteca?
-Contribua abrindo uma issue no nosso repositório oficial do GitHub!
-- 🔗 All Validations BR — [GitHub](https://github.com/CriandoGames/all_validations_br/)
-
---- 
-
-### 📦 Instalação
-## Adicione a dependência ao seu arquivo pubspec.yaml:
-
-dependencies:
-  all_validations_br: 
-
-### 📜 Licença
-Este projeto está sob a licença MIT.
-
----
-
-<p align="center">💻 Desenvolvido com ❤️ para facilitar o desenvolvimento no Flutter.</p> 
-
+- Exemplo de uso: `AllVali
