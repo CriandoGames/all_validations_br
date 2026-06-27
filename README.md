@@ -117,15 +117,15 @@ O app está dividido em seções:
 
 As classes abaixo têm seção dedicada com exemplos completos mais adiante neste documento:
 
-| Classe | O que faz |
-|--------|----------|
-| [`BrFormatter`](#brformatter--formatação-e-geração-de-documentos-br) | Formata, limpa e gera CPF, CNPJ, CEP, telefone, moeda e KM |
-| [`BrData`](#brdata--datas-e-horas-sem-intl) | Formato `DD/MM/AAAA` sem `intl` — parse, formatação e validação |
-| [`BrInputMask`](#máscaras-de-campo--brinputmask) | 19 `TextInputFormatter` com `const` constructor |
-| [`CnpjAlfanumerico`](#cnpj-alfanumérico-2026----cnpjalfanumerico) | Novo CNPJ com letras — IN RFB 2229/2024 (jul/2026) |
-| [`CryptUtil`](#-criptografia-autenticada--cryptutil) | ChaCha20-Poly1305 (RFC 8439) em Dart puro |
-| [`Result<F, S>`](#-result--programação-orientada-a-trilhos) | Tipo funcional Success/Failure com railway operators |
-| [`Contract`](#integração-com-contract) | Contratos de validação com notificações de erro detalhadas |
+| Classe | O que faz | Docs detalhados |
+|--------|----------|----------------|
+| [`BrFormatter`](#brformatter--formatação-e-geração-de-documentos-br) | Formata, limpa e gera CPF, CNPJ, CEP, telefone, moeda e KM | [📄 BrFormatter.md](docs/BrFormatter.md) |
+| [`BrData`](#brdata--datas-e-horas-sem-intl) | Formato `DD/MM/AAAA` sem `intl` — parse, formatação e validação | [📄 BrData.md](docs/BrData.md) |
+| [`BrInputMask`](#máscaras-de-campo--brinputmask) | 19 `TextInputFormatter` com `const` constructor | [📄 BrInputMask.md](docs/BrInputMask.md) |
+| [`CnpjAlfanumerico`](#cnpj-alfanumérico-2026--cnpjalfanumerico) | Novo CNPJ com letras — IN RFB 2229/2024 (jul/2026) | [📄 CnpjAlfanumerico.md](docs/CnpjAlfanumerico.md) |
+| [`CryptUtil`](#-criptografia-autenticada--cryptutil) | ChaCha20-Poly1305 (RFC 8439) em Dart puro | [📄 CryptUtil.md](docs/CryptUtil.md) |
+| [`Result<F, S>`](#-result--programação-orientada-a-trilhos) | Tipo funcional Success/Failure com railway operators | [📄 Result.md](docs/Result.md) |
+| [`Contract`](#integração-com-contract) | Contratos de validação com notificações de erro detalhadas | [📄 Result.md#integração-com-contract](docs/Result.md#integração-com-contract) |
 
 ## 🧪 Exemplos de Uso
 
@@ -1040,17 +1040,17 @@ Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github
 
 Índice rápido — cada classe tem sua seção dedicada com exemplos completos:
 
-| Classe | Onde encontrar |
-|--------|---------------|
-| `AllValidations` | [⚙️ Funcionalidades › Validações](#validações--allvalidations) |
-| `HelperUtil` | [⚙️ Funcionalidades › Funções Avançadas](#funções-avançadas--helperutil) |
-| `BrFormatter` | [BrFormatter](#brformatter--formatação-e-geração-de-documentos-br) |
-| `BrData` | [BrData](#brdata--datas-e-horas-sem-intl) |
-| `BrInputMask` | [Máscaras de Campo](#máscaras-de-campo--brinputmask) |
-| `CnpjAlfanumerico` | [CNPJ Alfanumérico 2026](#cnpj-alfanumérico-2026----cnpjalfanumerico) |
-| `CryptUtil` | [CryptUtil](#-criptografia-autenticada--cryptutil) |
-| `Result<F, S>` | [Result](#-result--programação-orientada-a-trilhos) |
-| `Contract` | [Integração com Contract](#integração-com-contract) |
+| Classe | Resumo neste arquivo | Documentação detalhada |
+|--------|----------------------|----------------------|
+| `AllValidations` | [⚙️ Funcionalidades › Validações](#validações--allvalidations) | [📄 AllValidations.md](docs/AllValidations.md) |
+| `HelperUtil` | [⚙️ Funcionalidades › Funções Avançadas](#funções-avançadas--helperutil) | [📄 HelperUtil.md](docs/HelperUtil.md) |
+| `BrFormatter` | [BrFormatter](#brformatter--formatação-e-geração-de-documentos-br) | [📄 BrFormatter.md](docs/BrFormatter.md) |
+| `BrData` | [BrData](#brdata--datas-e-horas-sem-intl) | [📄 BrData.md](docs/BrData.md) |
+| `BrInputMask` | [Máscaras de Campo](#máscaras-de-campo--brinputmask) | [📄 BrInputMask.md](docs/BrInputMask.md) |
+| `CnpjAlfanumerico` | [CNPJ Alfanumérico 2026](#cnpj-alfanumérico-2026--cnpjalfanumerico) | [📄 CnpjAlfanumerico.md](docs/CnpjAlfanumerico.md) |
+| `CryptUtil` | [CryptUtil](#-criptografia-autenticada--cryptutil) | [📄 CryptUtil.md](docs/CryptUtil.md) |
+| `Result<F, S>` | [Result](#-result--programação-orientada-a-trilhos) | [📄 Result.md](docs/Result.md) |
+| `Contract` | [Integração com Contract](#integração-com-contract) | [📄 Result.md](docs/Result.md#integração-com-contract) |
 
 ---
 
