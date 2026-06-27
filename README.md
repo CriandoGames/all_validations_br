@@ -42,7 +42,8 @@ O app está dividido em seções:
 
 ## ⚙️ Funcionalidades
 
-- **Validações Gerais**
+### Validações — `AllValidations`
+
 - Verificação de tipos e formatos:
   - `isNull`, `isNum`, `isNumericOnly`, `isNumericFloat`
   - `isAlphabetOnly`, `isLowercase`, `isUppercase`
@@ -57,7 +58,7 @@ O app está dividido em seções:
   - Validação de chaves PIX: CPF, e-mail, celular e chave aleatória
 
 ---
-### **Manipulação de Texto**
+### **Manipulação de Texto — `AllValidations` · `HelperUtil`**
 - **Remoção de caracteres especiais:**
   - `removeCharacters`, `removeNonNumeric`, `removeAccents`
 - **Formatação de dados:**
@@ -71,7 +72,7 @@ O app está dividido em seções:
   - Capitalização de palavras: `capitalizeWords`
   
 ---
-### **Utilidades para Datas**
+### **Utilidades para Datas — `HelperUtil`**
 - **Conversões de horário:**
   - UTC para local: `convertUtcToLocal`
   - Local para UTC: `convertLocalToUtc`
@@ -81,7 +82,7 @@ O app está dividido em seções:
   - Cálculo de idade: `calculateAge`
 
 ---
-### **Funções Avançadas**
+### **Funções Avançadas — `HelperUtil`**
 - **Validações por Regex:**
   - E-mails, URLs, UUIDs, senhas fortes
 
@@ -104,45 +105,20 @@ O app está dividido em seções:
 - **Informações do dispositivo:**
   - Sistema operacional e versão do Dart: `getDeviceInfo`
 
-- **Result — Programação Orientada a Trilhos**
-  - `Result<F, S>`: tipo funcional Success/Failure sem exceções
-  - Encadeamento: `.map()`, `.then()`, `.fold()`, `.recover()`
-  - Async: `Result.tryAsync()`, extensão `FutureResult`
-  - Integração com `Contract`: `.toResult()`, `.toResultFirst()`, `.toResultAsync()`
-  - Validações pontuais: `AllValidations.validateCPF()`, `validateEmail()`, `validatePixKey()`, etc.
+---
+### Classes especializadas
 
-- **Formatação de documentos e dados BR — `BrFormatter`**
-  - Geração de CPF e CNPJ válidos: `generateCpf`, `generateCnpj`
-  - Formatação: `formatCpf`, `formatCnpj`, `formatCep`, `formatPhone`, `formatCurrency`, `formatKm`
-  - Strip de máscaras: `stripCpf`, `stripCnpj`, `stripCep`, `stripPhone`, `stripCurrencySymbol`
-  - Parse de moeda: `parseCurrency` (`'R$ 1.234,56'` → `1234.56`)
-  - Extração de DDD: `extractDdd`
+As classes abaixo têm seção dedicada com exemplos completos mais adiante neste documento:
 
-- **Datas e horas — `BrData`** (sem dependência do pacote `intl`)
-  - Formatação: `format`, `formatMonthYear`, `formatDayMonth`, `formatTime`, `formatTimeShort`
-  - Parse: `parse` (`'DD/MM/AAAA'` → `DateTime`), `parseWithTime`
-  - Validação: `validate` (incluindo anos bissextos e meses com 30/31 dias)
-
-- **Máscaras de campo (`TextInputFormatter`) — `BrInputMask`**
-  - `CpfMask` — `999.999.999-99`
-  - `CnpjMask` — `99.999.999/9999-99`
-  - `CnpjAlfaMask` — `AA.BBB.CCC/DDDD-VV` (alfanumérico 2026)
-  - `PhoneMask` — `(99) 9999-9999` / `(99) 99999-9999` (fixo/celular dinâmico)
-  - `CepMask` — `99999-999`
-  - `DateMask` — `99/99/9999`
-  - `TimeMask` — `99:99`
-  - `CurrencyMask` — `R$ 9.999,99` (centavos da direita para a esquerda)
-  - `CardMask` — `9999 9999 9999 9999`
-  - `CardExpiryMask` — `99/99`
-  - `CpfOuCnpjMask` — alterna automaticamente entre CPF e CNPJ
-  - `PlacaMask` — `AAA-9999` (antigo) / `AAA-9A99` (Mercosul)
-
-- **Criptografia autenticada — ChaCha20-Poly1305 (`CryptUtil`)**
-  - Implementação Dart pura do algoritmo AEAD ChaCha20-Poly1305 (RFC 8439)
-  - `encryptText` / `decryptText` — cifra e decifra strings UTF-8
-  - `encryptBytes` / `decryptBytes` — cifra e decifra dados binários
-  - `encryptToBase64` / `decryptFromBase64` — serialização como string única
-  - `generateKey` / `generateNonce` — geração segura via `Random.secure`
+| Classe | O que faz |
+|--------|----------|
+| [`BrFormatter`](#brformatter--formatação-e-geração-de-documentos-br) | Formata, limpa e gera CPF, CNPJ, CEP, telefone, moeda e KM |
+| [`BrData`](#brdata--datas-e-horas-sem-intl) | Formato `DD/MM/AAAA` sem `intl` — parse, formatação e validação |
+| [`BrInputMask`](#máscaras-de-campo--brinputmask) | 19 `TextInputFormatter` com `const` constructor |
+| [`CnpjAlfanumerico`](#cnpj-alfanumérico-2026----cnpjalfanumerico) | Novo CNPJ com letras — IN RFB 2229/2024 (jul/2026) |
+| [`CryptUtil`](#-criptografia-autenticada--cryptutil) | ChaCha20-Poly1305 (RFC 8439) em Dart puro |
+| [`Result<F, S>`](#-result--programação-orientada-a-trilhos) | Tipo funcional Success/Failure com railway operators |
+| [`Contract`](#integração-com-contract) | Contratos de validação com notificações de erro detalhadas |
 
 ## 🧪 Exemplos de Uso
 
@@ -659,9 +635,6 @@ final formatado = CnpjAlfanumerico.generate(formatted: true);
 final alfanumerico = CnpjAlfanumerico.generate(forceAlphanumeric: true);
 ```
 
-> **Correção de bug do brasil_fields:** o brasil_fields usa `codeUnit - 48` para converter todos os caracteres, gerando valores errados para letras (`A → 17` em vez de `10`, `Z → 42` em vez de `35`). Nossa implementação usa `codeUnit - 55` para letras maiúsculas, conforme especificado na IN RFB 2229/2024 — o que produz dígitos verificadores diferentes e corretos.
-
----
 
 ## BrFormatter — formatação e geração de documentos BR
 
@@ -1058,107 +1031,19 @@ Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github
 
 ## 🆘 Classes para Uso
 
-Aqui estão as principais classes disponíveis na biblioteca **AllValidations BR**, juntamente com suas funcionalidades para facilitar a validação e manipulação de dados em seus projetos Flutter.
+Índice rápido — cada classe tem sua seção dedicada com exemplos completos:
 
-### `HelperUtil`  
-Utilitários diversos para manipulação e formatação de dados, incluindo:  
-- Decodificação de JWT  
-- Geração de strings e números aleatórios  
-- Conversão de datas entre UTC e horário local  
-- Remoção de tags HTML de strings  
-- Geração de UUIDs (v3, v4 e v5)  
-- Validação de chaves PIX (CPF, Celular, E-mail, Chave Aleatória)  
-- Mascaramento de chaves PIX (`maskPixKey`)  
-> 💡 Para formatação de moeda e documentos, use `BrFormatter`. Para criptografia, use `CryptUtil`.  
-
----
-
-### `CnpjAlfanumerico`
-Suporte completo ao novo formato de CNPJ alfanumérico (IN RFB 2229/2024, vigência jul/2026).
-- `isValid(cnpj)` — valida CNPJ numérico legado **ou** alfanumérico 2026
-- `format(cnpj)` — aplica a máscara `AA.BBB.CCC/DDDD-VV`
-- `strip(cnpj)` — remove a máscara, preservando `[A-Z0-9]`
-- `generate({formatted, forceAlphanumeric})` — gera CNPJ válido aleatório
-
----
-
-### `BrFormatter`
-Utilitários de formatação, limpeza e geração para dados tipicamente brasileiros — sem dependências externas.
-- **CPF:** `generateCpf({formatted})`, `formatCpf(cpf)`, `stripCpf(cpf)`
-- **CNPJ numérico:** `generateCnpj({formatted})`, `formatCnpj(cnpj)`, `stripCnpj(cnpj)`
-- **CEP:** `formatCep(cep)`, `stripCep(cep)`
-- **Telefone:** `formatPhone(phone, {ddd})`, `extractDdd(phone)`, `stripPhone(phone)`
-- **Moeda:** `formatCurrency(value, {symbol, decimals})`, `parseCurrency(value)`, `stripCurrencySymbol(value)`
-- **KM:** `formatKm(km)`
-
----
-
-### `BrData`
-Formatação e parse de datas e horas no padrão brasileiro, implementados em Dart puro (sem `intl`).
-- `format(dt)` → `'DD/MM/AAAA'`
-- `formatMonthYear(dt)` → `'MM/AAAA'`
-- `formatDayMonth(dt)` → `'DD/MM'`
-- `formatTime(dt)` → `'HH:MM:SS'`
-- `formatTimeShort(dt)` → `'HH:MM'`
-- `parse(date)` → `DateTime` de `'DD/MM/AAAA'`
-- `parseWithTime(dateTime)` → `DateTime` de `'DD/MM/AAAA HH:MM'`
-- `validate(date)` → `bool` (valida bissextos e dias por mês)
-
----
-
-### `BrInputMask` e subclasses
-Formatters de campo (`TextInputFormatter`) para máscaras brasileiras em tempo real. Todas têm `const` constructor.
-
-| Classe | Máscara |
-|--------|---------|
-| `CpfMask` | `999.999.999-99` |
-| `CnpjMask` | `99.999.999/9999-99` |
-| `CnpjAlfaMask` | `AA.BBB.CCC/DDDD-VV` (2026) |
-| `CpfOuCnpjMask` | `999.999.999-99` / `99.999.999/9999-99` (dinâmico) |
-| `PhoneMask` | `(99) 9999-9999` / `(99) 99999-9999` |
-| `CepMask` | `99999-999` |
-| `DateMask` | `99/99/9999` |
-| `TimeMask` | `99:99` |
-| `CurrencyMask` | `R$ 9.999,99` |
-| `CardMask` | `9999 9999 9999 9999` |
-| `CardExpiryMask` | `99/99` / `99/9999` (MM/AA ou MM/AAAA) |
-| `PlacaMask` | `AAA-9999` / `AAA-9A99` (Mercosul) |
-| `KmMask` | `9.999.999` |
-| `CentavosMask` | `9.999,99` (sem R$) |
-| `NcmMask` | `1234.56.78` |
-| `CnsMask` | `111 2222 3333 4444` |
-| `AlturaMask` | `X,XX` |
-| `PesoMask` | `XXX,X` |
-| `TemperaturaMask` | `XX,X` |
-
----
-
-### `AllValidations`  
-Conjunto de funções para validar diferentes tipos de dados, como:  
-- CPF, CNPJ numérico (`isCnpj`) e CNPJ alfanumérico 2026 (`isCnpjAlphanumeric`)
-- E-mail e URL  
-- Telefone brasileiro (fixo e celular)  
-- CEP, RG e outras identificações  
-- Formatos de data, IP e JSON  
-
----
-
-### `Contract`  
-Classe para gerenciamento de contratos de validação, permitindo a criação de regras flexíveis e reutilizáveis para validar dados com notificações de erro detalhadas.  
-- Definição de regras de validação personalizada  
-- Verificação de requisitos obrigatórios e condições específicas  
-- Emissão de notificações de erro em propriedades inválidas
-- Conversão direta para `Result` via `.toResult()`, `.toResultFirst()`, `.toResultAsync()`
-
----
-
-### `Result<F, S>`  
-Tipo funcional para representar o resultado de uma operação que pode falhar, eliminando exceções e `null` do fluxo de negócio.  
-- `Result.success(value)` / `Result.failure(error)` — construtores básicos  
-- `Result.guard` / `Result.tryAsync` — captura exceções de forma funcional  
-- `.map()`, `.then()`, `.fold()`, `.recover()` — transformações encadeadas  
-- Extensões async via `FutureResult` para operações HTTP, banco e cache  
-- `ValidationResult<T>` — alias para `Result<List<ValidationNotification>, T>`  
+| Classe | Onde encontrar |
+|--------|---------------|
+| `AllValidations` | [⚙️ Funcionalidades › Validações](#validações--allvalidations) |
+| `HelperUtil` | [⚙️ Funcionalidades › Funções Avançadas](#funções-avançadas--helperutil) |
+| `BrFormatter` | [BrFormatter](#brformatter--formatação-e-geração-de-documentos-br) |
+| `BrData` | [BrData](#brdata--datas-e-horas-sem-intl) |
+| `BrInputMask` | [Máscaras de Campo](#máscaras-de-campo--brinputmask) |
+| `CnpjAlfanumerico` | [CNPJ Alfanumérico 2026](#cnpj-alfanumérico-2026----cnpjalfanumerico) |
+| `CryptUtil` | [CryptUtil](#-criptografia-autenticada--cryptutil) |
+| `Result<F, S>` | [Result](#-result--programação-orientada-a-trilhos) |
+| `Contract` | [Integração com Contract](#integração-com-contract) |
 
 ---
 

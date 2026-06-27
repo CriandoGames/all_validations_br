@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.3
+### 📝 Documentação
+- Refatoração do README: eliminada duplicação de conteúdo entre as seções ⚙️ Funcionalidades e 🆘 Classes para Uso. Nenhuma mudança de API ou comportamento.
+
+---
+
 ## 4.0.2
 ### 🎭 Novos Formatters 
 

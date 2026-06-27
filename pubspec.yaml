@@ -1,6 +1,6 @@
 name: all_validations_br
 description: "Dart/Flutter library for Brazilian validations (CPF, CNPJ, CNH, PIX, CEP and more), utilities (JWT, UUID, currency, dates) and authenticated encryption (ChaCha20-Poly1305)."
-version: 4.0.2
+version: 4.0.3
 homepage: https://github.com/CriandoGames/all_validations_br
 repository: https://github.com/CriandoGames/all_validations_br
 issue_tracker: https://github.com/CriandoGames/all_validations_br/issues
