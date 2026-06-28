@@ -182,6 +182,14 @@ class _ExamplesPageState extends State<ExamplesPage> {
                 keyboardType: TextInputType.number),
             _maskField('Temperatura (°C)', [const TemperaturaMask()],
                 keyboardType: TextInputType.number),
+            _maskField('CEST', [const CestMask()],
+                keyboardType: TextInputType.number),
+            _maskField('IOF (alíquota)', [const IofMask()],
+                keyboardType: TextInputType.number),
+            _maskField('NUP (protocolo federal)', [const NupMask()],
+                keyboardType: TextInputType.number),
+            _maskField('Certidão de Nascimento', [const CertNascimentoMask()],
+                keyboardType: TextInputType.number),
 
             const Divider(height: 32),
 

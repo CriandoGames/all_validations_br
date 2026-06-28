@@ -29,7 +29,7 @@ Adicione ao seu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.0.4
+  all_validations_br: ^4.0.5
 ```
 
 Em seguida:
@@ -140,17 +140,17 @@ O app está dividido em seções:
 
 Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 
-| Classe | O que faz | Documentação |
-|--------|----------|--------------|
-| `AllValidations` | Validações BR (CPF, CNPJ, CNH, PIX, EAN-13 e mais) | [📄 AllValidations.md](doc/AllValidations.md) |
-| `HelperUtil` | Utilitários de texto, datas, UUID, JWT, PIX | [📄 HelperUtil.md](doc/HelperUtil.md) |
-| `BrFormatter` | Formata, limpa e gera CPF, CNPJ, CEP, telefone, moeda e KM | [📄 BrFormatter.md](doc/BrFormatter.md) |
-| `BrData` | Formato `DD/MM/AAAA` sem `intl` — parse, formatação e validação | [📄 BrData.md](doc/BrData.md) |
-| `BrInputMask` | 23 `TextInputFormatter` com `const` constructor | [📄 BrInputMask.md](doc/BrInputMask.md) |
-| `CnpjAlfanumerico` | Novo CNPJ com letras — IN RFB 2229/2024 (jul/2026) | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) |
-| `CryptUtil` | ChaCha20-Poly1305 (RFC 8439) em Dart puro | [📄 CryptUtil.md](doc/CryptUtil.md) |
-| `Result<F, S>` | Tipo funcional Success/Failure com railway operators | [📄 Result.md](doc/Result.md) |
-| `Contract` | Contratos de validação com notificações de erro detalhadas | [📄 Result.md](doc/Result.md#integração-com-contract) |
+| Classe | Principais capabilities | Documentação |
+|--------|------------------------|--------------|
+| `AllValidations` | CPF, CNPJ, CNH, RG, RENAVAM, PIS, Título Eleitor, CEP, Placa, EAN-13, Cor Hex, PIX, UUID, e-mail, URL + `validate*()` retornando `Result` | [📄 AllValidations.md](doc/AllValidations.md) |
+| `HelperUtil` | UUID v3/v4/v5, JWT decode/claims/expiry, PIX validação + máscara, datas, maioridade, strings aleatórias, remoção de HTML | [📄 HelperUtil.md](doc/HelperUtil.md) |
+| `BrFormatter` | `formatCpf`, `generateCpf`, `formatCnpj`, `generateCnpj`, `formatPhone`, `extractDdd`, `formatCep`, `formatCurrency`, `parseCurrency`, `formatKm` | [📄 BrFormatter.md](doc/BrFormatter.md) |
+| `BrData` | `format`, `formatMonthYear`, `formatDayMonth`, `formatTime`, `parse`, `parseWithTime`, `validate` — tudo sem o pacote `intl` | [📄 BrData.md](doc/BrData.md) |
+| `BrInputMask` | CPF, CNPJ, CNPJ Alfa, CPF/CNPJ, Telefone, CEP, Data, Hora, Moeda, Centavos, Cartão, Validade, Placa, KM, NCM, CNS, Altura, Peso, Temperatura | [📄 BrInputMask.md](doc/BrInputMask.md) |
+| `CnpjAlfanumerico` | `isValid`, `format`, `strip`, `generate(forceAlphanumeric)` — retrocompatível com CNPJ numérico | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) |
+| `CryptUtil` | `encryptText`, `decryptText`, `encryptToBase64`, `decryptFromBase64`, `generateKey`, AAD, detecção de adulteração | [📄 CryptUtil.md](doc/CryptUtil.md) |
+| `Result<F, S>` | `map`, `then`, `fold`, `guard`, `tryAsync`, `thenAsync`, `recover`, `swap` + extensões em `Future<Result>` | [📄 Result.md](doc/Result.md) |
+| `Contract` | `isEmail`, `isValidCPF`, `hasMinLen`, `requires` → `.toResult()`, `.toResultFirst()`, `.toResultAsync()` | [📄 Result.md](doc/Result.md#integração-com-contract) |
 
 ## 🧪 Exemplos de Uso
 

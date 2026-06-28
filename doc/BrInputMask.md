@@ -402,6 +402,89 @@ Progressão:
 
 ---
 
+## Fiscal / tributário
+
+### CEST — Código Especificador da Substituição Tributária
+
+Máscara: `12.345.67` · máx 7 dígitos
+
+```dart
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [CestMask()],
+)
+```
+
+Progressão:
+- `'12'`      → `'12'`
+- `'123'`     → `'12.3'`
+- `'12345'`   → `'12.345'`
+- `'1234567'` → `'12.345.67'`
+
+---
+
+### IOF — Alíquota com 6 casas decimais
+
+Máscara: `X,XXXXXX` · máx 7 dígitos · preenchimento da **esquerda para a direita**
+
+```dart
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [IofMask()],
+  decoration: InputDecoration(suffixText: '%'),
+)
+```
+
+Progressão:
+- `'1'`       → `'1'`
+- `'12'`      → `'1,2'`
+- `'1234567'` → `'1,234567'`
+- `'0038000'` → `'0,038000'`
+
+---
+
+## Documentos governamentais
+
+### NUP — Número Único de Protocolo
+
+Formato federal: `1234567-89.0123.4.56.7890` · máx 20 dígitos
+
+Grupos: 7 dígitos `-` 2 `.` 4 `.` 1 `.` 2 `.` 4
+
+```dart
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [NupMask()],
+)
+```
+
+Progressão:
+- `'1234567'`              → `'1234567'`
+- `'12345678'`             → `'1234567-8'`
+- `'1234567890'`           → `'1234567-89.0'`
+- `'12345678901234567890'` → `'1234567-89.0123.4.56.7890'`
+
+---
+
+### Certidão de Nascimento
+
+Máscara: `000000 11 22 3333 4 55555 666 7777777 88` · máx 32 dígitos
+
+9 grupos de dígitos separados por espaços: 6 · 2 · 2 · 4 · 1 · 5 · 3 · 7 · 2
+
+```dart
+TextField(
+  keyboardType: TextInputType.number,
+  inputFormatters: [CertNascimentoMask()],
+)
+```
+
+Exemplo completo (32 dígitos):
+- `'00000011223333455555666777777788'`
+  → `'000000 11 22 3333 4 55555 666 7777777 88'`
+
+---
+
 ## Criando uma máscara customizada
 
 Para criar um formato próprio, estenda `BrInputMask` e implemente `formatEditUpdate`. Os helpers estáticos já estão disponíveis:

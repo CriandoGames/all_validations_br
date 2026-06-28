@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.0.5
+### 🎭 Novos Formatters
+
+- **`CestMask`** — Código Especificador da Substituição Tributária: `12.345.67` (7 dígitos).
+- **`IofMask`** — Alíquota de IOF com 6 casas decimais: `1,234567` (7 dígitos, entrada esquerda-direita).
+- **`NupMask`** — Número Único de Protocolo federal: `1234567-89.0123.4.56.7890` (20 dígitos).
+- **`CertNascimentoMask`** — Certidão de Nascimento: `000000 11 22 3333 4 55555 666 7777777 88` (32 dígitos).
+
+**Testes:** 38 casos adicionados em `test/masks/cest_iof_nup_cert_mask_test.dart`.
+
+> ⚠️ **Breaking change:** nenhum.
+
+---
+
 ## 4.0.4
 ### 📚 Documentação
 
