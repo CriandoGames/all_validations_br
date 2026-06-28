@@ -23,6 +23,29 @@
 
 ---
 
+## 📦 Instalação
+
+Adicione ao seu `pubspec.yaml`:
+
+```yaml
+dependencies:
+  all_validations_br: ^4.0.4
+```
+
+Em seguida:
+
+```bash
+flutter pub get
+```
+
+E importe no seu código:
+
+```dart
+import 'package:all_validations_br/all_validations_br.dart';
+```
+
+---
+
 ## 📱 App de Exemplo
 
 O diretório `example/` contém um app Flutter interativo que demonstra as principais funcionalidades da biblioteca.
@@ -160,66 +183,66 @@ void main() {
 
 ````
 
-## Validação de CPF
+### Validação de CPF
 
 ```dart
 var isCpf = AllValidations.isCpf("000.000.000-00"); 
 // Retorna false
 ``` 
 
-## Validação de Cores Hexadecimais
+### Validação de Cores Hexadecimais
 ```dart
 bool isValidColor = AllValidations.isValidHexColor('#FF5733');
 // Retorna: true; 
 ``` 
 
-## Contagem de Palavras em uma String
+### Contagem de Palavras em uma String
 ```dart
 int totalWords = HelperUtil.countWords('Flutter é incrível');
 // Retorna: 3
 ``` 
 
-## Remoção de Tags HTML
+### Remoção de Tags HTML
 ```dart
 String cleanText = HelperUtil.removeHtmlTags('<p>Hello <b>World</b></p>');
 // Retorna: Hello World
 ``` 
 
-## Remoção de Caracteres
+### Remoção de Caracteres
 
 ```dart
 var remover = AllValidations.removeCharacters("000.000.000-00"); 
 // Retorna: 00000000000
 ``` 
 
-## Comparação de Senhas ou Frases
+### Comparação de Senhas ou Frases
 
 ```dart
 var comparacao = AllValidations.isPhraseEqual("123456789", "123456789");
 // Retorna: true
 ``` 
 
-## Geração de UUIDs
+### Geração de UUIDs
 ```dart
 String uuid4 = HelperUtil.generateUUIDv4();
 // Exemplo de saída: '550e8400-e29b-41d4-a716-446655440000'
 ``` 
 
-## Lista de Dias da Semana
+### Lista de Dias da Semana
 
 ```dart
 var diasDaSemana = AllValidationsGetWeek.listDaysWeekAbvr;
 // Retorna: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo']
 ``` 
 
-## Remoção de Acentos e Caracteres Especiais
+### Remoção de Acentos e Caracteres Especiais
 
 ```dart
 var texto = AllValidations.removeAccents("áãé");
 // Retorna: aae
 ``` 
 
-## Função para Retornar o Estado pelo DDD
+### Função para Retornar o Estado pelo DDD
 
 ```dart
 print(AllValidations.getStateByDDD("11")); 
@@ -1036,24 +1059,6 @@ Para mais detalhes sobre o uso da biblioteca, acesse nossa [Wiki](https://github
 
 ---
 
-## 🆘 Classes para Uso
-
-Índice rápido — cada classe tem sua seção dedicada com exemplos completos:
-
-| Classe | Resumo neste arquivo | Documentação detalhada |
-|--------|----------------------|----------------------|
-| `AllValidations` | [⚙️ Funcionalidades › Validações](#validações--allvalidations) | [📄 AllValidations.md](doc/AllValidations.md) |
-| `HelperUtil` | [⚙️ Funcionalidades › Funções Avançadas](#funções-avançadas--helperutil) | [📄 HelperUtil.md](doc/HelperUtil.md) |
-| `BrFormatter` | [BrFormatter](#brformatter--formatação-e-geração-de-documentos-br) | [📄 BrFormatter.md](doc/BrFormatter.md) |
-| `BrData` | [BrData](#brdata--datas-e-horas-sem-intl) | [📄 BrData.md](doc/BrData.md) |
-| `BrInputMask` | [Máscaras de Campo](#máscaras-de-campo--brinputmask) | [📄 BrInputMask.md](doc/BrInputMask.md) |
-| `CnpjAlfanumerico` | [CNPJ Alfanumérico 2026](#cnpj-alfanumérico-2026--cnpjalfanumerico) | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) |
-| `CryptUtil` | [CryptUtil](#-criptografia-autenticada--cryptutil) | [📄 CryptUtil.md](doc/CryptUtil.md) |
-| `Result<F, S>` | [Result](#-result--programação-orientada-a-trilhos) | [📄 Result.md](doc/Result.md) |
-| `Contract` | [Integração com Contract](#integração-com-contract) | [📄 Result.md](doc/Result.md#integração-com-contract) |
-
----
-
 ### `AllValidationsGetMonth`  
 Fornece listas de nomes dos meses do ano para fácil acesso e manipulação.  
 - Exemplo de uso: `AllValidationsGetMonth.list` → `[Janeiro, Fevereiro, ...]`  
@@ -1073,5 +1078,24 @@ Disponibiliza os estados brasileiros e suas siglas.
 ---
 
 ### `AllValidationsGetWeek`  
-Fornece listas de dias da semana em formato abreviado e completo.  
-- Exemplo de uso: `AllVali
+Fornece listas de dias da semana em formato abreviado, completo, apenas dias úteis e com ordenação a partir do domingo.  
+- `AllValidationsGetWeek.listDaysWeek` → `['Segunda-Feira', 'Terça-Feira', ..., 'Domingo']`  
+- `AllValidationsGetWeek.listDaysWeekAbvr` → `['Segunda', 'Terça', ..., 'Domingo']`  
+- `AllValidationsGetWeek.listWorkDays` → `['Segunda-Feira', ..., 'Sexta-Feira']`  
+- `AllValidationsGetWeek.listDaysWeekOrdered` → `['Domingo', 'Segunda', ..., 'Sábado']`  
+
+---
+
+## 👥 Contribuidores
+
+[![Contributors](https://contrib.rocks/image?repo=CriandoGames/all_validations_br)](https://github.com/CriandoGames/all_validations_br/graphs/contributors)
+
+Made with [contrib.rocks](https://contrib.rocks).
+
+Contribuições são bem-vindas! Leia o [CONTRIBUTING.md](CONTRIBUTING.md) para começar.
+
+---
+
+## 📄 Licença
+
+Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
