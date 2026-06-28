@@ -1,10 +1,40 @@
 # BrInputMask — Máscaras de Campo
 
-Todas as máscaras estendem `BrInputMask` (que estende `TextInputFormatter` do Flutter) e possuem `const` constructors — zero custo de instanciação. Basta adicioná-las ao `inputFormatters` de qualquer `TextField`.
+23 `TextInputFormatter` prontos para uso, todos com `const` constructor — zero custo de instanciação. Basta adicioná-los ao `inputFormatters` de qualquer `TextField`.
 
 ```dart
 import 'package:all_validations_br/all_validations_br.dart';
 ```
+
+---
+
+## Referência rápida
+
+| Classe | Máscara | Dígitos máx |
+|--------|---------|:-----------:|
+| `CpfMask` | `999.999.999-99` | 11 |
+| `CnpjMask` | `99.999.999/9999-99` | 14 |
+| `CnpjAlfaMask` | `AA.123.CDE/0001-39` | 14 |
+| `CpfOuCnpjMask` | CPF ↔ CNPJ dinâmico | 14 |
+| `PhoneMask` | `(99) 9999-9999` / `(99) 99999-9999` | 10/11 |
+| `CepMask` | `99999-999` | 8 |
+| `DateMask` | `DD/MM/AAAA` | 8 |
+| `TimeMask` | `HH:MM` | 4 |
+| `CurrencyMask` | `R$ 1.234,56` | 13 |
+| `CentavosMask` | `1.234,56` (sem R$) | 13 |
+| `CardMask` | `9999 9999 9999 9999` | 16 |
+| `CardExpiryMask` | `MM/AA` / `MM/AAAA` | 4/6 |
+| `PlacaMask` | `ABC-1234` / `ABC-1D23` | 7 |
+| `KmMask` | `9.999.999` | 7 |
+| `NcmMask` | `1234.56.78` | 8 |
+| `CnsMask` | `111 2222 3333 4444` | 15 |
+| `AlturaMask` | `X,XX` (metros) | 3 |
+| `PesoMask` | `XXX,X` (kg) | 4 |
+| `TemperaturaMask` | `XX,X` (°C) | 3 |
+| `CestMask` | `12.345.67` | 7 |
+| `IofMask` | `1,234567` | 7 |
+| `NupMask` | `1234567-89.0123.4.56.7890` | 20 |
+| `CertNascimentoMask` | `000000 11 22 3333 4 55555 666 7777777 88` | 32 |
 
 ---
 

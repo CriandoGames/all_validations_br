@@ -263,7 +263,7 @@ A documentação completa de cada classe — com todos os métodos, parâmetros 
 | [📄 HelperUtil.md](doc/HelperUtil.md) | Utilitários de texto, datas, UUID, JWT, PIX (validação e mascaramento), maioridade |
 | [📄 BrFormatter.md](doc/BrFormatter.md) | Formatação e geração de CPF, CNPJ, CEP, telefone, moeda e KM |
 | [📄 BrData.md](doc/BrData.md) | Parse, formatação e validação de datas no padrão BR sem `intl` |
-| [📄 BrInputMask.md](doc/BrInputMask.md) | Referência completa das 19 máscaras de campo com exemplos de `TextField` |
+| [📄 BrInputMask.md](doc/BrInputMask.md) | Referência completa das 23 máscaras de campo com exemplos de `TextField` |
 | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) | CNPJ alfanumérico 2026 — validação, formatação e geração |
 | [📄 CryptUtil.md](doc/CryptUtil.md) | ChaCha20-Poly1305: criptografia, AAD, serialização e boas práticas |
 | [📄 Result.md](doc/Result.md) | `Result<F,S>`, `Contract`, `ValidationResult` e operações assíncronas |
