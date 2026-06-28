@@ -151,6 +151,7 @@ Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 | `CryptUtil` | `encryptText`, `decryptText`, `encryptToBase64`, `decryptFromBase64`, `generateKey`, AAD, detecção de adulteração | [📄 CryptUtil.md](doc/CryptUtil.md) |
 | `Result<F, S>` | `map`, `then`, `fold`, `guard`, `tryAsync`, `thenAsync`, `recover`, `swap` + extensões em `Future<Result>` | [📄 Result.md](doc/Result.md) |
 | `Contract` | `isEmail`, `isValidCPF`, `hasMinLen`, `requires` → `.toResult()`, `.toResultFirst()`, `.toResultAsync()` | [📄 Result.md](doc/Result.md#integração-com-contract) |
+| `BrLogger` | `trace`, `debug`, `info`, `warning`, `error`, `fatal` — filtros por ambiente, printers coloridos (ANSI), outputs plugáveis, zero deps | [📄 BrLogger.md](doc/BrLogger.md) |
 
 ## 🧪 Exemplos de Uso
 
@@ -197,6 +198,29 @@ var isCpf = AllValidations.isCpf("000.000.000-00");
 bool isValidColor = AllValidations.isValidHexColor('#FF5733');
 // Retorna: true; 
 ``` 
+
+### Logging com BrLogger
+
+Importação separada — não interfere no resto da biblioteca:
+
+```dart
+import 'package:all_validations_br/br_logger.dart';
+```
+
+```dart
+final log = BrLogger(tag: 'Auth');
+
+log.trace('iniciando handshake');
+log.debug('userId: $id');
+log.info('login bem-sucedido');
+log.warning('token expira em 5 min');
+log.error('falha na requisição', error: e, stackTrace: st);
+log.fatal('banco de dados indisponível');
+```
+
+Por padrão: tudo aparece em debug, apenas `warning+` em produção. Printers, filtros e outputs são substituíveis. Veja [📄 BrLogger.md](doc/BrLogger.md) para configurações avançadas.
+
+---
 
 ### Contagem de Palavras em uma String
 ```dart
@@ -267,6 +291,7 @@ A documentação completa de cada classe — com todos os métodos, parâmetros 
 | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) | CNPJ alfanumérico 2026 — validação, formatação e geração |
 | [📄 CryptUtil.md](doc/CryptUtil.md) | ChaCha20-Poly1305: criptografia, AAD, serialização e boas práticas |
 | [📄 Result.md](doc/Result.md) | `Result<F,S>`, `Contract`, `ValidationResult` e operações assíncronas |
+| [📄 BrLogger.md](doc/BrLogger.md) | Pipeline filter → printer → output, níveis, cores ANSI, outputs plugáveis |
 
 
 ### `AllValidationsGetMonth`  
