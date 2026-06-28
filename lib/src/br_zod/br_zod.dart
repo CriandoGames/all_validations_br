@@ -1,11 +1,14 @@
 import 'locale/i_locale_br_zod.dart';
 import 'locale/locale_pt_br.dart';
 import 'models/br_zod_result.dart';
+import 'validations/br.dart' as br;
 import 'validations/generic.dart' as g;
+import 'validations/security.dart' as sec;
 
 export 'locale/i_locale_br_zod.dart';
 export 'locale/locale_pt_br.dart';
 export 'models/br_zod_result.dart';
+export 'validations/security.dart' show PasswordPolicy;
 
 /// Callback de validação: recebe o valor e retorna `null` (válido)
 /// ou uma mensagem de erro (inválido).
@@ -157,6 +160,115 @@ class BrZod {
   BrZod isAfter(DateTime min, [String? message]) => _add(
         (v) => g.isAfterDate(v, min) ? null : message ?? _l.minDate(min),
       );
+
+  // ── Validações BR ───────────────────────────────────────────
+
+  /// CPF válido (com ou sem máscara). Verifica dígitos verificadores.
+  BrZod cpf([String? message]) => _add(
+        (v) => br.isCpf(v) ? null : message ?? _l.cpf,
+      );
+
+  /// CNPJ numérico válido (com ou sem máscara).
+  BrZod cnpj([String? message]) => _add(
+        (v) => br.isCnpj(v) ? null : message ?? _l.cnpj,
+      );
+
+  /// CNPJ alfanumérico — IN RFB 2229/2024 (vigente a partir de julho/2026).
+  ///
+  /// Aceita letras A–Z nos primeiros 12 caracteres.
+  /// Para validar tanto o formato antigo quanto o novo, use [cnpjOuAlfa].
+  BrZod cnpjAlfa([String? message]) => _add(
+        (v) => br.isCnpjAlfa(v) ? null : message ?? _l.cnpjAlfa,
+      );
+
+  /// CPF **ou** CNPJ numérico. Útil em campos de documento genérico.
+  BrZod cpfOuCnpj([String? message]) => _add(
+        (v) => br.isCpfOuCnpj(v) ? null : message ?? _l.cpfCnpj,
+      );
+
+  /// CEP brasileiro — formato `00000-000` ou `00000000`.
+  BrZod cep([String? message]) => _add(
+        (v) => br.isCep(v) ? null : message ?? _l.cep,
+      );
+
+  /// RG — formato mais comum (aceita com ou sem pontuação e dígito X).
+  BrZod rg([String? message]) => _add(
+        (v) => br.isRg(v) ? null : message ?? _l.rg,
+      );
+
+  /// Placa veicular — formato antigo (`ABC-1234`) e Mercosul (`ABC1D23`).
+  BrZod placa([String? message]) => _add(
+        (v) => br.isPlaca(v) ? null : message ?? _l.placa,
+      );
+
+  /// CNH — 11 dígitos com dois dígitos verificadores via módulo 11.
+  BrZod cnh([String? message]) => _add(
+        (v) => br.isCnh(v) ? null : message ?? _l.cnh,
+      );
+
+  /// RENAVAM — 9 ou 11 dígitos, módulo 11.
+  BrZod renavam([String? message]) => _add(
+        (v) => br.isRenavam(v) ? null : message ?? _l.renavam,
+      );
+
+  /// PIS/PASEP — 11 dígitos, módulo 11.
+  BrZod pisPasep([String? message]) => _add(
+        (v) => br.isPisPasep(v) ? null : message ?? _l.pisPasep,
+      );
+
+  /// Título de Eleitor — 12 dígitos, dois DVs via módulo 11.
+  BrZod tituloEleitor([String? message]) => _add(
+        (v) => br.isTituloEleitor(v) ? null : message ?? _l.tituloEleitor,
+      );
+
+  /// CNS (Cartão Nacional de Saúde) — 15 dígitos, algoritmo DATASUS.
+  BrZod cns([String? message]) => _add(
+        (v) => br.isCns(v) ? null : message ?? _l.cns,
+      );
+
+  // ── Validações de segurança ─────────────────────────────────
+
+  /// Senha válida conforme política configurável.
+  ///
+  /// Padrão (`PasswordPolicy.strong`): 8+ caracteres, maiúscula, minúscula,
+  /// número e símbolo especial.
+  ///
+  /// ```dart
+  /// // Forte (padrão)
+  /// BrZod().required().password().build
+  ///
+  /// // Média
+  /// BrZod().required().password(policy: PasswordPolicy.medium).build
+  ///
+  /// // Customizada
+  /// BrZod().required().password(policy: PasswordPolicy(minLength: 12)).build
+  /// ```
+  BrZod password({sec.PasswordPolicy policy = sec.PasswordPolicy.strong, String? message}) =>
+      _add((v) => sec.isPassword(v, policy: policy) ? null : message ?? _l.password);
+
+  /// UUID válido — qualquer versão por padrão. Versões: `'3'`, `'4'`, `'5'`, `'all'`.
+  BrZod uuid({String version = 'all', String? message}) =>
+      _add((v) => sec.isUuid(v, version: version) ? null : message ?? _l.uuid);
+
+  /// URL válida com esquema `http`, `https` ou `ftp`.
+  BrZod url([String? message]) =>
+      _add((v) => sec.isUrl(v) ? null : message ?? _l.url);
+
+  /// Endereço IPv4 válido (`0.0.0.0` a `255.255.255.255`).
+  BrZod ipv4([String? message]) =>
+      _add((v) => sec.isIpv4(v) ? null : message ?? _l.ipv4);
+
+  /// Endereço IPv6 válido — formato completo ou comprimido.
+  BrZod ipv6([String? message]) =>
+      _add((v) => sec.isIpv6(v) ? null : message ?? _l.ipv6);
+
+  /// Valor deve corresponder ao [pattern] regex fornecido.
+  ///
+  /// ```dart
+  /// BrZod().required().regex(r'^\d{4}$', message: 'Apenas 4 dígitos').build
+  /// ```
+  BrZod regex(String pattern, {String? message}) =>
+      _add((v) => sec.matchesRegex(v, pattern) ? null : message ?? _l.regex);
 
   // ── Validação de Map ────────────────────────────────────────
 
