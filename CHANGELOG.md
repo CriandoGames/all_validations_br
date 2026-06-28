@@ -1,5 +1,54 @@
 # Changelog
 
+## 4.1.0
+
+### 🔍 BrZod — Validador Fluente
+
+Novo módulo de validação fluente/encadeado com foco em documentos brasileiros. Importação separada, zero dependências externas, autocontido e estruturado para eventual extração como pacote standalone.
+
+```dart
+import 'package:all_validations_br/br_zod.dart';
+```
+
+**30 métodos encadeáveis:**
+
+- **Genéricos:** `required`, `optional`, `min`, `max`, `email`, `phone`, `equals`, `type<T>`, `isDate`, `isBefore`, `isAfter`, `custom`
+- **Documentos BR:** `cpf`, `cnpj`, `cnpjAlfa`, `cpfOuCnpj`, `cep`, `rg`, `placa`, `cnh`, `renavam`, `pisPasep`, `tituloEleitor`, `cns`
+- **Segurança:** `password`, `uuid`, `url`, `ipv4`, `ipv6`, `regex`
+
+**`PasswordPolicy`** — política de senha configurável com presets `weak`, `medium` e `strong`, ou totalmente customizável.
+
+**`BrZod.validate()`** — valida `Map<String, dynamic>` contra um esquema de validators. Suporta Maps aninhados e retorna `BrZodResult` com `errors` (estruturado) e `errorList` (notação de ponto, ex: `user.email: ...`).
+
+**Locale customizado** — `BrZod.defaultLocale` para configuração global ou `BrZod(locale:)` por instância. Interface `ILocaleBrZod` para tradução completa das 30 mensagens.
+
+**Testes:** 126 casos distribuídos em `br_zod_generic_test.dart`, `br_zod_br_test.dart`, `br_zod_security_test.dart` e `br_zod_integration_test.dart`.
+
+**Documentação:** [📄 BrZod.md](doc/BrZod.md)
+
+---
+
+### 📋 BrLogger — Logging Puro para Dart/Flutter
+
+Novo módulo de logging zero dependências. Funciona em Flutter e Dart server-side. Importação separada — não interfere no resto da biblioteca.
+
+```dart
+import 'package:all_validations_br/br_logger.dart';
+```
+
+**6 níveis de log:** `trace`, `debug`, `info`, `warning`, `error`, `fatal`.
+
+**Pipeline plugável:** `BrLogFilter` → `BrLogPrinter` → `BrLogOutput` — cada etapa é substituível.
+
+**Padrão out-of-the-box:** tudo visível em debug, apenas `warning+` em produção. Printers com cores ANSI, output para `print()` e DevTools.
+
+**Documentação:** [📄 BrLogger.md](doc/BrLogger.md)
+
+---
+
+> ⚠️ **Breaking change:** nenhum. Toda a API anterior permanece inalterada. Os novos módulos usam importações separadas (`br_zod.dart`, `br_logger.dart`) e não conflitam com `all_validations_br.dart`.
+---
+
 ## 4.0.5
 ### 🎭 Novos Formatters
 

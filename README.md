@@ -29,7 +29,7 @@ Adicione ao seu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.0.5
+  all_validations_br: ^4.1.0
 ```
 
 Em seguida:
@@ -152,6 +152,143 @@ Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 | `Result<F, S>` | `map`, `then`, `fold`, `guard`, `tryAsync`, `thenAsync`, `recover`, `swap` + extensões em `Future<Result>` | [📄 Result.md](doc/Result.md) |
 | `Contract` | `isEmail`, `isValidCPF`, `hasMinLen`, `requires` → `.toResult()`, `.toResultFirst()`, `.toResultAsync()` | [📄 Result.md](doc/Result.md#integração-com-contract) |
 | `BrLogger` | `trace`, `debug`, `info`, `warning`, `error`, `fatal` — filtros por ambiente, printers coloridos (ANSI), outputs plugáveis, zero deps | [📄 BrLogger.md](doc/BrLogger.md) |
+| `BrZod` | Validador fluente/encadeado — `required`, `email`, `cpf`, `cnpj`, `cnh`, `cns`, `password`, `uuid`, `url` e mais 20 métodos. `BrZod.validate()` para Maps. Zero deps. | [📄 BrZod.md](doc/BrZod.md) |
+
+---
+
+## 🧭 Escolhendo o modelo de validação
+
+Esta biblioteca oferece **três abordagens** independentes. Você pode usar qualquer uma — ou combiná-las em partes diferentes do mesmo projeto. Não há resposta errada, mas cada modelo tem seu ponto forte.
+
+### Comparativo rápido
+
+| | `Contract` | `Result<F,S>` | `BrZod` |
+|---|---|---|---|
+| **Estilo** | Imperativo, acumulativo | Funcional, railway-oriented | Fluente, encadeado |
+| **Onde brilha** | Validação de entidades de domínio | Operações que podem falhar (async, I/O) | Campos de formulário Flutter |
+| **Retorno** | Lista de notificações (`isValid`) | `Success` ou `Failure` | `String?` (validator do TextFormField) |
+| **Validação de Map** | — | via `Contract.toResult()` | `BrZod.validate()` |
+| **Locale customizado** | — | — | `BrZod.defaultLocale` / `BrZod(locale:)` |
+| **Importação** | `all_validations_br.dart` | `all_validations_br.dart` | `br_zod.dart` |
+
+---
+
+### `Contract` — validação de entidades de domínio
+
+Ideal quando você precisa **acumular vários erros** de uma só vez em uma entidade (model, DTO, value object).
+
+```dart
+class CadastroParams extends ValidationNotifiable {
+  CadastroParams({required String nome, required String email}) {
+    addNotifications(
+      Contract()
+        .hasMinLen(nome, 2, 'nome', 'Nome deve ter no mínimo 2 caracteres')
+        .isEmail(email, 'email', 'E-mail inválido'),
+    );
+  }
+}
+
+final params = CadastroParams(nome: 'J', email: 'ruim');
+if (params.isNotValid) {
+  params.notifications.forEach((n) => print(n.message));
+}
+```
+
+**Use quando:** validar objetos de domínio antes de persistir; regras de negócio no construtor; checagem de múltiplas propriedades de uma entidade.
+
+---
+
+### `Result<F, S>` — operações que podem falhar
+
+Ideal para **encadear operações assíncronas** ou tratar erros de I/O sem lançar exceções.
+
+```dart
+final result = await Result.tryAsync<String, Response>(
+  () => dio.get('/api/usuario/$id'),
+  onError: (e, _) => 'Falha na requisição: $e',
+);
+
+result.fold(
+  (erro)  => log.error(erro),
+  (dados) => processar(dados),
+);
+```
+
+**Use quando:** chamadas HTTP, operações de banco, parsing de JSON, qualquer fluxo onde o caminho de sucesso e de falha têm tratamentos distintos.
+
+---
+
+### `BrZod` — campos de formulário Flutter
+
+Ideal para **`TextFormField.validator`** e validação declarativa de formulários, sem boilerplate.
+
+```dart
+import 'package:all_validations_br/br_zod.dart';
+
+// Simples
+TextFormField(validator: BrZod().required().email().build)
+TextFormField(validator: BrZod().required().cpf().build)
+TextFormField(validator: BrZod().optional().cep().build)
+
+// Política de senha configurável
+TextFormField(
+  validator: BrZod().required()
+    .password(policy: PasswordPolicy.medium)
+    .build,
+)
+
+// Validação de payload (API / Shelf)
+final result = BrZod.validate(
+  data: body,
+  params: {
+    'email': BrZod().required().email(),
+    'cpf':   BrZod().required().cpf(),
+  },
+);
+if (result.isNotValid) return Response.badRequest(body: result.errors.toString());
+```
+
+**Use quando:** formulários Flutter com `TextFormField`; validação rápida de payloads de API; quando quer mensagens de erro em PT-BR prontas sem configuração.
+
+---
+
+### ⚠️ O que não fazer
+
+**Não misture modelos no mesmo campo.** Escolha um e seja consistente dentro do mesmo contexto.
+
+```dart
+// ❌ Evite: Contract dentro de um validator de TextFormField
+TextFormField(
+  validator: (v) {
+    final c = Contract().isEmail(v ?? '', 'email', 'inválido');
+    return c.isValid ? null : c.notifications.first.message;
+  },
+)
+
+// ✅ Use BrZod para isso — é o que ele foi feito
+TextFormField(validator: BrZod().required().email().build)
+```
+
+**Não use `BrZod` para lógica de domínio complexa.** Para invariantes de entidade com múltiplas regras interdependentes, `Contract` é mais adequado.
+
+```dart
+// ❌ Evite: lógica de domínio espalhada em validators de campo
+final validarIdade = BrZod().custom((v) => calcularIdade(v) >= 18).build;
+
+// ✅ Prefira: regra de negócio no domínio, via Contract ou diretamente
+class Pessoa extends ValidationNotifiable {
+  Pessoa({required DateTime nascimento}) {
+    addNotification(
+      'idade', 'Deve ser maior de 18 anos',
+      when: calcularIdade(nascimento) < 18,
+    );
+  }
+}
+```
+
+**Não use `Result` para substituir validators de formulário.** `Result` é para operações com dois caminhos (sucesso / falha), não para campos que só precisam de uma string de erro.
+
+---
 
 ## 🧪 Exemplos de Uso
 
@@ -292,6 +429,7 @@ A documentação completa de cada classe — com todos os métodos, parâmetros 
 | [📄 CryptUtil.md](doc/CryptUtil.md) | ChaCha20-Poly1305: criptografia, AAD, serialização e boas práticas |
 | [📄 Result.md](doc/Result.md) | `Result<F,S>`, `Contract`, `ValidationResult` e operações assíncronas |
 | [📄 BrLogger.md](doc/BrLogger.md) | Pipeline filter → printer → output, níveis, cores ANSI, outputs plugáveis |
+| [📄 BrZod.md](doc/BrZod.md) | Validador fluente — referência completa de métodos, `PasswordPolicy`, `BrZod.validate()`, locale customizado |
 
 
 ### `AllValidationsGetMonth`  
