@@ -29,7 +29,7 @@ Adicione ao seu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.1.0
+  all_validations_br: ^4.2.0
 ```
 
 Em seguida:

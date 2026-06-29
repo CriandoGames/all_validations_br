@@ -1,5 +1,69 @@
 # Changelog
 
+## 4.2.0
+
+### 🧩 Extensions — Extensões null-safe em tipos nativos
+
+Novo módulo `src/extensions/` com extensões Dart sobre `bool?`, `String?` e `List<T>?`. Disponível automaticamente via importação padrão — nenhuma importação adicional necessária.
+
+```dart
+import 'package:all_validations_br/all_validations_br.dart';
+```
+
+#### BoolExtension
+
+Getters semânticos em `bool?` que diferenciam explicitamente `true`, `false` e `null` sem lançar exceções.
+
+```dart
+bool? ativo = true;
+ativo.isTrue;   // true
+ativo.isFalse;  // false
+
+bool? indefinido = null;
+indefinido.isTrue;  // false — null seguro
+indefinido.isFalse; // false — null seguro
+```
+
+#### StringExtension
+
+Verificação de nulidade/vazio e truncagem de texto em `String?`.
+
+| Getter / Método | Comportamento |
+|---|---|
+| `isNullOrEmpty` | `true` se `null` ou `''` — espaços **não** são vazios |
+| `isNotNullOrEmpty` | inverso de `isNullOrEmpty` |
+| `isNullOrEmptyWithSpace` | `true` se `null`, `''` ou só espaços (usa `trim()`) |
+| `isNotNullOrEmptyWithSpace` | inverso de `isNullOrEmptyWithSpace` |
+| `truncate(int maxLength)` | trunca ao limite e adiciona `'...'`; null-safe |
+
+```dart
+'  Carlos  '.isNullOrEmptyWithSpace;   // false
+'   '.isNullOrEmptyWithSpace;          // true
+'Flutter é incrível'.truncate(7);      // 'Flutter...'
+```
+
+#### ListExtension
+
+Verificação de nulidade/vazio em `List<T>?`.
+
+```dart
+List<String>? erros = null;
+erros.isNullOrEmpty;    // true
+erros.isNotNullOrEmpty; // false
+
+['CPF inválido'].isNotNullOrEmpty; // true
+```
+
+**Testes:** 25 casos em `test/extensions/extensions_test.dart`.
+
+**Documentação:** [📄 Extensions.md](doc/Extensions.md)
+
+---
+
+> ⚠️ **Breaking change:** nenhum. Toda a API anterior permanece inalterada.
+
+---
+
 ## 4.1.0
 
 ### 🔍 BrZod — Validador Fluente
