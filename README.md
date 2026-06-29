@@ -153,6 +153,7 @@ Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 | `Contract` | `isEmail`, `isValidCPF`, `hasMinLen`, `requires` → `.toResult()`, `.toResultFirst()`, `.toResultAsync()` | [📄 Result.md](doc/Result.md#integração-com-contract) |
 | `BrLogger` | `trace`, `debug`, `info`, `warning`, `error`, `fatal` — filtros por ambiente, printers coloridos (ANSI), outputs plugáveis, zero deps | [📄 BrLogger.md](doc/BrLogger.md) |
 | `BrZod` | Validador fluente/encadeado — `required`, `email`, `cpf`, `cnpj`, `cnh`, `cns`, `password`, `uuid`, `url` e mais 20 métodos. `BrZod.validate()` para Maps. Zero deps. | [📄 BrZod.md](doc/BrZod.md) |
+| Extensions | `BoolExtension` · `StringExtension` · `ListExtension` — getters null-safe em tipos nativos: `isTrue`, `isFalse`, `isNullOrEmpty`, `isNotNullOrEmpty`, `isNullOrEmptyWithSpace`, `truncate` | [📄 Extensions.md](doc/Extensions.md) |
 
 ---
 
@@ -405,6 +406,35 @@ var texto = AllValidations.removeAccents("áãé");
 // Retorna: aae
 ``` 
 
+### Extensions — tipos nativos null-safe
+
+```dart
+// bool?
+bool? ativo = true;
+ativo.isTrue;   // true
+ativo.isFalse;  // false
+
+bool? indefinido = null;
+indefinido.isTrue;  // false — null nunca lança exceção
+indefinido.isFalse; // false
+
+// String?
+String? campo = '   ';
+campo.isNullOrEmpty;            // false — espaços contam
+campo.isNullOrEmptyWithSpace;   // true  — vazio após trim
+
+String? nome = 'Carlos';
+nome.isNotNullOrEmpty;          // true
+nome.truncate(3);               // 'Car...'
+
+// List<T>?
+List<String>? erros = null;
+erros.isNullOrEmpty;    // true
+erros.isNotNullOrEmpty; // false
+```
+
+---
+
 ### Função para Retornar o Estado pelo DDD
 
 ```dart
@@ -430,6 +460,7 @@ A documentação completa de cada classe — com todos os métodos, parâmetros 
 | [📄 Result.md](doc/Result.md) | `Result<F,S>`, `Contract`, `ValidationResult` e operações assíncronas |
 | [📄 BrLogger.md](doc/BrLogger.md) | Pipeline filter → printer → output, níveis, cores ANSI, outputs plugáveis |
 | [📄 BrZod.md](doc/BrZod.md) | Validador fluente — referência completa de métodos, `PasswordPolicy`, `BrZod.validate()`, locale customizado |
+| [📄 Extensions.md](doc/Extensions.md) | Extensões null-safe em `bool?`, `String?` e `List<T>?` — referência completa com exemplos |
 
 
 ### `AllValidationsGetMonth`  

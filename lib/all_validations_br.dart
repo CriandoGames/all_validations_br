@@ -88,3 +88,4 @@ export './src/validator/contract_validations.dart';
 export './src/helper_utils/helper_util.dart';
 export './src/crypt/crypt_util.dart';
 export './src/result/result_exports.dart';
+export 'src/extensions/extensions.dart';
