@@ -1,3 +1,56 @@
+/// Biblioteca principal do pacote — exporta todos os módulos em uma única importação.
+///
+/// Inclui validações brasileiras, máscaras de campo, formatadores, utilitários,
+/// `Contract`/`Result` para validação de domínio e criptografia autenticada.
+///
+/// ## Importação
+///
+/// ```dart
+/// import 'package:all_validations_br/all_validations_br.dart';
+/// ```
+///
+/// ## O que está incluído
+///
+/// | Módulo | Classes principais |
+/// |--------|--------------------|
+/// | Validações | `AllValidations` — CPF, CNPJ, CNH, RENAVAM, PIS, Título, CEP, Placa, PIX, EAN-13 |
+/// | Formatadores | `BrFormatter`, `BrData` — CPF, CNPJ, moeda, datas (sem `intl`) |
+/// | Máscaras | `BrInputMask` + 23 máscaras especializadas para `TextField` |
+/// | CNPJ 2026 | `CnpjAlfanumerico` — IN RFB 2229/2024: validação, formatação, geração |
+/// | Contrato | `Contract`, `ValidationNotifiable` — validação acumulativa de entidades |
+/// | Result | `Result<F,S>`, `ContractValidations` — programação orientada a trilhos |
+/// | Utilitários | `HelperUtil` — UUID, JWT, PIX, datas, strings, maioridade |
+/// | Criptografia | `CryptUtil` — ChaCha20-Poly1305 (RFC 8439), zero dependências externas |
+/// | Modelos | `AllValidationsGetMonth`, `AllValidationsGetStates`, `AllValidationsGetRegions` |
+///
+/// ## Módulos com importação separada
+///
+/// Estes módulos têm barrel próprio e **não** estão incluídos aqui:
+///
+/// ```dart
+/// import 'package:all_validations_br/br_zod.dart';     // validador fluente
+/// import 'package:all_validations_br/br_logger.dart';  // logging puro
+/// ```
+///
+/// ## Exemplos rápidos
+///
+/// ```dart
+/// // Validação direta
+/// AllValidations.isCpf('529.982.247-25'); // true
+///
+/// // Máscara em TextField
+/// TextField(inputFormatters: [BrInputMask.cpf()])
+///
+/// // Contract em entidade
+/// Contract().isEmail(email, 'email', 'E-mail inválido').hasMinLen(nome, 2, 'nome', 'Mínimo 2')
+///
+/// // Result assíncrono
+/// final r = await Result.tryAsync(() => dio.get('/api'), onError: (e, _) => '$e');
+///
+/// // Criptografia
+/// final enc = CryptUtil.encryptToBase64('segredo');
+/// final dec = CryptUtil.decryptFromBase64(enc);
+/// ```
 library all_validations_br;
 
 export 'src/cnpj/cnpj_alfanumerico.dart';
