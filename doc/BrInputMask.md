@@ -23,7 +23,8 @@ import 'package:all_validations_br/all_validations_br.dart';
 | `CurrencyMask` | `R$ 1.234,56` | 13 |
 | `CentavosMask` | `1.234,56` (sem R$) | 13 |
 | `CardMask` | `9999 9999 9999 9999` | 16 |
-| `CardExpiryMask` | `MM/AA` / `MM/AAAA` | 4/6 |
+| `CardExpiryMask` | `MM/AA` / `MM/AAAA` (cartões) | 4/6 |
+| `ExpiryMask` | `MM/AA` / `MM/AAAA` (documentos) | 4/6 |
 | `PlacaMask` | `ABC-1234` / `ABC-1D23` | 7 |
 | `KmMask` | `9.999.999` | 7 |
 | `NcmMask` | `1234.56.78` | 8 |

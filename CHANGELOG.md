@@ -1,5 +1,69 @@
 # Changelog
 
+## 4.3.0
+
+### 🎭 ExpiryMask — Nova máscara para data de expiração (MM/AA e MM/AAAA)
+
+Nova classe `ExpiryMask` para campos de data de expiração que aceitam tanto ano com 2 quanto com 4 dígitos (documentos, passaportes, CNH).
+
+```dart
+TextField(
+  inputFormatters: [ExpiryMask()],
+)
+```
+
+| Entrada    | Saída       | Formato   |
+|------------|-------------|-----------|
+| `'1224'`   | `'12/24'`   | MM/AA     |
+| `'12245'`  | `'12/245'`  | MM/AAA    |
+| `'122024'` | `'12/2024'` | MM/AAAA   |
+| `'1220249'`| `'12/2024'` | truncado no 6° dígito |
+
+Para campos de cartão de crédito/débito, continue usando `CardExpiryMask` — que já suporta MM/AA e MM/AAAA e permanece inalterada.
+
+---
+
+### 🐛 Correções de testes — valores de exemplo inválidos
+
+Corrigidos valores de exemplo nos testes unitários que não satisfaziam os algoritmos já implementados (os algoritmos estavam corretos; os dados de teste estavam errados):
+
+| Validador | Valor anterior (inválido) | Valor corrigido |
+|---|---|---|
+| `isRenavam` — 11 dígitos | `'97832655694'` | `'97832655697'` |
+| `isRenavam` — 9 dígitos | `'732655694'` | `'732655692'` |
+| `isTituloEleitor` — SP (cod 01) | `'906701490856'` | `'123456780191'` |
+| `isCns` — definitivo | `'700616457492003'` | `'700616457492001'` |
+| `isCns` — provisório | `'144477462150010'` | `'144477462150004'` |
+| `CnpjAlfanumerico.format` — input | `'AB1234567800AB99'` (16 chars) | `'AB1234567800AB'` (14 chars) |
+
+Nenhuma lógica de validação foi alterada.
+
+---
+
+### ⚠️ Breaking change — `isPlaca` não normaliza entrada para maiúsculas
+
+**Antes (4.2.0):**
+```dart
+isPlaca('abc1234'); // true  ← convertia para 'ABC1234' internamente
+```
+
+**Depois (4.3.0):**
+```dart
+isPlaca('abc1234'); // false ← valida o valor como recebido
+isPlaca('ABC1234'); // true
+```
+
+**Impacto:** código que passa strings com letras minúsculas para `isPlaca` e espera `true` precisa normalizar a entrada antes:
+
+```dart
+// Migração: normalize antes de chamar
+isPlaca(value.toUpperCase()); // comportamento equivalente ao anterior
+```
+
+**Motivação:** placas brasileiras são sempre maiúsculas por definição (DENATRAN/SENATRAN). A normalização silenciosa escondia entradas malformadas, o que é inconsistente com o comportamento dos demais validadores da biblioteca (nenhum outro normaliza silenciosamente).
+
+---
+
 ## 4.2.0
 
 ### 🧩 Extensions — Extensões null-safe em tipos nativos
