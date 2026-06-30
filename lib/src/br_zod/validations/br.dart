@@ -121,7 +121,7 @@ bool isRg(dynamic value) {
 /// Valida placa veicular brasileira — formato antigo (`ABC-1234`)
 /// e Mercosul (`ABC1D23`), com ou sem hífen.
 bool isPlaca(dynamic value) {
-  final s = value?.toString().toUpperCase().trim() ?? '';
+  final s = value?.toString().trim() ?? '';
   final old = RegExp(r'^[A-Z]{3}-?\d{4}$');
   final mercosul = RegExp(r'^[A-Z]{3}\d[A-Z]\d{2}$');
   return old.hasMatch(s) || mercosul.hasMatch(s);

@@ -67,6 +67,7 @@ export 'src/masks/time_mask.dart';
 export 'src/masks/currency_mask.dart';
 export 'src/masks/card_mask.dart';
 export 'src/masks/card_expiry_mask.dart';
+export 'src/masks/expiry_mask.dart';
 export 'src/masks/cpf_ou_cnpj_mask.dart';
 export 'src/masks/placa_mask.dart';
 export 'src/masks/km_mask.dart';

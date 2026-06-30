@@ -5,6 +5,9 @@ import 'dart:typed_data';
 import 'algorithms/chacha20_poly1305.dart';
 import 'models/encrypted_payload.dart';
 
+export 'algorithms/aes_gcm.dart';
+export 'algorithms/hmac_sha256.dart';
+export 'algorithms/sha256.dart';
 export 'models/crypt_exception.dart';
 export 'models/encrypted_payload.dart';
 

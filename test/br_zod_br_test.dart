@@ -92,8 +92,8 @@ void main() {
   // ── RENAVAM ───────────────────────────────────────────────────
   group('isRenavam', () {
     test(
-        '11 dígitos válido', () => expect(br.isRenavam('97832655694'), isTrue));
-    test('9 dígitos válido', () => expect(br.isRenavam('732655694'), isTrue));
+        '11 dígitos válido', () => expect(br.isRenavam('97832655697'), isTrue));
+    test('9 dígitos válido', () => expect(br.isRenavam('732655692'), isTrue));
     test('todos iguais', () => expect(br.isRenavam('11111111111'), isFalse));
     test('DV errado', () => expect(br.isRenavam('97832655695'), isFalse));
     test('null', () => expect(br.isRenavam(null), isFalse));
@@ -110,7 +110,7 @@ void main() {
 
   // ── Título de Eleitor ─────────────────────────────────────────
   group('isTituloEleitor', () {
-    test('SP válido', () => expect(br.isTituloEleitor('906701490856'), isTrue));
+    test('SP válido', () => expect(br.isTituloEleitor('123456780191'), isTrue));
     test('estado inválido (00)',
         () => expect(br.isTituloEleitor('906701490056'), isFalse));
     test('estado inválido (29)',
@@ -125,10 +125,10 @@ void main() {
   // ── CNS ───────────────────────────────────────────────────────
   group('isCns', () {
     test('definitivo válido (inicia com 7)', () {
-      expect(br.isCns('700616457492003'), isTrue);
+      expect(br.isCns('700616457492001'), isTrue);
     });
     test('provisório válido (inicia com 1)', () {
-      expect(br.isCns('144477462150010'), isTrue);
+      expect(br.isCns('144477462150004'), isTrue);
     });
     test('14 dígitos', () => expect(br.isCns('70061645749200'), isFalse));
     test('inicia com 3 (inválido)',
@@ -177,7 +177,7 @@ void main() {
       expect(BrZod().required().cnh().build('84718735264'), isNull);
     });
     test('cns() — válido', () {
-      expect(BrZod().required().cns().build('700616457492003'), isNull);
+      expect(BrZod().required().cns().build('700616457492001'), isNull);
     });
     test('cns() — inválido', () {
       expect(BrZod().required().cns().build('123456789012345'), isNotNull);

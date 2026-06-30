@@ -110,9 +110,8 @@ void main() {
   group('CnpjAlfanumerico.format', () {
     test('formata CNPJ alfanumérico sem máscara', () {
       expect(
-        CnpjAlfanumerico.format('AB1234567800AB99'),
-        // 14 chars: AB.123.456/7800-AB — mas DV deve ser numérico, então
-        // usamos um body fixo sem validar (format não valida)
+        CnpjAlfanumerico.format('AB1234567800AB'),
+        // 14 chars após strip: AB.123.456/7800-AB (format não valida DV)
         'AB.123.456/7800-AB',
       );
     });
