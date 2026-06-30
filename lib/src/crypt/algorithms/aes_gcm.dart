@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../models/crypt_algorithm.dart';
 import '../models/crypt_exception.dart';
 import '../models/encrypted_payload.dart';
 import 'aes_core.dart';
@@ -49,7 +50,7 @@ class AesGcm {
     final tag = _computeTag(ek, h, j0, ct);
 
     return EncryptedPayload(
-      algorithm: 'aes-gcm',
+      algorithm: CryptAlgorithm.aesGcm,
       ciphertext: Uint8List.fromList(ct),
       key: key,
       tag: tag,

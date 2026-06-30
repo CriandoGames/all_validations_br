@@ -6,6 +6,7 @@ import 'algorithms/aes_cbc.dart';
 import 'algorithms/aes_ctr.dart';
 import 'algorithms/aes_gcm.dart';
 import 'algorithms/chacha20_poly1305.dart';
+import 'models/crypt_algorithm.dart';
 import 'models/crypt_exception.dart';
 import 'models/encrypted_payload.dart';
 
@@ -14,6 +15,7 @@ export 'algorithms/aes_ctr.dart';
 export 'algorithms/aes_gcm.dart';
 export 'algorithms/hmac_sha256.dart';
 export 'algorithms/sha256.dart';
+export 'models/crypt_algorithm.dart';
 export 'models/crypt_exception.dart';
 export 'models/encrypted_payload.dart';
 
@@ -260,17 +262,14 @@ class CryptUtil {
   /// ```
   static List<int> decryptAny(EncryptedPayload payload) {
     switch (payload.algorithm) {
-      case 'chacha20-poly1305':
+      case CryptAlgorithm.chacha20Poly1305:
         return decryptBytes(payload);
-      case 'aes-gcm':
+      case CryptAlgorithm.aesGcm:
         return decryptAesGcm(payload);
-      case 'aes-cbc':
+      case CryptAlgorithm.aesCbc:
         return decryptAesCbc(payload);
-      case 'aes-ctr':
+      case CryptAlgorithm.aesCtr:
         return decryptAesCtr(payload);
-      default:
-        throw CryptException(
-            'CryptUtil.decryptAny: algoritmo não suportado: "${payload.algorithm}".');
     }
   }
 

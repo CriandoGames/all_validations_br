@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:all_validations_br/src/crypt/algorithms/aes_cbc.dart';
 import 'package:all_validations_br/src/crypt/algorithms/aes_ctr.dart';
+import 'package:all_validations_br/src/crypt/models/crypt_algorithm.dart';
 import 'package:all_validations_br/src/crypt/models/crypt_exception.dart';
 import 'package:all_validations_br/src/crypt/models/encrypted_payload.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -182,7 +183,7 @@ void main() {
     // ── Serialização ─────────────────────────────────────────────────────────
     test('payload.algorithm = "aes-cbc"', () {
       final cbc = AesCbc(key: _hex(_k128), iv: _hex(_iv));
-      expect(cbc.encrypt([1, 2, 3]).algorithm, 'aes-cbc');
+      expect(cbc.encrypt([1, 2, 3]).algorithm, CryptAlgorithm.aesCbc);
     });
 
     test('tag está vazia (CBC não autenticado)', () {
@@ -218,12 +219,10 @@ void main() {
         () {
       final cbc = AesCbc(key: _hex(_k128), iv: _hex(_iv));
       final badPayload = EncryptedPayload(
-        algorithm: 'aes-cbc',
+        algorithm: CryptAlgorithm.aesCbc,
         ciphertext: Uint8List(17), // inválido
         key: _hex(_k128),
-        tag: Uint8List(0),
         nonce: _hex(_iv),
-        aad: Uint8List(0),
       );
       expect(() => cbc.decrypt(badPayload), throwsA(isA<CryptException>()));
     });
@@ -322,7 +321,7 @@ void main() {
     // ── Serialização ─────────────────────────────────────────────────────────
     test('payload.algorithm = "aes-ctr"', () {
       final ctr = AesCtr(key: _hex(_k128), initialCounterBlock: _hex(_icb_128));
-      expect(ctr.encrypt([1]).algorithm, 'aes-ctr');
+      expect(ctr.encrypt([1]).algorithm, CryptAlgorithm.aesCtr);
     });
 
     test('tag está vazia (CTR não autenticado)', () {
@@ -333,12 +332,10 @@ void main() {
     test('algoritmo incompatível no payload → CryptException', () {
       final ctr = AesCtr(key: _hex(_k128), initialCounterBlock: _hex(_icb_128));
       final wrongPayload = EncryptedPayload(
-        algorithm: 'chacha20-poly1305', // errado
+        algorithm: CryptAlgorithm.chacha20Poly1305, // errado
         ciphertext: Uint8List(16),
         key: _hex(_k128),
-        tag: Uint8List(0),
         nonce: _hex(_icb_128),
-        aad: Uint8List(0),
       );
       expect(() => ctr.decrypt(wrongPayload), throwsA(isA<CryptException>()));
     });

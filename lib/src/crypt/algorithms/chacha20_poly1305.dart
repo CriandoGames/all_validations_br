@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../models/crypt_algorithm.dart';
 import '../models/crypt_exception.dart';
 import '../models/encrypted_payload.dart';
 import 'chacha20.dart';
@@ -39,6 +40,7 @@ class ChaCha20Poly1305 {
     final tag = calculateTag(ciphertext, aad, polyKey);
 
     return EncryptedPayload(
+      algorithm: CryptAlgorithm.chacha20Poly1305,
       ciphertext: Uint8List.fromList(ciphertext),
       key: key,
       tag: tag,

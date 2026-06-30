@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../models/crypt_algorithm.dart';
 import '../models/crypt_exception.dart';
 import '../models/encrypted_payload.dart';
 import 'aes_core.dart';
@@ -50,12 +51,11 @@ class AesCtr {
   EncryptedPayload encrypt(List<int> plaintext) {
     _validate();
     return EncryptedPayload(
-      algorithm: 'aes-ctr',
+      algorithm: CryptAlgorithm.aesCtr,
       ciphertext: Uint8List.fromList(_ctr(plaintext)),
       key: key,
-      tag: Uint8List(0), // CTR não produz tag de autenticação
       nonce: initialCounterBlock,
-      aad: Uint8List(0),
+      // tag e aad omitidos → Uint8List(0) por padrão
     );
   }
 
@@ -65,7 +65,7 @@ class AesCtr {
   /// Lança [CryptException] se o payload usar um algoritmo diferente.
   List<int> decrypt(EncryptedPayload payload) {
     _validate();
-    if (payload.algorithm != 'aes-ctr') {
+    if (payload.algorithm != CryptAlgorithm.aesCtr) {
       throw CryptException(
           'AES-CTR: algoritmo incompatível no payload (${payload.algorithm}).');
     }

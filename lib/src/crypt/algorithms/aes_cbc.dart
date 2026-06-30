@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../models/crypt_algorithm.dart';
 import '../models/crypt_exception.dart';
 import '../models/encrypted_payload.dart';
 import 'aes_core.dart';
@@ -54,12 +55,11 @@ class AesCbc {
     }
 
     return EncryptedPayload(
-      algorithm: 'aes-cbc',
+      algorithm: CryptAlgorithm.aesCbc,
       ciphertext: ct,
       key: key,
-      tag: Uint8List(0), // CBC não produz tag de autenticação
       nonce: iv,
-      aad: Uint8List(0),
+      // tag e aad omitidos → Uint8List(0) por padrão
     );
   }
 
