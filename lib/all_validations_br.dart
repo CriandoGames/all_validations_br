@@ -20,7 +20,7 @@
 /// | Contrato | `Contract`, `ValidationNotifiable` — validação acumulativa de entidades |
 /// | Result | `Result<F,S>`, `ContractValidations` — programação orientada a trilhos |
 /// | Utilitários | `HelperUtil` — UUID, JWT, PIX, datas, strings, maioridade |
-/// | Criptografia | `CryptUtil` — ChaCha20-Poly1305 (RFC 8439), zero dependências externas |
+/// | Criptografia | `CryptUtil` — ChaCha20-Poly1305, AES-GCM, AES-CBC, AES-CTR, SHA-256, HMAC-SHA256 |
 /// | Modelos | `AllValidationsGetMonth`, `AllValidationsGetStates`, `AllValidationsGetRegions` |
 ///
 /// ## Módulos com importação separada
@@ -28,8 +28,9 @@
 /// Estes módulos têm barrel próprio e **não** estão incluídos aqui:
 ///
 /// ```dart
-/// import 'package:all_validations_br/br_zod.dart';     // validador fluente
-/// import 'package:all_validations_br/br_logger.dart';  // logging puro
+/// import 'package:all_validations_br/br_zod.dart';  // validador fluente
+/// import 'package:all_validations_br/br_logger.dart'; // logging puro
+/// import 'package:all_validations_br/crypt.dart';   // apenas criptografia
 /// ```
 ///
 /// ## Exemplos rápidos
@@ -47,9 +48,13 @@
 /// // Result assíncrono
 /// final r = await Result.tryAsync(() => dio.get('/api'), onError: (e, _) => '$e');
 ///
-/// // Criptografia
+/// // Criptografia — ChaCha20-Poly1305 (padrão)
 /// final enc = CryptUtil.encryptToBase64('segredo');
 /// final dec = CryptUtil.decryptFromBase64(enc);
+///
+/// // Criptografia — AES-256-GCM
+/// final payload = CryptUtil.encryptAesGcm(utf8.encode('segredo'));
+/// final plain   = CryptUtil.decryptAny(payload); // dispatch automático
 /// ```
 library all_validations_br;
 

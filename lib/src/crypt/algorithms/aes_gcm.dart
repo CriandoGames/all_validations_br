@@ -101,7 +101,8 @@ class AesGcm {
   Uint8List _inc32(Uint8List b) {
     final r = Uint8List.fromList(b);
     for (int i = 15; i >= 12; i--) {
-      if (++r[i] != 0) break;
+      r[i]++;
+      if (r[i] != 0) break;
     }
     return r;
   }
@@ -124,9 +125,11 @@ class AesGcm {
         out[offset + i] = data[offset + i] ^ enc[i];
       }
       offset += len;
-      // Incrementa o contador (não importa se é o último bloco)
+      // Incrementa o contador (Inc32, bytes 12-15, big-endian).
+      // Veja nota em aes_ctr.dart sobre ++ctr[i] vs ctr[i]++.
       for (int i = 15; i >= 12; i--) {
-        if (++ctr[i] != 0) break;
+        ctr[i]++;
+        if (ctr[i] != 0) break;
       }
     }
     return out;

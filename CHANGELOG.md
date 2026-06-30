@@ -1,5 +1,73 @@
 # Changelog
 
+## 4.4.0
+
+### Módulo de criptografia expandido — puro Dart, zero dependências
+
+Implementação completa de criptografia simétrica, hash e MAC em Dart puro
+(apenas `dart:typed_data`, `dart:math`, `dart:convert`), seguindo as especificações
+NIST / RFC com vetores de teste verificados via Python `cryptography`.
+
+#### Novos algoritmos
+
+| Algoritmo | Spec | Classe |
+|-----------|------|--------|
+| SHA-256 | FIPS 180-4 | `sha256()` |
+| HMAC-SHA256 | RFC 2104 / RFC 4231 | `hmacSha256()`, `hmacEqual()` |
+| AES-GCM (AEAD) | NIST SP 800-38D | `AesGcm` |
+| AES-CBC + PKCS#7 | NIST SP 800-38A | `AesCbc` |
+| AES-CTR + Inc128 | NIST SP 800-38A | `AesCtr` |
+
+Suporte a AES-128 (chave 16 bytes) e AES-256 (chave 32 bytes) em todos os modos AES.
+
+#### CryptUtil — API unificada ampliada
+
+```dart
+// AES-256-GCM (AEAD)
+final payload = CryptUtil.encryptAesGcm(bytes, key: key);
+final plain   = CryptUtil.decryptAesGcm(payload);
+
+// AES-CBC
+final payload = CryptUtil.encryptAesCbc(bytes, key: key);
+final plain   = CryptUtil.decryptAesCbc(payload);
+
+// AES-CTR
+final payload = CryptUtil.encryptAesCtr(bytes, key: key);
+final plain   = CryptUtil.decryptAesCtr(payload);
+
+// Dispatch automático pelo campo algorithm
+final plain = CryptUtil.decryptAny(payload);
+
+// Geração de material criptográfico
+final key32 = CryptUtil.generateKey();      // 32 bytes (AES-256 / ChaCha20)
+final key16 = CryptUtil.generateKey128();   // 16 bytes (AES-128)
+final nonce = CryptUtil.generateNonce();    // 12 bytes (GCM / ChaCha20)
+final iv    = CryptUtil.generateIv();       // 16 bytes (CBC / CTR)
+```
+
+#### EncryptedPayload — campo `algorithm`
+
+O modelo [EncryptedPayload] ganhou o campo `algorithm` (retrocompatível —
+payloads antigos sem o campo assumem `'chacha20-poly1305'`).
+
+#### Novo barrel `crypt.dart`
+
+```dart
+// Para projetos que usam apenas o módulo de criptografia:
+import 'package:all_validations_br/crypt.dart';
+```
+
+#### Testes
+
+Todos os algoritmos novos possuem testes unitários com vetores de referência
+verificados por Python `cryptography` / OpenSSL:
+
+- `test/sha256_test.dart` — NIST FIPS 180-4 + RFC 4231 (HMAC)
+- `test/aes_gcm_test.dart` — NIST SP 800-38D
+- `test/aes_cbc_ctr_test.dart` — NIST SP 800-38A (F.2 CBC, F.5 CTR)
+
+---
+
 ## 4.3.0
 
 ### 🎭 ExpiryMask — Nova máscara para data de expiração (MM/AA e MM/AAAA)
