@@ -45,7 +45,9 @@ class AesCbc {
     for (int i = 0; i < padded.length; i += 16) {
       // XOR bloco de plaintext com bloco anterior (ou IV)
       final block = Uint8List(16);
-      for (int j = 0; j < 16; j++) block[j] = padded[i + j] ^ prev[j];
+      for (int j = 0; j < 16; j++) {
+        block[j] = padded[i + j] ^ prev[j];
+      }
       final enc = aesEncryptBlock(block, ek);
       ct.setRange(i, i + 16, enc);
       prev = enc;
@@ -80,7 +82,9 @@ class AesCbc {
     for (int i = 0; i < ct.length; i += 16) {
       final block = ct.sublist(i, i + 16);
       final dec = aesDecryptBlock(block, ek);
-      for (int j = 0; j < 16; j++) pt[i + j] = dec[j] ^ prev[j];
+      for (int j = 0; j < 16; j++) {
+        pt[i + j] = dec[j] ^ prev[j];
+      }
       prev = block;
     }
 
@@ -107,7 +111,9 @@ class AesCbc {
   Uint8List _pkcs7Pad(List<int> data) {
     final padLen = 16 - (data.length % 16);
     final out = Uint8List(data.length + padLen);
-    for (int i = 0; i < data.length; i++) out[i] = data[i];
+    for (int i = 0; i < data.length; i++) {
+      out[i] = data[i];
+    }
     out.fillRange(data.length, out.length, padLen);
     return out;
   }
