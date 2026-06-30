@@ -1,5 +1,93 @@
 # Changelog
 
+## 4.5.0
+
+### Criptografia — qualidade e ergonomia
+
+#### `CryptAlgorithm` — novo enum público
+
+O campo `algorithm` do `EncryptedPayload` passou de `String` para o enum
+fortemente tipado `CryptAlgorithm`, com autocomplete e exaustividade
+garantida pelo compilador no `switch`:
+
+```dart
+// Antes (string literal sem autocomplete)
+EncryptedPayload(algorithm: 'aes-cbc', ...)
+
+// Agora (enum com autocomplete e type-safety)
+EncryptedPayload(algorithm: CryptAlgorithm.aesCbc, ...)
+```
+
+Valores disponíveis: `chacha20Poly1305`, `aesGcm`, `aesCbc`, `aesCtr`.
+Cada case expõe `.value` (string JSON) e `CryptAlgorithm.fromString()` para
+desserialização retrocompatível.
+
+`CryptUtil.decryptAny` agora usa `switch` exaustivo — o compilador garante que
+todo algoritmo suportado está coberto, sem necessidade de cláusula `default`.
+
+#### `EncryptedPayload` — `tag` e `aad` opcionais
+
+Os campos `tag` e `aad` agora são opcionais no construtor e assumem
+`Uint8List(0)` quando omitidos. Elimina boilerplate em modos sem autenticação:
+
+```dart
+// Antes
+EncryptedPayload(
+  algorithm:  CryptAlgorithm.aesCbc,
+  ciphertext: base64.decode(ct),
+  key:        key,
+  nonce:      iv,
+  tag:        Uint8List(0),   // obrigatório, mas sempre vazio em CBC/CTR
+  aad:        Uint8List(0),   // idem
+);
+
+// Agora
+EncryptedPayload(
+  algorithm:  CryptAlgorithm.aesCbc,
+  ciphertext: base64.decode(ct),
+  key:        key,
+  nonce:      iv,
+);
+```
+
+Código existente que passa `tag`/`aad` explicitamente continua funcionando.
+
+#### Correção de bug — Inc128 / Inc32 em `Uint8List` (AES-CTR e AES-GCM)
+
+`++ctr[i]` em Dart retorna o valor pré-truncagem (ex.: `256` quando o byte
+vale `0xff`), o que impedia o carry de propagar corretamente no incremento
+big-endian do contador. O bug afetava:
+
+- **AES-CTR**: blocos 2+ do ciphertext incorretos quando qualquer byte do
+  contador transbordava de `0xff` para `0x00`.
+- **AES-GCM `_inc32` / `_gctr`**: mesma condição nos últimos 4 bytes; não
+  manifestado nos testes NIST anteriores porque nenhum contador chegava a `0xff`.
+
+Correção aplicada em `aes_ctr.dart` e `aes_gcm.dart`:
+
+```dart
+// Antes (bug: verifica valor pré-truncagem)
+if (++ctr[i] != 0) break;
+
+// Depois (correto: verifica valor já truncado a 8 bits)
+ctr[i]++;
+if (ctr[i] != 0) break;
+```
+
+Todos os vetores NIST SP 800-38A F.5.1 (AES-128-CTR) e F.5.5 (AES-256-CTR)
+passam após a correção.
+
+#### Documentação
+
+- `EncryptedPayload` ganhou dartdoc detalhado por campo, com tabela de tamanhos
+  por algoritmo, exemplo de interop com APIs externas (Flavors / `.env`) e
+  orientação sobre quando construir manualmente vs. usar `CryptUtil`.
+- `CryptAlgorithm` documentado com dartdoc por case.
+- README atualizado: nova seção `🔐 Criptografia` com tabela de algoritmos,
+  exemplos de todos os métodos e badge de total de testes (1110).
+
+---
+
 ## 4.4.0
 
 ### Módulo de criptografia expandido — puro Dart, zero dependências

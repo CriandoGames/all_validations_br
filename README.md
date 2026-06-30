@@ -16,11 +16,12 @@
 
 ## 🚀 Descrição do Projeto
 
-**AllValidations BR** é uma biblioteca Dart/Flutter com três pilares:
+**AllValidations BR** é uma biblioteca Dart/Flutter com quatro pilares:
 
-- **Validações brasileiras** — CPF, CNPJ, CNH, RENAVAM, PIS/PASEP, Título de Eleitor, chaves PIX, telefones, CEP, placas, EAN-13 e muito mais.
-- **Utilitários** — formatação de moeda, datas, texto, JWT, UUID v3/v4/v5, HTML, PIX e informações de dispositivo.
+- **Validações brasileiras** — CPF, CNPJ (incluindo alfanumérico 2026), CNH, RENAVAM, PIS/PASEP, Título de Eleitor, chaves PIX, telefones, CEP, placas, EAN-13 e muito mais. Com 23 máscaras prontas para `TextField` e `BrZod` para validação fluente em formulários.
+- **Utilitários** — formatação de moeda, datas e texto; JWT, UUID v3/v4/v5, PIX e informações de dispositivo. Inclui `Contract` e `Result<F,S>` para validação de domínio e programação orientada a trilhos, e `BrLogger` com níveis, filtros por ambiente e saídas plugáveis.
 - **Criptografia pura Dart** — ChaCha20-Poly1305 (RFC 8439), AES-GCM, AES-CBC e AES-CTR; SHA-256 e HMAC-SHA256. Sem dependências externas, **zero `dart:io`**, compatível com Flutter Web e mobile.
+- **Zero dependências externas** — tudo em Dart puro, funciona em qualquer plataforma Flutter.
 
 ---
 
@@ -30,7 +31,7 @@ Adicione ao seu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.4.0
+  all_validations_br: ^4.5.0
 ```
 
 Em seguida:
@@ -137,7 +138,7 @@ O app está dividido em seções:
   - Sistema operacional e versão do Dart: `getDeviceInfo`
 
 ---
-### Classes especializadas e ## 📚 Documentação
+### Classes especializadas
 
 Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 
@@ -155,6 +156,26 @@ Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 | `BrLogger` | `trace`, `debug`, `info`, `warning`, `error`, `fatal` — filtros por ambiente, printers coloridos (ANSI), outputs plugáveis, zero deps | [📄 BrLogger.md](doc/BrLogger.md) |
 | `BrZod` | Validador fluente/encadeado — `required`, `email`, `cpf`, `cnpj`, `cnh`, `cns`, `password`, `uuid`, `url` e mais 20 métodos. `BrZod.validate()` para Maps. Zero deps. | [📄 BrZod.md](doc/BrZod.md) |
 | Extensions | `BoolExtension` · `StringExtension` · `ListExtension` — getters null-safe em tipos nativos: `isTrue`, `isFalse`, `isNullOrEmpty`, `isNotNullOrEmpty`, `isNullOrEmptyWithSpace`, `truncate` | [📄 Extensions.md](doc/Extensions.md) |
+
+---
+
+## 📚 Documentação
+
+A documentação completa de cada classe — com todos os métodos, parâmetros e exemplos — está nos arquivos abaixo:
+
+| Arquivo | Conteúdo |
+|---------|----------|
+| [📄 AllValidations.md](doc/AllValidations.md) | Todos os métodos de validação BR, `validate*()` com `Result`, `Contract` |
+| [📄 HelperUtil.md](doc/HelperUtil.md) | Utilitários de texto, datas, UUID, JWT, PIX (validação e mascaramento), maioridade |
+| [📄 BrFormatter.md](doc/BrFormatter.md) | Formatação e geração de CPF, CNPJ, CEP, telefone, moeda e KM |
+| [📄 BrData.md](doc/BrData.md) | Parse, formatação e validação de datas no padrão BR sem `intl` |
+| [📄 BrInputMask.md](doc/BrInputMask.md) | Referência completa das 23 máscaras de campo com exemplos de `TextField` |
+| [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) | CNPJ alfanumérico 2026 — validação, formatação e geração |
+| [📄 CryptUtil.md](doc/CryptUtil.md) | ChaCha20-Poly1305, AES-GCM, AES-CBC, AES-CTR, SHA-256, HMAC-SHA256 — API unificada, AAD, `decryptAny`, serialização e boas práticas |
+| [📄 Result.md](doc/Result.md) | `Result<F,S>`, `Contract`, `ValidationResult` e operações assíncronas |
+| [📄 BrLogger.md](doc/BrLogger.md) | Pipeline filter → printer → output, níveis, cores ANSI, outputs plugáveis |
+| [📄 BrZod.md](doc/BrZod.md) | Validador fluente — referência completa de métodos, `PasswordPolicy`, `BrZod.validate()`, locale customizado |
+| [📄 Extensions.md](doc/Extensions.md) | Extensões null-safe em `bool?`, `String?` e `List<T>?` — referência completa com exemplos |
 
 ---
 
