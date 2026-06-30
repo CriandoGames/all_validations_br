@@ -9,6 +9,7 @@
   <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/likes/all_validations_br?label=likes" alt="pub likes"></a>
   <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/points/all_validations_br?label=pub%20points" alt="pub points"></a>
   <a href="https://github.com/CriandoGames/all_validations_br/blob/main/LICENSE"><img src="https://img.shields.io/github/license/CriandoGames/all_validations_br" alt="license"></a>
+  <img src="https://img.shields.io/badge/testes-1110-brightgreen" alt="1110 testes">
 </p>
 
 ---
@@ -19,7 +20,7 @@
 
 - **Validações brasileiras** — CPF, CNPJ, CNH, RENAVAM, PIS/PASEP, Título de Eleitor, chaves PIX, telefones, CEP, placas, EAN-13 e muito mais.
 - **Utilitários** — formatação de moeda, datas, texto, JWT, UUID v3/v4/v5, HTML, PIX e informações de dispositivo.
-- **Criptografia autenticada** — implementação Dart pura de ChaCha20-Poly1305 (RFC 8439), com geração segura de chaves, serialização em base64 e detecção automática de adulteração.
+- **Criptografia pura Dart** — ChaCha20-Poly1305 (RFC 8439), AES-GCM, AES-CBC e AES-CTR; SHA-256 e HMAC-SHA256. Sem dependências externas, **zero `dart:io`**, compatível com Flutter Web e mobile.
 
 ---
 
@@ -136,7 +137,7 @@ O app está dividido em seções:
   - Sistema operacional e versão do Dart: `getDeviceInfo`
 
 ---
-### Classes especializadas
+### Classes especializadas e ## 📚 Documentação
 
 Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 
@@ -148,12 +149,71 @@ Cada classe tem documentação detalhada com exemplos completos na pasta `doc/`:
 | `BrData` | `format`, `formatMonthYear`, `formatDayMonth`, `formatTime`, `parse`, `parseWithTime`, `validate` — tudo sem o pacote `intl` | [📄 BrData.md](doc/BrData.md) |
 | `BrInputMask` | CPF, CNPJ, CNPJ Alfa, CPF/CNPJ, Telefone, CEP, Data, Hora, Moeda, Centavos, Cartão, Validade, Placa, KM, NCM, CNS, Altura, Peso, Temperatura | [📄 BrInputMask.md](doc/BrInputMask.md) |
 | `CnpjAlfanumerico` | `isValid`, `format`, `strip`, `generate(forceAlphanumeric)` — retrocompatível com CNPJ numérico | [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) |
-| `CryptUtil` | `encryptText`, `decryptText`, `encryptToBase64`, `decryptFromBase64`, `generateKey`, AAD, detecção de adulteração | [📄 CryptUtil.md](doc/CryptUtil.md) |
+| `CryptUtil` | ChaCha20-Poly1305 · AES-GCM · AES-CBC · AES-CTR · SHA-256 · HMAC-SHA256 — API unificada com `encryptAesGcm`, `encryptAesCbc`, `encryptAesCtr`, `decryptAny`, `generateKey`, AAD, serialização JSON/Base64 | [📄 CryptUtil.md](doc/CryptUtil.md) |
 | `Result<F, S>` | `map`, `then`, `fold`, `guard`, `tryAsync`, `thenAsync`, `recover`, `swap` + extensões em `Future<Result>` | [📄 Result.md](doc/Result.md) |
 | `Contract` | `isEmail`, `isValidCPF`, `hasMinLen`, `requires` → `.toResult()`, `.toResultFirst()`, `.toResultAsync()` | [📄 Result.md](doc/Result.md#integração-com-contract) |
 | `BrLogger` | `trace`, `debug`, `info`, `warning`, `error`, `fatal` — filtros por ambiente, printers coloridos (ANSI), outputs plugáveis, zero deps | [📄 BrLogger.md](doc/BrLogger.md) |
 | `BrZod` | Validador fluente/encadeado — `required`, `email`, `cpf`, `cnpj`, `cnh`, `cns`, `password`, `uuid`, `url` e mais 20 métodos. `BrZod.validate()` para Maps. Zero deps. | [📄 BrZod.md](doc/BrZod.md) |
 | Extensions | `BoolExtension` · `StringExtension` · `ListExtension` — getters null-safe em tipos nativos: `isTrue`, `isFalse`, `isNullOrEmpty`, `isNotNullOrEmpty`, `isNullOrEmptyWithSpace`, `truncate` | [📄 Extensions.md](doc/Extensions.md) |
+
+---
+
+## 🔐 Criptografia — `CryptUtil`
+
+Implementação **Dart pura** (zero dependências externas). Todos os algoritmos operam sobre [`EncryptedPayload`](doc/CryptUtil.md), que serializa chave, nonce, ciphertext, tag e nome do algoritmo em JSON/Base64. Compatível com Flutter Web, mobile e server.
+
+### Algoritmos disponíveis
+
+| Algoritmo | Tipo | Caso de uso |
+|-----------|------|-------------|
+| **ChaCha20-Poly1305** (padrão) | AEAD ✅ | Recomendado para a maioria dos casos |
+| **AES-256-GCM** | AEAD ✅ | Interoperabilidade com sistemas AES |
+| **AES-CBC + PKCS#7** | Cifra ⚠️ | Compatibilidade legada; combine com HMAC-SHA256 |
+| **AES-CTR** | Cifra ⚠️ | Streaming; combine com HMAC-SHA256 |
+| **SHA-256** | Hash | Digest de dados, integridade |
+| **HMAC-SHA256** | MAC | Autenticação de mensagem, assinatura de tokens |
+
+> ⚠️ AES-CBC e AES-CTR **não são autenticados**. Prefira ChaCha20-Poly1305 ou AES-GCM quando precisar de integridade garantida.
+
+### Exemplos rápidos
+
+```dart
+import 'package:all_validations_br/all_validations_br.dart';
+// ou, para usar só o módulo crypt:
+import 'package:all_validations_br/crypt.dart';
+
+// ChaCha20-Poly1305 (padrão — AEAD)
+final key     = CryptUtil.generateKey();              // 32 bytes
+final payload = CryptUtil.encryptText('segredo', key: key);
+final texto   = CryptUtil.decryptText(payload);       // 'segredo'
+
+// AES-256-GCM (AEAD)
+final nonce   = CryptUtil.generateNonce();            // 12 bytes
+final gcm     = CryptUtil.encryptAesGcm(dados, key: key, nonce: nonce);
+final plain   = CryptUtil.decryptAesGcm(gcm);
+
+// AES-CBC + PKCS#7
+final iv      = CryptUtil.generateIv();               // 16 bytes
+final cbc     = CryptUtil.encryptAesCbc(dados, key: key, iv: iv);
+final plain2  = CryptUtil.decryptAesCbc(cbc);
+
+// AES-CTR
+final ctr     = CryptUtil.encryptAesCtr(dados, key: key);
+final plain3  = CryptUtil.decryptAesCtr(ctr);
+
+// Dispatch automático — decifra qualquer payload pelo campo `algorithm`
+final qualquer = CryptUtil.decryptAny(payload);       // funciona com todos os algoritmos
+
+// SHA-256
+final digest  = sha256(utf8.encode('mensagem'));       // List<int> com 32 bytes
+
+// HMAC-SHA256
+final mac     = hmacSha256(key: key, data: dados);
+
+// Serialização — persista ou transmita o payload
+final b64      = payload.toBase64();
+final restored = EncryptedPayload.fromBase64(b64);
+```
 
 ---
 
@@ -441,27 +501,6 @@ erros.isNotNullOrEmpty; // false
 print(AllValidations.getStateByDDD("11")); 
 // Saída: BrazilianState.SP
 ```
-
----
-
-## 📚 Documentação
-
-A documentação completa de cada classe — com todos os métodos, parâmetros e exemplos — está nos arquivos abaixo:
-
-| Arquivo | Conteúdo |
-|---------|----------|
-| [📄 AllValidations.md](doc/AllValidations.md) | Todos os métodos de validação BR, `validate*()` com `Result`, `Contract` |
-| [📄 HelperUtil.md](doc/HelperUtil.md) | Utilitários de texto, datas, UUID, JWT, PIX (validação e mascaramento), maioridade |
-| [📄 BrFormatter.md](doc/BrFormatter.md) | Formatação e geração de CPF, CNPJ, CEP, telefone, moeda e KM |
-| [📄 BrData.md](doc/BrData.md) | Parse, formatação e validação de datas no padrão BR sem `intl` |
-| [📄 BrInputMask.md](doc/BrInputMask.md) | Referência completa das 23 máscaras de campo com exemplos de `TextField` |
-| [📄 CnpjAlfanumerico.md](doc/CnpjAlfanumerico.md) | CNPJ alfanumérico 2026 — validação, formatação e geração |
-| [📄 CryptUtil.md](doc/CryptUtil.md) | ChaCha20-Poly1305: criptografia, AAD, serialização e boas práticas |
-| [📄 Result.md](doc/Result.md) | `Result<F,S>`, `Contract`, `ValidationResult` e operações assíncronas |
-| [📄 BrLogger.md](doc/BrLogger.md) | Pipeline filter → printer → output, níveis, cores ANSI, outputs plugáveis |
-| [📄 BrZod.md](doc/BrZod.md) | Validador fluente — referência completa de métodos, `PasswordPolicy`, `BrZod.validate()`, locale customizado |
-| [📄 Extensions.md](doc/Extensions.md) | Extensões null-safe em `bool?`, `String?` e `List<T>?` — referência completa com exemplos |
-
 
 ### `AllValidationsGetMonth`  
 Fornece listas de nomes dos meses do ano para fácil acesso e manipulação.  
