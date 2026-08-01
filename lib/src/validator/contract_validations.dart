@@ -31,7 +31,7 @@ class ContractValidations extends ValidationNotifiable {
   }
 
   ContractValidations isURL(String url, String property, String message) {
-    if (!RegExp(r'^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$').hasMatch(url)) {
+    if (!AllValidations.isURL(url)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }
@@ -50,7 +50,9 @@ class ContractValidations extends ValidationNotifiable {
 
   ContractValidations isValidBRZip(
       String zip, String property, String message) {
-    if (!RegExp(r'^\d{5}-?\d{3}$').hasMatch(zip)) {
+    // Alinhado com AllValidations.isValidBRZip / BrZod().cep() para manter
+    // consistência entre as três APIs (mesmos 3 formatos aceitos).
+    if (!AllValidations.isValidBRZip(zip)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }

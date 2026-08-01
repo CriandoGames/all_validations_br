@@ -4,6 +4,8 @@
 /// e eventual extração do módulo como pacote standalone.
 library;
 
+import '../../validator/internal/url_validator.dart';
+
 // ── Senha ────────────────────────────────────────────────────
 
 /// Configuração de política de senha para [isPassword].
@@ -87,14 +89,7 @@ bool isUuid(dynamic value, {String version = 'all'}) {
 /// Valida URL com esquema `http`, `https` ou `ftp`.
 bool isUrl(dynamic value) {
   final s = value?.toString() ?? '';
-  return RegExp(
-    r'^(https?|ftp):\/\/'
-    r'(([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}'
-    r'|localhost'
-    r'|\d{1,3}(\.\d{1,3}){3})'
-    r'(:\d+)?(\/[^\s]*)?$',
-    caseSensitive: false,
-  ).hasMatch(s);
+  return isAllowedUrl(s);
 }
 
 // ── IPv4 ─────────────────────────────────────────────────────

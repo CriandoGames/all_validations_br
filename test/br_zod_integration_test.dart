@@ -168,6 +168,151 @@ void main() {
     });
   });
 
+  // ── Bug: TypeError quando o dado de um campo aninhado não é Map ──
+  //
+  // Antes: `data[key] as Map<String, dynamic>?` lançava TypeError sempre que
+  // data[key] não era nulo e não era um Map<String, dynamic> (ex.: String,
+  // int, List). Isso derrubava BrZod.validate() inteiro em vez de reportar
+  // um erro de validação normal.
+  group('BrZod.validate() — mapa aninhado com tipo incompatível', () {
+    final params = {
+      'user': {
+        'email': BrZod().required().email(),
+      },
+    };
+
+    test('positivo — Map<String, dynamic> continua funcionando normalmente',
+        () {
+      final result = BrZod.validate(
+        data: {
+          'user': {'email': 'user@example.com'}
+        },
+        params: params,
+      );
+      expect(result.isValid, isTrue);
+    });
+
+    test('negativo — reproduz o bug: String no lugar de Map não lança', () {
+      expect(
+        () => BrZod.validate(
+          data: {'user': 'não é um mapa'},
+          params: params,
+        ),
+        returnsNormally,
+      );
+      final result = BrZod.validate(
+        data: {'user': 'não é um mapa'},
+        params: params,
+      );
+      expect(result.isNotValid, isTrue);
+      expect(result.errors.containsKey('user'), isTrue);
+    });
+
+    test('negativo — reproduz o bug: int no lugar de Map não lança', () {
+      expect(
+        () => BrZod.validate(data: {'user': 42}, params: params),
+        returnsNormally,
+      );
+      expect(BrZod.validate(data: {'user': 42}, params: params).isNotValid,
+          isTrue);
+    });
+
+    test('negativo — reproduz o bug: List no lugar de Map não lança', () {
+      expect(
+        () => BrZod.validate(data: {
+          'user': [1, 2, 3]
+        }, params: params),
+        returnsNormally,
+      );
+      expect(
+        BrZod.validate(data: {
+          'user': [1, 2, 3]
+        }, params: params)
+            .isNotValid,
+        isTrue,
+      );
+    });
+
+    test(
+        'limite — null continua tratado como mapa vazio (comportamento já existente)',
+        () {
+      expect(
+        () => BrZod.validate(data: {'user': null}, params: params),
+        returnsNormally,
+      );
+      expect(BrZod.validate(data: {'user': null}, params: params).isNotValid,
+          isTrue);
+    });
+
+    test('Map<dynamic, dynamic> com chaves String é normalizado e validado',
+        () {
+      final Map<dynamic, dynamic> raw = {'email': 'user@example.com'};
+      final result = BrZod.validate(
+        data: {'user': raw},
+        params: params,
+      );
+      expect(result.isValid, isTrue);
+    });
+  });
+
+  // ── Bug: validador executado duas vezes por chamada a validate() ──
+  //
+  // Antes: `_buildErrorMap` e `_buildErrorList` percorriam a árvore de
+  // validação de forma independente, cada uma chamando `schema.build(...)`.
+  // Um validador `custom()` com efeito colateral (contador, log, etc.)
+  // rodava 2x por chamada a BrZod.validate().
+  group('BrZod.validate() — execução única de validadores', () {
+    test('negativo — reproduz o bug: custom() deve rodar 1x, não 2x', () {
+      var executions = 0;
+      final schema = BrZod().custom((value) {
+        executions++;
+        return false;
+      }, message: 'erro');
+
+      BrZod.validate(
+        data: {'field': 'value'},
+        params: {'field': schema},
+      );
+
+      expect(executions, 1);
+    });
+
+    test('validador customizado aninhado também roda apenas 1x', () {
+      var executions = 0;
+      final schema = BrZod().custom((value) {
+        executions++;
+        return false;
+      }, message: 'erro');
+
+      BrZod.validate(
+        data: {
+          'user': {'field': 'value'}
+        },
+        params: {
+          'user': {'field': schema}
+        },
+      );
+
+      expect(executions, 1);
+    });
+
+    test('preserva o formato público de errors e errorList após a correção',
+        () {
+      final params = {
+        'email': BrZod().required().email(),
+        'cpf': BrZod().required().cpf(),
+      };
+      final result = BrZod.validate(
+        data: {'email': 'invalido', 'cpf': '000'},
+        params: params,
+      );
+      expect(result.errors.length, equals(2));
+      expect(result.errorList.length, equals(2));
+      expect(result.errorList.any((e) => e.startsWith('email:')), isTrue);
+      expect(result.errorList.any((e) => e.startsWith('cpf:')), isTrue);
+    });
+  });
+
   // ── BrZodResult ───────────────────────────────────────────────
   group('BrZodResult', () {
     test('construtor direto — isValid', () {

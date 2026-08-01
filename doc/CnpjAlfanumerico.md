@@ -17,12 +17,16 @@ import 'package:all_validations_br/all_validations_br.dart';
 CnpjAlfanumerico.isValid('11.222.333/0001-81'); // true
 
 // Aceita CNPJ alfanumérico 2026 (com ou sem máscara)
-CnpjAlfanumerico.isValid('AB.1CD.2EF/3GHI-45'); // true
-CnpjAlfanumerico.isValid('AB1CD2EF3GHI45');      // true (sem máscara)
+// Exemplo oficial (SERPRO — Cálculo dos DVs de CNPJ alfanumérico):
+CnpjAlfanumerico.isValid('12.ABC.345/01DE-35'); // true
+CnpjAlfanumerico.isValid('12ABC34501DE35');      // true (sem máscara)
 
 // Atalho via AllValidations
-AllValidations.isCnpjAlphanumeric('AB.1CD.2EF/3GHI-45'); // true
+AllValidations.isCnpjAlphanumeric('12.ABC.345/01DE-35'); // true
 ```
+
+A validação aceita somente os 14 caracteres sem máscara ou a máscara oficial
+`AA.BBB.CCC/DDDD-VV`. Prefixos, sufixos e outros separadores são rejeitados.
 
 ---
 

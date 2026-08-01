@@ -4,6 +4,7 @@ import 'package:all_validations_br/all_validations_br.dart';
 
 import '../helpers/constants.dart';
 import 'dart:developer' as developer;
+import 'internal/url_validator.dart';
 
 class AllValidations {
   AllValidations._();
@@ -96,8 +97,14 @@ class AllValidations {
   }
 
   /// Checks if string is URL.
-  static bool isURL(String s) => hasMatch(s,
-      r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$");
+  ///
+  /// Bug corrigido: a implementação anterior usava (por engano) uma regex de
+  /// validação de e-mail (`local@dominio`), então qualquer URL de verdade
+  /// era rejeitada e qualquer e-mail era aceito como "URL".
+  ///
+  /// Aceita apenas os esquemas `http`, `https` e `ftp`, exige host não vazio
+  /// e rejeita caracteres de espaço.
+  static bool isURL(String s) => isAllowedUrl(s);
 
   /// Checks if string is email.
   /// O caractere `+` é permitido na parte local do e-mail (RFC 5321).
@@ -119,8 +126,10 @@ class AllValidations {
 
     String cleanedNumber = removeCharacters(s);
 
-    // Verifica se o número contém o código de país (+55) e o remove
-    if (cleanedNumber.startsWith('55')) {
+    // Só remove o código de país (+55) quando o comprimento comprova que ele
+    // está presente (13 dígitos = 55 + DDD + 9 dígitos). Sem essa checagem de
+    // tamanho, números com DDD 55 (RS) eram cortados por engano.
+    if (cleanedNumber.length == 13 && cleanedNumber.startsWith('55')) {
       cleanedNumber = cleanedNumber.substring(2);
     }
 
@@ -145,8 +154,10 @@ class AllValidations {
     // Remove caracteres não numéricos
     String cleanedNumber = removeCharacters(s);
 
-    // Verifica se o número contém o código de país (+55) e o remove
-    if (cleanedNumber.startsWith('55')) {
+    // Só remove o código de país (+55) quando o comprimento comprova que ele
+    // está presente (12 dígitos = 55 + DDD + 8 dígitos). Sem essa checagem de
+    // tamanho, números com DDD 55 (RS) eram cortados por engano.
+    if (cleanedNumber.length == 12 && cleanedNumber.startsWith('55')) {
       cleanedNumber = cleanedNumber.substring(2);
     }
 
@@ -252,12 +263,12 @@ class AllValidations {
   static bool isMD5(String s) => hasMatch(s, r'^[a-f0-9]{32}$');
 
   /// Checks if string is SHA1 hash.
-  static bool isSHA1(String s) =>
-      hasMatch(s, r'(([A-Fa-f0-9]{2}\:){19}[A-Fa-f0-9]{2}|[A-Fa-f0-9]{40})');
+  static bool isSHA1(String s) => hasMatch(
+      s, r'^(?:[A-Fa-f0-9]{40}|(?:[A-Fa-f0-9]{2}\:){19}[A-Fa-f0-9]{2})$');
 
   /// Checks if string is SHA256 hash.
-  static bool isSHA256(String s) =>
-      hasMatch(s, r'([A-Fa-f0-9]{2}\:){31}[A-Fa-f0-9]{2}|[A-Fa-f0-9]{64}');
+  static bool isSHA256(String s) => hasMatch(
+      s, r'^(?:[A-Fa-f0-9]{64}|(?:[A-Fa-f0-9]{2}\:){31}[A-Fa-f0-9]{2})$');
 
   /// Checks if string is SSN (Social Security Number).
   static bool isSSN(String s) => hasMatch(s,
@@ -436,6 +447,10 @@ class AllValidations {
 
   /// Check if the string is a UUID (version 3, 4 or 5).
   static bool isUUID(String? str, [version]) {
+    // Bug corrigido: `str!` explodia com TypeError quando `str` era nulo,
+    // apesar da assinatura aceitar `String?`.
+    if (str == null) return false;
+
     Map uuid = {
       '3': RegExp(
           r'^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$'),
@@ -455,7 +470,7 @@ class AllValidations {
 
     RegExp? pat = uuid[version];
 
-    return (pat != null && pat.hasMatch(str!.toUpperCase()));
+    return (pat != null && pat.hasMatch(str.toUpperCase()));
   }
 
   /// Check if the string is valid JSON
@@ -468,17 +483,21 @@ class AllValidations {
     return true;
   }
 
-  /// Check if CEP is valid format
-  static bool isValidBRZip(String cep) {
-    int len = cep.trim().length;
-    RegExp isZipValid =
-        RegExp(r'[0-9]{2}\.?[0-9]{3}-?[0-9]{3}', caseSensitive: false);
-    return len >= 8 && len <= 10 && isZipValid.hasMatch(cep);
-  }
+  /// Check if CEP is valid format.
+  ///
+  /// Aceita somente `00000000`, `00000-000` ou `00.000-000` — a string
+  /// inteira precisa corresponder a um desses formatos. Antes, a regex não
+  /// era ancorada e bastava existir um trecho válido em qualquer posição,
+  /// então `"a12345-678"` (10 caracteres) era aceito indevidamente.
+  static bool isValidBRZip(String cep) =>
+      hasMatch(cep, r'^(?:\d{8}|\d{5}-\d{3}|\d{2}\.\d{3}-\d{3})$');
 
-  /// Check if RG is valid format included with x in end
+  /// Check if RG is valid format included with x in end.
+  ///
+  /// A regex agora é ancorada no fim (`$`) além do início, então conteúdo
+  /// extra antes ou depois do RG (prefixo, sufixo, espaços) é rejeitado.
   static bool isRG(String rg) =>
-      hasMatch(rg, r'(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)');
+      hasMatch(rg, r'^\d{1,2}.?\d{3}.?\d{3}-?(?:\d|[Xx])$');
 
   /// Check if Nickname is valid format
   static bool isNickname(String nickName) =>

@@ -7,16 +7,27 @@ import 'dart:math';
 ///
 /// Formato com máscara: `AA.BBB.CCC/DDDD-VV`
 ///
-/// ### Bug corrigido em relação ao brasil_fields
-/// O brasil_fields usa `codeUnits.first - 48` para converter todos os caracteres,
-/// o que produz valores errados para letras (A → 17 em vez de 10, Z → 42 em vez
-/// de 35). A conversão correta da IN RFB 2229/2024 é:
-/// - Dígitos `'0'–'9'` → valores 0–9 (`codeUnit - 48`)
-/// - Letras  `'A'–'Z'` → valores 10–35 (`codeUnit - 55`)
+/// ### Conversão de caractere → valor numérico (Nota Técnica Conjunta
+/// 2025.001 / IN RFB 2229/2024)
+/// Cada caractere é convertido para "valor decimal ASCII menos 48":
+/// - Dígitos `'0'–'9'` (codes 48–57) → valores 0–9 (`codeUnit - 48`)
+/// - Letras  `'A'–'Z'` (codes 65–90) → valores 17–42 (`codeUnit - 48`)
+///
+/// Bug corrigido: uma versão anterior usava `codeUnit - 55` para letras
+/// (produzindo A=10 … Z=35, o esquema base-36 "óbvio" mas **incorreto**).
+/// Isso foi confirmado contra o exemplo oficial publicado pelo SERPRO
+/// (Cálculo dos dígitos verificadores de CNPJ alfanumérico): para o corpo
+/// `12ABC34501DE`, os dígitos verificadores oficiais são `35`
+/// (`12ABC34501DE35`) — com `codeUnit - 55` o cálculo dá um DV1 diferente
+/// (4 em vez de 3), rejeitando um CNPJ alfanumérico válido.
 class CnpjAlfanumerico {
   CnpjAlfanumerico._();
 
   static final RegExp _stripRegex = RegExp(r'[^A-Z0-9]');
+  static final RegExp _inputRegex = RegExp(
+    r'^(?:[A-Z0-9]{12}\d{2}|[A-Z0-9]{2}\.[A-Z0-9]{3}\.[A-Z0-9]{3}/[A-Z0-9]{4}-\d{2})$',
+    caseSensitive: false,
+  );
   static final RegExp _dvRegex = RegExp(r'^\d{2}$');
   static final RegExp _allSameRegex = RegExp(r'^(.)\1{13}$');
 
@@ -26,14 +37,12 @@ class CnpjAlfanumerico {
 
   // ── Conversão de caractere → valor numérico ──────────────────────────────
 
-  /// Converte um code unit para seu valor posicional no conjunto [0-9A-Z].
+  /// Converte um code unit para seu valor posicional conforme a IN RFB
+  /// 2229/2024: valor ASCII do caractere menos 48.
   ///
   /// `'0'`–`'9'` (codes 48–57) → 0–9
-  /// `'A'`–`'Z'` (codes 65–90) → 10–35
-  static int _charValue(int codeUnit) {
-    if (codeUnit >= 48 && codeUnit <= 57) return codeUnit - 48;
-    return codeUnit - 55;
-  }
+  /// `'A'`–`'Z'` (codes 65–90) → 17–42
+  static int _charValue(int codeUnit) => codeUnit - 48;
 
   // ── Dígito verificador ───────────────────────────────────────────────────
 
@@ -65,12 +74,13 @@ class CnpjAlfanumerico {
   ///
   /// Retorna `false` para:
   /// - strings nulas/vazias
-  /// - comprimento ≠ 14 após strip
+  /// - formato diferente de `AABBCCDD000100` ou `AA.BBB.CCC/DDDD-00`
   /// - sequências repetidas (`00000000000000`, etc.)
   /// - dígitos verificadores inválidos
   /// - dígitos verificadores não numéricos (posições 12–13)
   static bool isValid(String? cnpj) {
     if (cnpj == null || cnpj.isEmpty) return false;
+    if (!_inputRegex.hasMatch(cnpj)) return false;
 
     final s = strip(cnpj);
 

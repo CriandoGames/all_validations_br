@@ -93,15 +93,64 @@ void main() {
       expect(CnpjAlfanumerico.isValid(tampered), isFalse);
     });
 
-    // Demonstra o bug do brasil_fields: converte char com -48 em vez de -55
-    // Para 'A' o brasil_fields usa valor 17 (errado), o correto é 10.
-    // Este teste verifica que nosso algoritmo usa o valor correto.
-    test('valor de A é 10 e de Z é 35 no mapeamento correto', () {
-      // Verifica indiretamente via geração + validação com letra A no body
-      // Se o algoritmo fosse errado (A=17), o DV seria diferente e isValid falharia.
+    // Round-trip apenas prova consistência interna (gerar e validar com o
+    // mesmo algoritmo) — não prova que o algoritmo está correto perante a
+    // especificação oficial. Os testes com vetores independentes abaixo
+    // (grupo "vetores oficiais") são a prova real.
+    test('CNPJ com letra no body é validável (round-trip)', () {
       final cnpjComA = CnpjAlfanumerico.generate(forceAlphanumeric: true);
-      // Qualquer CNPJ gerado com letra deve ser validável
       expect(CnpjAlfanumerico.isValid(cnpjComA), isTrue);
+    });
+  });
+
+  // ── Vetores oficiais / independentes ──────────────────────────────────────
+  //
+  // Fonte: SERPRO, "Cálculo dos dígitos verificadores de CNPJ alfanumérico"
+  // (https://www.serpro.gov.br/menu/noticias/videos/calculodvcnpjalfanaumerico.pdf),
+  // que reproduz a regra da Nota Técnica Conjunta 2025.001 / IN RFB 2229/2024:
+  // cada caractere vira "valor ASCII − 48" (dígitos 0–9, letras A=17…Z=42),
+  // módulo 11, pesos 2–9 da direita para a esquerda.
+  //
+  // Bug confirmado: a implementação anterior usava `codeUnit - 55` para
+  // letras (A=10…Z=35, esquema base-36), calculando DV1=4 em vez do DV1=3
+  // oficial para o corpo "12ABC34501DE" — rejeitando um CNPJ alfanumérico
+  // legítimo.
+  group('CnpjAlfanumerico — vetores oficiais (independentes do algoritmo)', () {
+    test('exemplo oficial SERPRO: 12ABC34501DE35', () {
+      expect(CnpjAlfanumerico.isValid('12ABC34501DE35'), isTrue);
+      expect(CnpjAlfanumerico.isValid('12.ABC.345/01DE-35'), isTrue);
+    });
+
+    test('reproduz o bug: DV calculado com -55 (10 para A) é rejeitado', () {
+      // Antes da correção, isValid('12ABC34501DE35') retornava false porque
+      // o DV1 calculado com A=10 (em vez de A=17) dava 4, não 3.
+      expect(CnpjAlfanumerico.isValid('12ABC34501DE34'), isFalse);
+    });
+
+    test('segundo vetor independente: AB123456789C30', () {
+      // Calculado manualmente com o algoritmo oficial (valor ASCII - 48,
+      // pesos 2-9 da direita para a esquerda, módulo 11):
+      // body="AB123456789C" -> DV1=3, DV2=0
+      expect(CnpjAlfanumerico.isValid('AB123456789C30'), isTrue);
+    });
+
+    test('letras minúsculas são aceitas (normalizadas para maiúsculas)', () {
+      expect(CnpjAlfanumerico.isValid('12abc34501de35'), isTrue);
+    });
+
+    test('caracteres proibidos não são removidos para formar um CNPJ válido',
+        () {
+      // Regressão: isValid() usava strip indiscriminadamente, aceitando lixo
+      // ao redor de um documento válido e qualquer combinação de separadores.
+      expect(CnpjAlfanumerico.isValid('@12ABC34501DE35'), isFalse);
+      expect(CnpjAlfanumerico.isValid('12ABC34501DE35!'), isFalse);
+      expect(CnpjAlfanumerico.isValid('12-ABC-345-01DE-35'), isFalse);
+    });
+
+    test('CNPJ numérico legado continua correto com o algoritmo unificado', () {
+      // Todos os caracteres são dígitos, então -48 é idêntico em ambas as
+      // versões do algoritmo — serve de guarda contra regressão no legado.
+      expect(CnpjAlfanumerico.isValid('11222333000181'), isTrue);
     });
   });
 

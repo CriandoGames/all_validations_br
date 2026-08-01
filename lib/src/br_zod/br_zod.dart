@@ -186,7 +186,7 @@ class BrZod {
         (v) => br.isCpfOuCnpj(v) ? null : message ?? _l.cpfCnpj,
       );
 
-  /// CEP brasileiro — formato `00000-000` ou `00000000`.
+  /// CEP brasileiro — formatos `00000-000`, `00000000` ou `00.000-000`.
   BrZod cep([String? message]) => _add(
         (v) => br.isCep(v) ? null : message ?? _l.cep,
       );
@@ -243,8 +243,11 @@ class BrZod {
   /// // Customizada
   /// BrZod().required().password(policy: PasswordPolicy(minLength: 12)).build
   /// ```
-  BrZod password({sec.PasswordPolicy policy = sec.PasswordPolicy.strong, String? message}) =>
-      _add((v) => sec.isPassword(v, policy: policy) ? null : message ?? _l.password);
+  BrZod password(
+          {sec.PasswordPolicy policy = sec.PasswordPolicy.strong,
+          String? message}) =>
+      _add((v) =>
+          sec.isPassword(v, policy: policy) ? null : message ?? _l.password);
 
   /// UUID válido — qualquer versão por padrão. Versões: `'3'`, `'4'`, `'5'`, `'all'`.
   BrZod uuid({String version = 'all', String? message}) =>
@@ -285,8 +288,14 @@ class BrZod {
     required Map<String, dynamic> data,
     required Map<String, dynamic> params,
   }) {
-    final errors = _buildErrorMap(data: data, params: params);
-    final errorList = _buildErrorList(data: data, params: params);
+    final errors = <String, dynamic>{};
+    final errorList = <String>[];
+    _collectErrors(
+      data: data,
+      params: params,
+      errors: errors,
+      errorList: errorList,
+    );
     return BrZodResult(
       isValid: errors.isEmpty,
       errors: errors,
@@ -294,46 +303,62 @@ class BrZod {
     );
   }
 
-  static Map<String, dynamic> _buildErrorMap({
+  /// Percorre [params] uma única vez, populando [errors] (mapa, possivelmente
+  /// aninhado) e [errorList] (lista plana com notação de ponto) a partir do
+  /// **mesmo** resultado de cada validação.
+  ///
+  /// Bug corrigido: antes, `errors` e `errorList` eram construídos por duas
+  /// passagens independentes (`_buildErrorMap` + `_buildErrorList`), cada uma
+  /// chamando `schema.build(...)` — ou seja, cada validador (inclusive
+  /// `custom()`) rodava duas vezes por chamada a [validate]. Isso é um
+  /// problema real para validadores com contadores, logs ou efeitos
+  /// colaterais. Agora cada schema roda exatamente uma vez.
+  static void _collectErrors({
     required Map<String, dynamic> data,
     required Map<String, dynamic> params,
-  }) {
-    final result = <String, dynamic>{};
-    params.forEach((key, schema) {
-      if (schema is BrZod) {
-        final msg = schema.build(data[key] ?? '');
-        if (msg != null) result[key] = msg;
-      } else if (schema is Map<String, dynamic>) {
-        final nested = _buildErrorMap(
-          data: (data[key] as Map<String, dynamic>?) ?? {},
-          params: schema,
-        );
-        if (nested.isNotEmpty) result[key] = nested;
-      }
-    });
-    return result;
-  }
-
-  static List<String> _buildErrorList({
-    required Map<String, dynamic> data,
-    required Map<String, dynamic> params,
+    required Map<String, dynamic> errors,
+    required List<String> errorList,
     String prefix = '',
   }) {
-    final result = <String>[];
     params.forEach((key, schema) {
       final fullKey = prefix.isEmpty ? key : '$prefix.$key';
+
       if (schema is BrZod) {
         final msg = schema.build(data[key] ?? '');
-        if (msg != null) result.add('$fullKey: $msg');
+        if (msg != null) {
+          errors[key] = msg;
+          errorList.add('$fullKey: $msg');
+        }
       } else if (schema is Map<String, dynamic>) {
-        result.addAll(_buildErrorList(
-          data: (data[key] as Map<String, dynamic>?) ?? {},
+        // Bug corrigido: `data[key] as Map<String, dynamic>?` lançava
+        // TypeError quando data[key] era uma String/int/List (qualquer tipo
+        // não nulo e não-Map). Agora um valor de tipo incompatível é tratado
+        // como mapa vazio — os validadores internos (ex.: `required()`)
+        // reportam os próprios erros a partir de um valor ausente.
+        final rawValue = data[key];
+        final Map<String, dynamic> nestedData;
+        if (rawValue is Map<String, dynamic>) {
+          nestedData = rawValue;
+        } else if (rawValue is Map) {
+          // Map com chaves não tipadas como String (ex.: vindo de um JSON
+          // decodificado como Map<dynamic, dynamic>) — normaliza as chaves
+          // em vez de tratar como incompatível.
+          nestedData = rawValue.map((k, v) => MapEntry(k.toString(), v));
+        } else {
+          nestedData = <String, dynamic>{};
+        }
+
+        final nestedErrors = <String, dynamic>{};
+        _collectErrors(
+          data: nestedData,
           params: schema,
+          errors: nestedErrors,
+          errorList: errorList,
           prefix: fullKey,
-        ));
+        );
+        if (nestedErrors.isNotEmpty) errors[key] = nestedErrors;
       }
     });
-    return result;
   }
 }
 

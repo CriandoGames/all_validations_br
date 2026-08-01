@@ -6,6 +6,8 @@
 /// Todos os métodos aceitam strings com ou sem máscara.
 library;
 
+import '../../cnpj/cnpj_alfanumerico.dart';
+
 // ── CPF ─────────────────────────────────────────────────────
 
 /// Valida CPF (com ou sem máscara). Verifica dígitos verificadores via módulo 11.
@@ -62,44 +64,26 @@ bool isCnpj(dynamic value) {
 ///
 /// Aceita letras A–Z nos primeiros 12 caracteres. Os dígitos verificadores
 /// continuam sendo numéricos. Aceita com ou sem máscara.
-bool isCnpjAlfa(dynamic value) {
-  if (value == null) return false;
-  final s = value.toString().toUpperCase().replaceAll(RegExp(r'[^A-Z0-9]'), '');
-  if (s.length != 14) return false;
-  if (RegExp(r'^(.)\1{13}$').hasMatch(s)) return false;
-
-  // Os dois últimos caracteres devem ser dígitos (DV sempre numérico)
-  if (!RegExp(r'^\d{2}$').hasMatch(s.substring(12))) return false;
-
-  int val(int cu) => (cu >= 48 && cu <= 57) ? cu - 48 : cu - 55;
-
-  int calc(String body) {
-    int weight = 2, sum = 0;
-    for (int i = body.length - 1; i >= 0; i--) {
-      sum += val(body.codeUnitAt(i)) * weight;
-      weight = weight == 9 ? 2 : weight + 1;
-    }
-    final mod = sum % 11;
-    return mod < 2 ? 0 : 11 - mod;
-  }
-
-  final dv1 = calc(s.substring(0, 12));
-  if (dv1 != int.parse(s[12])) return false;
-
-  final dv2 = calc(s.substring(0, 13));
-  return dv2 == int.parse(s[13]);
-}
+/// Delega para [CnpjAlfanumerico.isValid] — fonte única do algoritmo
+/// (evita duplicar a conversão de caractere e correr o risco de as duas
+/// cópias divergirem, como ocorria antes).
+bool isCnpjAlfa(dynamic value) => CnpjAlfanumerico.isValid(value?.toString());
 
 /// Valida CPF **ou** CNPJ (numérico).
 bool isCpfOuCnpj(dynamic value) => isCpf(value) || isCnpj(value);
 
 // ── CEP ─────────────────────────────────────────────────────
 
-/// Valida CEP brasileiro no formato `00000-000` ou `00000000`.
+/// Valida CEP brasileiro no formato `00000-000`, `00000000` ou `00.000-000`.
+///
+/// Bug corrigido: a versão anterior removia *todos* os caracteres não
+/// numéricos antes de validar, então qualquer lixo ao redor de 8 dígitos
+/// (ex.: `"abc12345678xyz"`) era aceito. Agora a string inteira precisa
+/// corresponder a um dos formatos válidos (mesma regra usada por
+/// [AllValidations.isValidBRZip]).
 bool isCep(dynamic value) {
   final s = value?.toString() ?? '';
-  final digits = s.replaceAll(RegExp(r'\D'), '');
-  return digits.length == 8 && RegExp(r'^\d{8}$').hasMatch(digits);
+  return RegExp(r'^(?:\d{8}|\d{5}-\d{3}|\d{2}\.\d{3}-\d{3})$').hasMatch(s);
 }
 
 // ── RG ──────────────────────────────────────────────────────
@@ -110,8 +94,10 @@ bool isCep(dynamic value) {
 /// (cada estado tem regras distintas).
 bool isRg(dynamic value) {
   final s = value?.toString() ?? '';
+  // Ancorado no início E no fim — antes aceitava conteúdo extra depois do RG
+  // (ex.: `"29.385.462-2qualquer-coisa"`).
   return RegExp(
-    r'(^\d{1,2}).?(\d{3}).?(\d{3})-?(\d{1}|X|x$)',
+    r'^\d{1,2}.?\d{3}.?\d{3}-?[\dXx]$',
     caseSensitive: false,
   ).hasMatch(s);
 }

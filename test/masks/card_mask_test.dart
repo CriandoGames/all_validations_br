@@ -178,8 +178,8 @@ void main() {
     test('1 dígito', () => expect(_applyExpiry2('1'), '1'));
     test('2 dígitos — mês completo, sem barra',
         () => expect(_applyExpiry2('12'), '12'));
-    test('3 dígitos — insere barra',
-        () => expect(_applyExpiry2('122'), '12/2'));
+    test(
+        '3 dígitos — insere barra', () => expect(_applyExpiry2('122'), '12/2'));
     test('4 dígitos — MM/AA completo',
         () => expect(_applyExpiry2('1224'), '12/24'));
   });
@@ -199,8 +199,7 @@ void main() {
         () => expect(_applyExpiry2('12/24'), '12/24'));
     test('entrada já mascarada MM/AAAA é re-aplicada corretamente',
         () => expect(_applyExpiry2('12/2024'), '12/2024'));
-    test('mistura letras e dígitos',
-        () => expect(_applyExpiry2('1a2'), '12'));
+    test('mistura letras e dígitos', () => expect(_applyExpiry2('1a2'), '12'));
   });
 
   group('ExpiryMask — cursor colapsado no final', () {
