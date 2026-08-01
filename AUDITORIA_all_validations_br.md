@@ -26,9 +26,9 @@ aceitação de caracteres proibidos no CNPJ foi reproduzida depois em um teste
 isolado, antes da correção mínima.
 
 `dart format --output=none --set-exit-if-changed .` já falhava no `HEAD` em 10
-arquivos. Um deles (`lib/src/br_zod/br_zod.dart`) entrou no escopo e foi
-formatado; os 9 arquivos alheios restantes foram preservados. Todos os arquivos
-Dart alterados nesta auditoria passam na verificação isolada.
+arquivos. Um deles (`lib/src/br_zod/br_zod.dart`) entrou no escopo da correção;
+após autorização para finalizar a formatação, os 9 arquivos restantes também
+foram formatados. O projeto inteiro passa na verificação global de formatação.
 
 ## Inventário e compatibilidade estrutural
 
@@ -174,8 +174,6 @@ schema do `BrZod.validate()` roda uma vez.
 
 ## Pendências
 
-- Restam 9 arquivos não relacionados que já falhavam no check global de
-  formatação. Não foram reformados para evitar misturar mudanças estéticas.
 - CNH, RENAVAM de 9 dígitos, Título de Eleitor, CNS, cartões, IPv6, nomes,
   e-mails internacionalizados, datas ISO, senhas e telefones sem DDD:
   **não confirmado — nenhuma alteração aplicada**. Os testes de consistência
@@ -217,6 +215,6 @@ flutter analyze                         OK — No issues found
 flutter test                            OK — 1.197 testes
 flutter test --coverage                 OK — 1.197 testes
 coverage/lcov.info                      83,61% (2.148/2.569 linhas)
-dart format <arquivos alterados>        OK
-dart format --output=none ... .         falha preexistente em 9 arquivos alheios
+dart format .                           OK — 121 arquivos; 9 formatados nesta etapa
+dart format --output=none ... .         OK — nenhuma alteração pendente
 ```
