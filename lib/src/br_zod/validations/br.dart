@@ -12,7 +12,13 @@ import '../../cnpj/cnpj_alfanumerico.dart';
 
 /// Valida CPF (com ou sem máscara). Verifica dígitos verificadores via módulo 11.
 bool isCpf(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
+  final input = value?.toString() ?? '';
+  if (!RegExp(
+    r'^(?:\d{11}|\d{3}\.\d{3}\.\d{3}-\d{2})$',
+  ).hasMatch(input)) {
+    return false;
+  }
+  final numbers = input.replaceAll(RegExp(r'[^0-9]'), '');
   if (numbers.length != 11) return false;
   if (RegExp(r'^(\d)\1{10}$').hasMatch(numbers)) return false;
 
@@ -37,7 +43,13 @@ bool isCpf(dynamic value) {
 
 /// Valida CNPJ numérico (com ou sem máscara). Dígitos verificadores via módulo 11.
 bool isCnpj(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
+  final input = value?.toString() ?? '';
+  if (!RegExp(
+    r'^(?:\d{14}|\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2})$',
+  ).hasMatch(input)) {
+    return false;
+  }
+  final numbers = input.replaceAll(RegExp(r'[^0-9]'), '');
   if (numbers.length != 14) return false;
   if (RegExp(r'^(\d)\1{13}$').hasMatch(numbers)) return false;
 
@@ -97,7 +109,7 @@ bool isRg(dynamic value) {
   // Ancorado no início E no fim — antes aceitava conteúdo extra depois do RG
   // (ex.: `"29.385.462-2qualquer-coisa"`).
   return RegExp(
-    r'^\d{1,2}.?\d{3}.?\d{3}-?[\dXx]$',
+    r'^\d{1,2}\.?\d{3}\.?\d{3}-?[\dXx]$',
     caseSensitive: false,
   ).hasMatch(s);
 }
@@ -118,7 +130,9 @@ bool isPlaca(dynamic value) {
 /// Valida CNH (Carteira Nacional de Habilitação) — 11 dígitos,
 /// dois dígitos verificadores via módulo 11.
 bool isCnh(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
+  final input = value?.toString() ?? '';
+  if (!RegExp(r'^\d{11}$').hasMatch(input)) return false;
+  final numbers = input;
   if (numbers.length != 11) return false;
   if (RegExp(r'^(\d)\1{10}$').hasMatch(numbers)) return false;
 
@@ -155,7 +169,9 @@ bool isCnh(dynamic value) {
 
 /// Valida RENAVAM (9 ou 11 dígitos) via módulo 11.
 bool isRenavam(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
+  final input = value?.toString() ?? '';
+  if (!RegExp(r'^\d{9,11}$').hasMatch(input)) return false;
+  final numbers = input;
   if (numbers.length < 9 || numbers.length > 11) return false;
 
   final padded = numbers.padLeft(11, '0');
@@ -176,7 +192,13 @@ bool isRenavam(dynamic value) {
 
 /// Valida PIS/PASEP — 11 dígitos, módulo 11 com pesos 3,2,9,8,7,6,5,4,3,2.
 bool isPisPasep(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
+  final input = value?.toString() ?? '';
+  if (!RegExp(
+    r'^(?:\d{11}|\d{3}\.\d{5}\.\d{2}-\d)$',
+  ).hasMatch(input)) {
+    return false;
+  }
+  final numbers = input.replaceAll(RegExp(r'[^0-9]'), '');
   if (numbers.length != 11) return false;
   if (RegExp(r'^(\d)\1{10}$').hasMatch(numbers)) return false;
 
@@ -195,7 +217,9 @@ bool isPisPasep(dynamic value) {
 
 /// Valida Título de Eleitor brasileiro — 12 dígitos, dois DVs via módulo 11.
 bool isTituloEleitor(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
+  final input = value?.toString() ?? '';
+  if (!RegExp(r'^\d{12}$').hasMatch(input)) return false;
+  final numbers = input;
   if (numbers.length != 12) return false;
   if (RegExp(r'^(\d)\1{11}$').hasMatch(numbers)) return false;
 

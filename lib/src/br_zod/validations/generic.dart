@@ -74,21 +74,7 @@ bool isType<T>(dynamic value) {
 ///
 /// Aceita formatos: `dd/MM/yyyy`, `yyyy-MM-dd` e ISO 8601.
 bool isDate(dynamic value) {
-  final str = value?.toString().trim() ?? '';
-  if (str.isEmpty) return false;
-
-  // dd/MM/yyyy
-  final brDate = RegExp(r'^(\d{2})/(\d{2})/(\d{4})$');
-  final brMatch = brDate.firstMatch(str);
-  if (brMatch != null) {
-    final day = int.parse(brMatch.group(1)!);
-    final month = int.parse(brMatch.group(2)!);
-    final year = int.parse(brMatch.group(3)!);
-    return _isValidCalendarDate(year, month, day);
-  }
-
-  // yyyy-MM-dd ou ISO 8601
-  return DateTime.tryParse(str) != null;
+  return _parseDate(value) != null;
 }
 
 /// Retorna `true` se [value] representa uma data anterior a [max].
@@ -116,6 +102,32 @@ DateTime? _parseDate(dynamic value) {
     final year = int.parse(brMatch.group(3)!);
     if (!_isValidCalendarDate(year, month, day)) return null;
     return DateTime(year, month, day);
+  }
+
+  final isoMatch = RegExp(
+    r'^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:[.,]\d{1,6})?)?(Z|[+-]\d{2}:?\d{2})?)?$',
+  ).firstMatch(str);
+  if (isoMatch == null) return null;
+
+  final year = int.parse(isoMatch.group(1)!);
+  final month = int.parse(isoMatch.group(2)!);
+  final day = int.parse(isoMatch.group(3)!);
+  if (!_isValidCalendarDate(year, month, day)) return null;
+
+  final hour = int.tryParse(isoMatch.group(4) ?? '0') ?? -1;
+  final minute = int.tryParse(isoMatch.group(5) ?? '0') ?? -1;
+  final second = int.tryParse(isoMatch.group(6) ?? '0') ?? -1;
+  if (hour > 23 || minute > 59 || second > 59) return null;
+
+  final timezone = isoMatch.group(7);
+  if (timezone != null && timezone != 'Z') {
+    final timezoneMatch =
+        RegExp(r'^[+-](\d{2}):?(\d{2})$').firstMatch(timezone);
+    if (timezoneMatch == null ||
+        int.parse(timezoneMatch.group(1)!) > 23 ||
+        int.parse(timezoneMatch.group(2)!) > 59) {
+      return null;
+    }
   }
 
   return DateTime.tryParse(str);

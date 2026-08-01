@@ -34,10 +34,10 @@ A validação aceita somente os 14 caracteres sem máscara ou a máscara oficial
 
 ```dart
 // Aplica a máscara XX.XXX.XXX/XXXX-VV
-CnpjAlfanumerico.format('AB1CD2EF3GHI45'); // 'AB.1CD.2EF/3GHI-45'
+CnpjAlfanumerico.format('12ABC34501DE35'); // '12.ABC.345/01DE-35'
 
 // Remove a máscara (preserva [A-Z0-9], converte para maiúsculas)
-CnpjAlfanumerico.strip('ab.1cd.2ef/3ghi-45'); // 'AB1CD2EF3GHI45'
+CnpjAlfanumerico.strip('12.abc.345/01de-35'); // '12ABC34501DE35'
 ```
 
 ---
@@ -47,14 +47,15 @@ CnpjAlfanumerico.strip('ab.1cd.2ef/3ghi-45'); // 'AB1CD2EF3GHI45'
 ```dart
 // CNPJ alfanumérico ou numérico aleatório válido
 final cnpj = CnpjAlfanumerico.generate();
-// Ex.: 'K7B3X19QAC0234'
+assert(CnpjAlfanumerico.isValid(cnpj));
 
 // Com máscara
 final formatado = CnpjAlfanumerico.generate(formatted: true);
-// Ex.: 'K7.B3X.19Q/AC02-34'
+assert(CnpjAlfanumerico.isValid(formatado));
 
 // Garante ao menos uma letra nos 12 primeiros caracteres
 final alfanumerico = CnpjAlfanumerico.generate(forceAlphanumeric: true);
+assert(CnpjAlfanumerico.isValid(alfanumerico));
 ```
 
 ---
@@ -62,7 +63,7 @@ final alfanumerico = CnpjAlfanumerico.generate(forceAlphanumeric: true);
 ## Máscara de campo
 
 ```dart
-// CNPJ alfanumérico 2026 → 'AB.123.CDE/0001-39'
+// Exemplo oficial válido → '12.ABC.345/01DE-35'
 TextField(
   keyboardType: TextInputType.text,
   textCapitalization: TextCapitalization.characters,
@@ -75,9 +76,9 @@ TextField(
 ## TextEditingController com CNPJ pré-formatado
 
 ```dart
-// CNPJ alfanumérico 2026 → 'AB.1CD.2EF/0001-99'
+// Exemplo oficial válido, pré-formatado no controller
 final cnpjAlfaController = TextEditingController(
-  text: CnpjAlfanumerico.format('AB1CD2EF000199'),
+  text: CnpjAlfanumerico.format('12ABC34501DE35'),
 );
 ```
 

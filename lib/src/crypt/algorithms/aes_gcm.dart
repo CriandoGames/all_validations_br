@@ -162,14 +162,12 @@ class AesGcm {
 
     // Processa AAD em blocos de 16 bytes (zero-padded)
     var r = _ghashBlocks(a, 0, a.length, xHi, xLo, hHi, hLo);
-    xHi = r[0];
-    xLo = r[1];
+    xHi = r[0]; xLo = r[1];
 
     // Processa ciphertext em blocos de 16 bytes (zero-padded)
     final ct = c is Uint8List ? c : Uint8List.fromList(c);
     r = _ghashBlocks(ct, 0, ct.length, xHi, xLo, hHi, hLo);
-    xHi = r[0];
-    xLo = r[1];
+    xHi = r[0]; xLo = r[1];
 
     // Bloco de comprimentos: [len(A)*8]_64 || [len(C)*8]_64 (big-endian)
     final lb = Uint8List(16);
@@ -180,8 +178,7 @@ class AesGcm {
     xHi ^= _b2i64(lb, 0);
     xLo ^= _b2i64(lb, 8);
     r = _gcmMul(xHi, xLo, hHi, hLo);
-    xHi = r[0];
-    xLo = r[1];
+    xHi = r[0]; xLo = r[1];
 
     final result = Uint8List(16);
     _i64b(xHi, result, 0);
@@ -191,13 +188,9 @@ class AesGcm {
 
   /// Itera sobre [data] em blocos de 16 bytes, acumulando o estado GHASH.
   List<int> _ghashBlocks(
-    List<int> data,
-    int start,
-    int end,
-    int xHi,
-    int xLo,
-    int hHi,
-    int hLo,
+    List<int> data, int start, int end,
+    int xHi, int xLo,
+    int hHi, int hLo,
   ) {
     final block = Uint8List(16);
     int offset = start;
@@ -213,8 +206,7 @@ class AesGcm {
       xLo ^= _b2i64(block, 8);
 
       final r = _gcmMul(xHi, xLo, hHi, hLo);
-      xHi = r[0];
-      xLo = r[1];
+      xHi = r[0]; xLo = r[1];
       offset += 16;
     }
     return [xHi, xLo];
@@ -259,23 +251,23 @@ class AesGcm {
 
   int _b2i64(List<int> b, int o) =>
       ((b[o] & 0xff) << 56) |
-      ((b[o + 1] & 0xff) << 48) |
-      ((b[o + 2] & 0xff) << 40) |
-      ((b[o + 3] & 0xff) << 32) |
-      ((b[o + 4] & 0xff) << 24) |
-      ((b[o + 5] & 0xff) << 16) |
-      ((b[o + 6] & 0xff) << 8) |
-      (b[o + 7] & 0xff);
+      ((b[o+1] & 0xff) << 48) |
+      ((b[o+2] & 0xff) << 40) |
+      ((b[o+3] & 0xff) << 32) |
+      ((b[o+4] & 0xff) << 24) |
+      ((b[o+5] & 0xff) << 16) |
+      ((b[o+6] & 0xff) << 8) |
+       (b[o+7] & 0xff);
 
   void _i64b(int v, Uint8List b, int o) {
-    b[o] = (v >> 56) & 0xff;
-    b[o + 1] = (v >> 48) & 0xff;
-    b[o + 2] = (v >> 40) & 0xff;
-    b[o + 3] = (v >> 32) & 0xff;
-    b[o + 4] = (v >> 24) & 0xff;
-    b[o + 5] = (v >> 16) & 0xff;
-    b[o + 6] = (v >> 8) & 0xff;
-    b[o + 7] = v & 0xff;
+    b[o]   = (v >> 56) & 0xff;
+    b[o+1] = (v >> 48) & 0xff;
+    b[o+2] = (v >> 40) & 0xff;
+    b[o+3] = (v >> 32) & 0xff;
+    b[o+4] = (v >> 24) & 0xff;
+    b[o+5] = (v >> 16) & 0xff;
+    b[o+6] = (v >> 8)  & 0xff;
+    b[o+7] =  v        & 0xff;
   }
 
   bool _ctEqual(List<int> a, List<int> b) {

@@ -2,7 +2,7 @@ import 'package:all_validations_br/all_validations_br.dart';
 
 class ContractValidations extends ValidationNotifiable {
   ContractValidations isFalse(bool value, String property, String message) {
-    if (!value) {
+    if (value) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }

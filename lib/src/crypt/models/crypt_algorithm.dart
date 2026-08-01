@@ -37,6 +37,7 @@ enum CryptAlgorithm {
   /// ```
   static CryptAlgorithm fromString(String s) => values.firstWhere(
         (e) => e.value == s,
-        orElse: () => throw ArgumentError('CryptAlgorithm desconhecido: "$s".'),
+        orElse: () =>
+            throw ArgumentError('CryptAlgorithm desconhecido: "$s".'),
       );
 }

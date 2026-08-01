@@ -123,7 +123,8 @@ class CryptUtil {
   /// Decriptografa [payload] (ChaCha20-Poly1305) e retorna os bytes originais.
   ///
   /// Lança [CryptException] se a tag de autenticação for inválida.
-  static List<int> decryptBytes(EncryptedPayload payload) => ChaCha20Poly1305(
+  static List<int> decryptBytes(EncryptedPayload payload) =>
+      ChaCha20Poly1305(
         key: payload.key,
         nonce: payload.nonce,
         aad: payload.aad,
@@ -179,7 +180,8 @@ class CryptUtil {
   /// Decriptografa [payload] (AES-GCM) e retorna os bytes originais.
   ///
   /// Lança [CryptException] se a tag GCM for inválida.
-  static List<int> decryptAesGcm(EncryptedPayload payload) => AesGcm(
+  static List<int> decryptAesGcm(EncryptedPayload payload) =>
+      AesGcm(
         key: payload.key,
         nonce: payload.nonce,
         aad: payload.aad,
@@ -209,7 +211,8 @@ class CryptUtil {
   /// Decriptografa [payload] (AES-CBC) e retorna os bytes sem padding.
   ///
   /// Lança [CryptException] se o padding PKCS#7 for inválido.
-  static List<int> decryptAesCbc(EncryptedPayload payload) => AesCbc(
+  static List<int> decryptAesCbc(EncryptedPayload payload) =>
+      AesCbc(
         key: payload.key,
         iv: payload.nonce, // nonce armazena o IV no EncryptedPayload
       ).decrypt(payload);
@@ -236,7 +239,8 @@ class CryptUtil {
       ).encrypt(bytes);
 
   /// Decriptografa [payload] (AES-CTR) e retorna os bytes originais.
-  static List<int> decryptAesCtr(EncryptedPayload payload) => AesCtr(
+  static List<int> decryptAesCtr(EncryptedPayload payload) =>
+      AesCtr(
         key: payload.key,
         initialCounterBlock: payload.nonce,
       ).decrypt(payload);

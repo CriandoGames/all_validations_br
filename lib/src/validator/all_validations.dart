@@ -255,9 +255,31 @@ class AllValidations {
     return dddToStateMap[ddd] ?? BrazilianState.Unknown;
   }
 
-  /// Checks if string is DateTime (UTC or Iso8601).
-  static bool isDateTime(String s) =>
-      hasMatch(s, r'^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}.\d{3}Z?$');
+  /// Checks if string is a real DateTime in the documented integral format.
+  static bool isDateTime(String s) {
+    final match = RegExp(
+      r'^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})\.(\d{3})Z?$',
+    ).firstMatch(s);
+    if (match == null) return false;
+
+    final parsed = DateTime.tryParse(s);
+    if (parsed == null) return false;
+
+    final components = [
+      parsed.year,
+      parsed.month,
+      parsed.day,
+      parsed.hour,
+      parsed.minute,
+      parsed.second,
+      parsed.millisecond,
+    ];
+
+    for (var i = 0; i < components.length; i++) {
+      if (components[i] != int.parse(match.group(i + 1)!)) return false;
+    }
+    return true;
+  }
 
   /// Checks if string is MD5 hash.
   static bool isMD5(String s) => hasMatch(s, r'^[a-f0-9]{32}$');
@@ -301,6 +323,11 @@ class AllValidations {
 
   //Check if num is a cnpj
   static bool isCnpj(String cnpj) {
+    if (!RegExp(
+      r'^(?:\d{14}|\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2})$',
+    ).hasMatch(cnpj)) {
+      return false;
+    }
     final numbers = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numbers.length != 14) {
@@ -351,6 +378,11 @@ class AllValidations {
 
   /// Checks if the cpf is valid.
   static bool isCpf(String cpf) {
+    if (!RegExp(
+      r'^(?:\d{11}|\d{3}\.\d{3}\.\d{3}-\d{2})$',
+    ).hasMatch(cpf)) {
+      return false;
+    }
     // get only the numbers
     final numbers = cpf.replaceAll(RegExp(r'[^0-9]'), '');
     // Test if the CPF has 11 digits
@@ -497,7 +529,7 @@ class AllValidations {
   /// A regex agora é ancorada no fim (`$`) além do início, então conteúdo
   /// extra antes ou depois do RG (prefixo, sufixo, espaços) é rejeitado.
   static bool isRG(String rg) =>
-      hasMatch(rg, r'^\d{1,2}.?\d{3}.?\d{3}-?(?:\d|[Xx])$');
+      hasMatch(rg, r'^\d{1,2}\.?\d{3}\.?\d{3}-?(?:\d|[Xx])$');
 
   /// Check if Nickname is valid format
   static bool isNickname(String nickName) =>
@@ -616,6 +648,7 @@ class AllValidations {
 
   /// Valida CNH (Carteira Nacional de Habilitação) — 11 dígitos com dois dígitos verificadores.
   static bool isCnh(String cnh) {
+    if (!RegExp(r'^\d{11}$').hasMatch(cnh)) return false;
     final numbers = cnh.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numbers.length != 11) return false;
@@ -656,6 +689,7 @@ class AllValidations {
 
   /// Valida RENAVAM (Registro Nacional de Veículos Automotores) — 9 ou 11 dígitos.
   static bool isRenavam(String renavam) {
+    if (!RegExp(r'^\d{9,11}$').hasMatch(renavam)) return false;
     final numbers = renavam.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numbers.length < 9 || numbers.length > 11) return false;
@@ -681,6 +715,11 @@ class AllValidations {
 
   /// Valida PIS/PASEP — 11 dígitos com dígito verificador.
   static bool isPisPasep(String pis) {
+    if (!RegExp(
+      r'^(?:\d{11}|\d{3}\.\d{5}\.\d{2}-\d)$',
+    ).hasMatch(pis)) {
+      return false;
+    }
     final numbers = pis.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numbers.length != 11) return false;
@@ -703,6 +742,7 @@ class AllValidations {
 
   /// Valida Título de Eleitor brasileiro.
   static bool isTituloEleitor(String titulo) {
+    if (!RegExp(r'^\d{12}$').hasMatch(titulo)) return false;
     final numbers = titulo.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (numbers.length != 12) return false;
