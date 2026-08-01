@@ -1,5 +1,7 @@
 import 'package:all_validations_br/all_validations_br.dart';
 
+import 'internal/email_validator.dart';
+
 class ContractValidations extends ValidationNotifiable {
   ContractValidations isFalse(bool value, String property, String message) {
     if (value) {
@@ -122,10 +124,12 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] NÃO for maior que [comparer].
   ContractValidations isGreaterThan(
       dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+    if (_rejectMismatchedDateTimeTypes([value, comparer], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      if (!(value as DateTime).isAfter(comparer as DateTime)) {
+    if (value is DateTime && comparer is DateTime) {
+      if (!value.isAfter(comparer)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
@@ -143,10 +147,12 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] NÃO for maior ou igual a [comparer].
   ContractValidations isGreaterOrEqualsThan(
       dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+    if (_rejectMismatchedDateTimeTypes([value, comparer], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      if ((value as DateTime).isBefore(comparer as DateTime)) {
+    if (value is DateTime && comparer is DateTime) {
+      if (value.isBefore(comparer)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
@@ -164,10 +170,12 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] NÃO for menor que [comparer].
   ContractValidations isLowerThan(
       dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+    if (_rejectMismatchedDateTimeTypes([value, comparer], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      if (!(value as DateTime).isBefore(comparer as DateTime)) {
+    if (value is DateTime && comparer is DateTime) {
+      if (!value.isBefore(comparer)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
@@ -185,10 +193,12 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] NÃO for menor ou igual a [comparer].
   ContractValidations isLowerOrEqualsThan(
       dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+    if (_rejectMismatchedDateTimeTypes([value, comparer], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      if ((value as DateTime).isAfter(comparer as DateTime)) {
+    if (value is DateTime && comparer is DateTime) {
+      if (value.isAfter(comparer)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
@@ -206,10 +216,12 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] NÃO for igual a [comparer].
   ContractValidations areEquals(
       dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+    if (_rejectMismatchedDateTimeTypes([value, comparer], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      if ((value as DateTime).difference(comparer as DateTime).inDays != 0) {
+    if (value is DateTime && comparer is DateTime) {
+      if (!value.isAtSameMomentAs(comparer)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
@@ -227,10 +239,12 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] FOR igual a [comparer].
   ContractValidations areNotEquals(
       dynamic value, dynamic comparer, String property, String message) {
-    final hasDatetime = (value is DateTime) || (comparer is DateTime);
+    if (_rejectMismatchedDateTimeTypes([value, comparer], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      if ((value as DateTime).difference(comparer as DateTime).inDays == 0) {
+    if (value is DateTime && comparer is DateTime) {
+      if (value.isAtSameMomentAs(comparer)) {
         addNotifications(
             ValidationNotification(property: property, message: message));
       }
@@ -248,14 +262,14 @@ class ContractValidations extends ValidationNotifiable {
   /// Notifica se [value] NÃO estiver entre [from] e [into] (inclusivo).
   ContractValidations isBetween(dynamic value, dynamic from, dynamic into,
       String property, String message) {
-    final hasDatetime =
-        (value is DateTime) || (from is DateTime) || (into is DateTime);
+    if (_rejectMismatchedDateTimeTypes(
+        [value, from, into], property, message)) {
+      return this;
+    }
 
-    if (hasDatetime) {
-      final dt = value as DateTime;
-      final isInRange =
-          (dt.isAfter(from as DateTime) || dt.isAtSameMomentAs(from)) &&
-              (dt.isBefore(into as DateTime) || dt.isAtSameMomentAs(into));
+    if (value is DateTime && from is DateTime && into is DateTime) {
+      final isInRange = (value.isAfter(from) || value.isAtSameMomentAs(from)) &&
+          (value.isBefore(into) || value.isAtSameMomentAs(into));
       if (!isInRange) {
         addNotifications(
             ValidationNotification(property: property, message: message));
@@ -269,6 +283,21 @@ class ContractValidations extends ValidationNotifiable {
     }
 
     return this;
+  }
+
+  bool _rejectMismatchedDateTimeTypes(
+    List<dynamic> values,
+    String property,
+    String message,
+  ) {
+    final hasDateTime = values.any((value) => value is DateTime);
+    final allDateTime = values.every((value) => value is DateTime);
+    if (!hasDateTime || allDateTime) return false;
+
+    addNotifications(
+      ValidationNotification(property: property, message: message),
+    );
+    return true;
   }
 
   ContractValidations isNullOrNullable(
@@ -384,7 +413,7 @@ class ContractValidations extends ValidationNotifiable {
 
   // Bug fix: was calling isCpf instead of isEmail
   ContractValidations isEmail(String email, String property, String message) {
-    if (!AllValidations.isEmail(email)) {
+    if (!isAllowedEmail(email)) {
       addNotifications(
           ValidationNotification(property: property, message: message));
     }

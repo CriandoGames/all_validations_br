@@ -6,7 +6,7 @@ Classe principal de validações. Cobre documentos BR (CPF, CNPJ, CNH, RENAVAM, 
 import 'package:all_validations_br/all_validations_br.dart';
 ```
 
-> `AllValidations` é uma classe **estática** — todos os métodos são `static`, exceto `getStateByDDD` (instância). Nunca é instanciada diretamente.
+> `AllValidations` é uma classe **estática** — todos os métodos são `static`. Nunca é instanciada diretamente.
 
 ---
 
@@ -149,7 +149,7 @@ AllValidations.isCnpj('11222333000181');       // true
 AllValidations.isCnpj('11.111.111/1111-11');  // false (dígitos iguais)
 
 // CNPJ alfanumérico 2026 (IN RFB 2229/2024)
-AllValidations.isCnpjAlphanumeric('AB.1CD.2EF/3GHI-45'); // true
+AllValidations.isCnpjAlphanumeric('AB.1CD.2EF/3GHI-09'); // true
 AllValidations.isCnpjAlphanumeric('11222333000181');      // true (numérico também aceito)
 
 AllValidations.isRG('12.345.678-9');           // true
@@ -233,12 +233,16 @@ AllValidations.isValidEAN13('123456789');     // false (< 13 dígitos)
 
 ### Cartão de crédito (Luhn)
 
-Aceita Visa, Mastercard, AmEx, Discover e JCB. Strip de não-dígitos antes de validar.
+Aceita Visa, Mastercard, AmEx, Discover e JCB. O formato original deve conter
+somente dígitos ou grupos consistentes separados por espaço ou hífen; depois,
+a bandeira, o comprimento e o algoritmo de Luhn são validados.
 
 ```dart
 AllValidations.isCreditCard('4111111111111111');        // true  (Visa)
 AllValidations.isCreditCard('4111-1111-1111-1111');    // true  (com hífens)
+AllValidations.isCreditCard('4111 1111 1111 1111');    // true  (com espaços)
 AllValidations.isCreditCard('1234567890123456');        // false
+AllValidations.isCreditCard('abc4111111111111111xyz');  // false
 ```
 
 ### Senhas
@@ -318,19 +322,14 @@ AllValidations.removeAccents('ção');   // 'cao'
 
 ## Estado pelo DDD
 
-> `getStateByDDD` é um método de **instância** — exige `AllValidations()`. Diferente de todos os outros que são `static`.
+> `getStateByDDD` é um método `static`, como os demais validadores da classe.
 
 ```dart
-// ❌ Errado — não é static
-// AllValidations.getStateByDDD('11');
-
-// ✅ Correto
-final av = AllValidations();
-av.getStateByDDD('11');  // BrazilianState.SP
-av.getStateByDDD('21');  // BrazilianState.RJ
-av.getStateByDDD('61');  // BrazilianState.DF
-av.getStateByDDD('99');  // BrazilianState.MA
-av.getStateByDDD('00');  // BrazilianState.Unknown
+AllValidations.getStateByDDD('11');  // BrazilianState.SP
+AllValidations.getStateByDDD('21');  // BrazilianState.RJ
+AllValidations.getStateByDDD('61');  // BrazilianState.DF
+AllValidations.getStateByDDD('99');  // BrazilianState.MA
+AllValidations.getStateByDDD('00');  // BrazilianState.Unknown
 ```
 
 Mapeamento resumido: 11–19 → SP · 21/22/24 → RJ · 27/28 → ES · 31–38 → MG · 41–46 → PR · 47–49 → SC · 51/53–55 → RS · 61 → DF · 62/64 → GO · 63 → TO · 65/66 → MT · 67 → MS · 68 → AC · 69 → RO · 71/73–75/77 → BA · 79 → SE · 81/87 → PE · 82 → AL · 83 → PB · 84 → RN · 85/88 → CE · 86/89 → PI · 91/93/94 → PA · 92/97 → AM · 95 → RR · 96 → AP · 98/99 → MA.
@@ -512,7 +511,7 @@ AllValidationsGetWeek.listDaysWeekAbvr;
 | `isPhraseEqual(s1, s2)` | `bool` | |
 | `removeCharacters(s)` | `String` | mantém A-Z e 0-9 |
 | `removeAccents(s)` | `String` | |
-| `getStateByDDD(ddd)` | `BrazilianState` | **instância**, não static |
+| `getStateByDDD(ddd)` | `BrazilianState` | `static` |
 | `isMapExists({key, map})` | `bool` | |
 | `validate*` | `Result<ValidationError, String>` | ver tabela acima |
 

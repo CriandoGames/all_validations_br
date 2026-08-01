@@ -4,6 +4,7 @@ import 'package:all_validations_br/all_validations_br.dart';
 
 import '../helpers/constants.dart';
 import 'dart:developer' as developer;
+import 'internal/email_validator.dart';
 import 'internal/url_validator.dart';
 
 class AllValidations {
@@ -108,16 +109,7 @@ class AllValidations {
 
   /// Checks if string is email.
   /// O caractere `+` é permitido na parte local do e-mail (RFC 5321).
-  static bool isEmail(String s) {
-    // Rejeita caracteres inválidos — `+` foi removido pois é válido em e-mails (ex: user+tag@gmail.com)
-    if (hasMatch(
-        s, r'[!#<>?":`~;[\]\\|=)(*&^%áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]')) {
-      return false;
-    }
-
-    return hasMatch(s,
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-  }
+  static bool isEmail(String s) => isAllowedEmail(s);
 
   /// Checks if string is phone Cell Phone Brazilian.
   static bool isBrazilianCellPhone(String s) {
@@ -181,7 +173,7 @@ class AllValidations {
   }
 
   /// Retorna o estado correspondente ao DDD informado.
-  BrazilianState getStateByDDD(String ddd) {
+  static BrazilianState getStateByDDD(String ddd) {
     const dddToStateMap = {
       '11': BrazilianState.SP,
       '12': BrazilianState.SP,
@@ -466,15 +458,34 @@ class AllValidations {
 
   /// Check if the string is a credit card
   static bool isCreditCard(String str) {
-    RegExp creditCard = RegExp(
-        r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$');
+    final acceptedFormat = RegExp(
+      r'^(?:\d{13,19}|\d{4}(?:-\d{4}){2,4}|\d{4}(?: \d{4}){2,4}|\d{4}-\d{6}-\d{5}|\d{4} \d{6} \d{5})$',
+    );
+    if (!acceptedFormat.hasMatch(str)) return false;
 
-    String sanitized = str.replaceAll(RegExp(r'[^0-9]+'), '');
-    if (!creditCard.hasMatch(sanitized)) {
-      return false;
-    } else {
-      return true;
+    final creditCard = RegExp(
+      r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$',
+    );
+    final digits = str.replaceAll(RegExp(r'[ -]'), '');
+
+    return creditCard.hasMatch(digits) && _passesLuhn(digits);
+  }
+
+  static bool _passesLuhn(String digits) {
+    var sum = 0;
+    var shouldDouble = false;
+
+    for (var index = digits.length - 1; index >= 0; index--) {
+      var digit = int.parse(digits[index]);
+      if (shouldDouble) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      shouldDouble = !shouldDouble;
     }
+
+    return sum % 10 == 0;
   }
 
   /// Check if the string is a UUID (version 3, 4 or 5).

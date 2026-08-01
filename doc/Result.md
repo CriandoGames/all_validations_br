@@ -376,7 +376,7 @@ Todos retornam `Contract` para encadeamento. Adicionam uma `ValidationNotificati
 
 | Método | Valida |
 |--------|--------|
-| `isEmail(email, prop, msg)` | e-mail (via `AllValidations.isEmail`) |
+| `isEmail(email, prop, msg)` | e-mail (mesma regra de `AllValidations` e `BrZod`) |
 | `isValidCPF(cpf, prop, msg)` | CPF (via `AllValidations.isCpf`) |
 | `isValidCNPJ(cnpj, prop, msg)` | CNPJ numérico (via `AllValidations.isCnpj`) |
 | `isPhoneNumber(phone, prop, msg)` | celular ou fixo brasileiro |

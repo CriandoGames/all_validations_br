@@ -25,5 +25,8 @@ jobs:
       - name: Tests
         run: flutter test
 
+      - name: Diff check
+        run: git diff --check
+
       - name: Publish dry run
         run: flutter pub publish --dry-run

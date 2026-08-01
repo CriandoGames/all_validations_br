@@ -175,8 +175,7 @@ class BrZod {
 
   /// CNPJ alfanumérico — IN RFB 2229/2024 (vigente a partir de julho/2026).
   ///
-  /// Aceita letras A–Z nos primeiros 12 caracteres.
-  /// Para validar tanto o formato antigo quanto o novo, use [cnpjOuAlfa].
+  /// Aceita CNPJ numérico legado e letras A–Z nos primeiros 12 caracteres.
   BrZod cnpjAlfa([String? message]) => _add(
         (v) => br.isCnpjAlfa(v) ? null : message ?? _l.cnpjAlfa,
       );
@@ -324,7 +323,7 @@ class BrZod {
       final fullKey = prefix.isEmpty ? key : '$prefix.$key';
 
       if (schema is BrZod) {
-        final msg = schema.build(data[key] ?? '');
+        final msg = schema.build(data[key]);
         if (msg != null) {
           errors[key] = msg;
           errorList.add('$fullKey: $msg');

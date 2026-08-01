@@ -265,8 +265,9 @@ bool isTituloEleitor(dynamic value) {
 /// - Começa com 7, 8 ou 9 (definitivo): soma ponderada % 11 == 0
 /// - Começa com 1 ou 2 (provisório): idem (gerado de modo que satisfaz a mesma condição)
 bool isCns(dynamic value) {
-  final numbers = value?.toString().replaceAll(RegExp(r'[^0-9]'), '') ?? '';
-  if (numbers.length != 15) return false;
+  final input = value?.toString() ?? '';
+  if (!RegExp(r'^\d{15}$').hasMatch(input)) return false;
+  final numbers = input;
 
   final first = int.parse(numbers[0]);
   if (![1, 2, 7, 8, 9].contains(first)) return false;

@@ -30,8 +30,8 @@ O método `.build` retorna `String? Function(dynamic)` — compatível diretamen
 | `optional()` | Se vazio/nulo, interrompe a cadeia sem erro. **Coloque antes das demais validações.** |
 | `min(n, [msg])` | Mínimo de `n` caracteres |
 | `max(n, [msg])` | Máximo de `n` caracteres |
-| `email([msg])` | Formato de e-mail válido |
-| `phone([msg])` | Telefone BR — celular (9 dígitos) ou fixo (8 dígitos), com ou sem DDD |
+| `email([msg])` | E-mail com regra compartilhada por `AllValidations` e `Contract` |
+| `phone([msg])` | Telefone BR — 8/9 dígitos sem DDD ou 10/11 com DDD; aceita máscaras `(DD) XXXX-XXXX` e `(DD) XXXXX-XXXX` |
 | `equals(other, [msg])` | Valor deve ser igual a `other` — útil para confirmação de senha |
 | `type<T>([msg])` | Valor deve ser do tipo `T` (`String`, `int`, `double`, `bool`) |
 | `isDate([msg])` | Data válida — aceita `dd/MM/yyyy`, `yyyy-MM-dd` e ISO 8601 |
@@ -45,7 +45,7 @@ O método `.build` retorna `String? Function(dynamic)` — compatível diretamen
 |--------|-----------|
 | `cpf([msg])` | CPF — mod-11 em 11 dígitos, rejeita sequências iguais |
 | `cnpj([msg])` | CNPJ numérico — mod-11 em 14 dígitos |
-| `cnpjAlfa([msg])` | CNPJ alfanumérico — IN RFB 2229/2024 (vigente jul/2026) |
+| `cnpjAlfa([msg])` | CNPJ numérico legado ou alfanumérico — IN RFB 2229/2024 (vigente jul/2026) |
 | `cpfOuCnpj([msg])` | CPF **ou** CNPJ numérico — útil em campos de documento genérico |
 | `cep([msg])` | CEP — `00000-000` ou `00000000` |
 | `rg([msg])` | RG — formato mais comum, aceita dígito X |
@@ -54,7 +54,7 @@ O método `.build` retorna `String? Function(dynamic)` — compatível diretamen
 | `renavam([msg])` | RENAVAM — 9 ou 11 dígitos, mod-11 |
 | `pisPasep([msg])` | PIS/PASEP — 11 dígitos, mod-11 |
 | `tituloEleitor([msg])` | Título de Eleitor — 12 dígitos, dois DVs, código de estado |
-| `cns([msg])` | CNS (Cartão Nacional de Saúde) — 15 dígitos, algoritmo DATASUS |
+| `cns([msg])` | CNS (Cartão Nacional de Saúde) — exatamente 15 dígitos, algoritmo DATASUS |
 
 ### Segurança
 
@@ -176,6 +176,10 @@ class MyLocale implements ILocaleBrZod {
 ## Validação de Map — `BrZod.validate()`
 
 Útil para validar payloads de API, formulários em bloco ou qualquer `Map<String, dynamic>`.
+
+Valores `null` e campos ausentes são entregues como `null` aos validadores,
+inclusive a callbacks de `custom()`. Assim, `required()` os rejeita e
+`optional()` pode interromper a cadeia sem alterar o valor original.
 
 ```dart
 final result = BrZod.validate(

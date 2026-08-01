@@ -9,7 +9,7 @@
   <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/likes/all_validations_br?label=likes" alt="pub likes"></a>
   <a href="https://pub.dev/packages/all_validations_br/score"><img src="https://img.shields.io/pub/points/all_validations_br?label=pub%20points" alt="pub points"></a>
   <a href="https://github.com/CriandoGames/all_validations_br/blob/main/LICENSE"><img src="https://img.shields.io/github/license/CriandoGames/all_validations_br" alt="license"></a>
-  <img src="https://img.shields.io/badge/testes-1110-brightgreen" alt="1110 testes">
+  <img src="https://img.shields.io/badge/testes-1319-brightgreen" alt="1319 testes">
 </p>
 
 ---
@@ -31,7 +31,7 @@ Adicione ao seu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.5.1
+  all_validations_br: ^4.5.2
 ```
 
 Em seguida:
