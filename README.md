@@ -31,7 +31,7 @@ Adicione ao seu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.5.0
+  all_validations_br: ^4.5.1
 ```
 
 Em seguida:

@@ -1,5 +1,52 @@
 # Changelog
 
+## 4.5.1
+
+### Correções de validação
+
+- Corrigida a semântica de `Contract.isTrue` e `Contract.isFalse`.
+- CPF e CNPJ numérico agora aceitam somente dígitos ou suas máscaras oficiais,
+  rejeitando letras, prefixos, sufixos e separadores arbitrários.
+- CNH, RENAVAM, PIS/PASEP e Título de Eleitor passaram a validar o formato
+  original antes do cálculo dos dígitos verificadores. A máscara oficial do
+  PIS/PASEP permanece aceita.
+- RG passou a aceitar somente pontos literais opcionais como separadores e a
+  rejeitar conteúdo externo.
+- CEP passou a exigir correspondência integral com um dos formatos suportados.
+- `AllValidations.isDateTime` agora rejeita datas impossíveis, horários fora do
+  intervalo e separadores inválidos antes dos milissegundos.
+- `BrZod.isDate`, `isBefore` e `isAfter` agora compartilham parsing estrito e
+  não aceitam a normalização silenciosa de datas inválidas do `DateTime`.
+- URLs passaram a usar parsing por `Uri`, com regras consistentes entre
+  `AllValidations`, `Contract` e `BrZod`.
+- Telefones com DDD 55 deixaram de ser confundidos com o código do país.
+- `AllValidations.isUUID(null)` retorna `false` em vez de lançar exceção.
+- Regexes SHA-1 e SHA-256 passaram a validar a entrada completa.
+
+### CNPJ alfanumérico
+
+- Corrigido o cálculo oficial dos dígitos verificadores para usar o valor
+  `ASCII - 48`, conforme Receita Federal/SERPRO.
+- A validação passou a aceitar somente os 14 caracteres ou a máscara oficial,
+  sem remover caracteres proibidos antes da checagem.
+- Exemplos da documentação foram substituídos por vetores com DVs válidos.
+
+### BrZod
+
+- `BrZod.validate()` não lança mais `TypeError` quando um campo aninhado recebe
+  um tipo incompatível.
+- Cada schema é executado uma única vez por validação, inclusive em mapas
+  aninhados.
+
+### Qualidade
+
+- Adicionadas suítes de regressão test-first e contratos de consistência entre
+  as APIs públicas, sempre acompanhados por vetores independentes.
+- Adicionado workflow de CI com analyzer, testes e publish dry-run.
+- Suíte ampliada de 1.110 para 1.258 testes.
+
+---
+
 ## 4.5.0
 
 ### Criptografia — qualidade e ergonomia

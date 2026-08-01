@@ -242,9 +242,9 @@ validá-los. Consumidores que contornavam a semântica invertida dos contratos
 também devem remover o contorno.
 
 Uma versão `4.5.1` é recomendada: são correções compatíveis em nível de API,
-adequadas a patch version, mas com endurecimento intencional de entradas. A
-versão e o `CHANGELOG.md` não foram alterados porque isso foi proibido no
-escopo.
+adequadas a patch version, mas com endurecimento intencional de entradas.
+Posteriormente à auditoria, a preparação dessa versão foi autorizada e
+`pubspec.yaml`, `README.md` e `CHANGELOG.md` foram atualizados.
 
 ## Execução final
 
@@ -262,6 +262,6 @@ git diff --check                                     OK
 ## Pendências
 
 - Nenhuma pendência funcional confirmada desta auditoria permanece aberta.
-- A versão `4.5.1`, o `CHANGELOG.md`, commit, push e publicação real dependem
-  de autorização explícita e não foram executados.
+- Commit, push e publicação real dependem de autorização explícita e não foram
+  executados nesta preparação do patch `4.5.1`.
 
