@@ -2,6 +2,22 @@
 
 ## 4.5.2
 
+### Correções finais de validação
+
+- `AllValidations.getStateByDDD` passou a ser uma API estática utilizável.
+- `isCreditCard` agora valida o formato original e o algoritmo de Luhn, além
+  da bandeira e do comprimento.
+- Comparações de `DateTime` no `Contract` passaram a considerar o instante
+  completo e tipos incompatíveis geram notificação em vez de `TypeError`.
+- `BrZod().cns()` rejeita conteúdo externo e separadores arbitrários.
+- `BrZod().phone()` passou a validar o formato, o DDD e os prefixos básicos de
+  telefones fixos e celulares.
+- A validação de e-mail foi unificada entre `AllValidations`, `Contract` e
+  `BrZod`.
+- `BrZod.validate()` preserva valores `null` e campos ausentes para validadores
+  customizados; `required()` e `optional()` mantêm suas semânticas.
+- Corrigidos exemplos e referências inválidas na documentação.
+
 ### Compatibilidade — possível breaking change comportamental
 
 Esta versão não remove nem renomeia APIs públicas. Porém, validadores que antes
@@ -13,6 +29,16 @@ entrada explicitamente antes da validação. Além disso, callbacks de
 comparações de `DateTime` consideram o instante completo. Essas mudanças podem
 alterar resultados anteriormente aceitos, mas corrigem comportamentos
 comprovadamente incorretos sem quebra de assinatura.
+
+### Qualidade
+
+- Adicionado `git diff --check` ao workflow de CI.
+- Adicionados 60 testes de regressão e 1 smoke test de API pública.
+- Suíte ampliada de 1.258 para 1.319 testes.
+
+---
+
+## 4.5.1
 
 ### Correções de validação
 
@@ -34,16 +60,6 @@ comprovadamente incorretos sem quebra de assinatura.
 - Telefones com DDD 55 deixaram de ser confundidos com o código do país.
 - `AllValidations.isUUID(null)` retorna `false` em vez de lançar exceção.
 - Regexes SHA-1 e SHA-256 passaram a validar a entrada completa.
-- `AllValidations.getStateByDDD` passou a ser uma API estática utilizável.
-- `isCreditCard` agora valida o formato original e o algoritmo de Luhn, além
-  da bandeira e do comprimento.
-- Comparações de `DateTime` no `Contract` passaram a considerar o instante
-  completo e tipos incompatíveis geram notificação em vez de `TypeError`.
-- `BrZod().cns()` rejeita conteúdo externo e separadores arbitrários.
-- `BrZod().phone()` passou a validar o formato, o DDD e os prefixos básicos de
-  telefones fixos e celulares.
-- A validação de e-mail foi unificada entre `AllValidations`, `Contract` e
-  `BrZod`.
 
 ### CNPJ alfanumérico
 
@@ -59,17 +75,13 @@ comprovadamente incorretos sem quebra de assinatura.
   um tipo incompatível.
 - Cada schema é executado uma única vez por validação, inclusive em mapas
   aninhados.
-- Valores `null` e campos ausentes são preservados para validadores
-  customizados; `required()` e `optional()` mantêm suas semânticas.
 
 ### Qualidade
 
 - Adicionadas suítes de regressão test-first e contratos de consistência entre
   as APIs públicas, sempre acompanhados por vetores independentes.
-- Adicionado workflow de CI com analyzer, testes, diff check e publish dry-run.
-- Adicionado smoke test das APIs públicas principais.
-- Corrigidos exemplos e referências inválidas na documentação.
-- Suíte ampliada de 1.110 para 1.319 testes.
+- Adicionado workflow de CI com analyzer, testes e publish dry-run.
+- Suíte ampliada de 1.110 para 1.258 testes.
 
 ---
 
