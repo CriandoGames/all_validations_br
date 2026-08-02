@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:all_observer/all_observer.dart';
 import 'package:all_validations_br/all_validations_br.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,77 +7,154 @@ void main() {
   runApp(const MyApp());
 }
 
+/// Estado reativo confinado ao aplicativo de exemplo.
+///
+/// `all_observer` demonstra apenas a reação da interface às operações do
+/// ecossistema; não é dependência de runtime de nenhum pacote publicável.
+class ExamplesController {
+  final cryptKey = AllCrypto.generateKey();
+  final logOutput = BrMemoryOutput(maxRecords: 10);
+  final encryptedBase64 = Observable<String>('');
+  final decryptedText = Observable<String>('');
+  final cryptError = Observable<String>('');
+  final lastLog = Observable<String>('');
+
+  late final logger = BrLogger(
+    tag: 'ToolkitExample',
+    filter: const BrAllFilter(),
+    printer: const BrSimplePrinter(showTime: false),
+    output: logOutput,
+  );
+
+  late final Computed<bool> hasEncrypted =
+      Computed(() => encryptedBase64.value.isNotEmpty);
+  late final Computed<bool> hasError =
+      Computed(() => cryptError.value.isNotEmpty);
+
+  late final staticPayload = AllCrypto.encryptText(
+    'Olá, Brasil!',
+    key: cryptKey,
+  );
+  late final staticDecrypted = AllCrypto.decryptText(
+    staticPayload,
+    key: cryptKey,
+  );
+
+  void runCryptDemo() {
+    try {
+      const plaintext = 'Dados sensíveis do usuário 🔒';
+      final envelope = AllCrypto.encryptText(plaintext, key: cryptKey);
+      final encrypted = envelope.toBase64();
+      final restored = CryptEnvelope.fromBase64(encrypted);
+      final decrypted = AllCrypto.decryptText(restored, key: cryptKey);
+
+      Observable.batch(() {
+        cryptError.value = '';
+        encryptedBase64.value = encrypted;
+        decryptedText.value = decrypted;
+      });
+    } on CryptException catch (error) {
+      Observable.batch(() {
+        encryptedBase64.value = '';
+        decryptedText.value = '';
+        cryptError.value = error.toString();
+      });
+    }
+  }
+
+  void runTamperingDemo() {
+    try {
+      final payload = AllCrypto.encryptText('segredo', key: cryptKey);
+      final tampered = CryptEnvelope(
+        ciphertext: Uint8List.fromList(
+          List<int>.from(payload.ciphertext)..[0] ^= 0xFF,
+        ),
+        algorithm: payload.algorithm,
+        tag: payload.tag,
+        nonce: payload.nonce,
+        aad: payload.aad,
+      );
+
+      AllCrypto.decryptText(tampered, key: cryptKey);
+    } on CryptException catch (error) {
+      Observable.batch(() {
+        encryptedBase64.value = '';
+        decryptedText.value = '';
+        cryptError.value = '✅ Adulteração detectada:\n${error.message}';
+      });
+    }
+  }
+
+  String validateCpfWithResult(String cpf) {
+    final error = BrZod().required().cpf().build(cpf);
+    final result = error == null
+        ? Result.success<String, String>(cpf)
+        : Result.failure<String, String>(error);
+
+    return result.fold(
+      (failure) => 'Falha: $failure',
+      (value) => 'Sucesso: CPF ${BrFormatter.formatCpf(value)}',
+    );
+  }
+
+  void runLoggerDemo() {
+    logger.info('fluxo integrado concluído');
+    final record = logOutput.records.last;
+    lastLog.value = '${record.level.name.toUpperCase()} '
+        '[${record.tag}] ${record.message}';
+  }
+
+  void dispose() {
+    logger.dispose();
+    hasEncrypted.close();
+    hasError.close();
+    encryptedBase64.close();
+    decryptedText.close();
+    cryptError.close();
+    lastLog.close();
+  }
+}
+
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key, this.controller});
+
+  final ExamplesController? controller;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'All Validations BR — Exemplos',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const ExamplesPage(),
+      home: ExamplesPage(controller: controller),
     );
   }
 }
 
 class ExamplesPage extends StatefulWidget {
-  const ExamplesPage({Key? key}) : super(key: key);
+  const ExamplesPage({super.key, this.controller});
+
+  final ExamplesController? controller;
 
   @override
   State<ExamplesPage> createState() => _ExamplesPageState();
 }
 
 class _ExamplesPageState extends State<ExamplesPage> {
-  // ── CryptUtil: estado da demo de criptografia ──────────────────────────────
-  late final _cryptKey = CryptUtil.generateKey();
-  String _encryptedBase64 = '';
-  String _decryptedText = '';
-  String _cryptError = '';
+  late final ExamplesController _controller;
+  late final bool _ownsController;
 
-  void _runCryptDemo() {
-    setState(() {
-      _cryptError = '';
-      try {
-        const plaintext = 'Dados sensíveis do usuário 🔒';
-
-        // 1. Criptografa e serializa como base64
-        _encryptedBase64 = CryptUtil.encryptToBase64(plaintext, key: _cryptKey);
-
-        // 2. Decriptografa a partir do base64
-        _decryptedText = CryptUtil.decryptFromBase64(_encryptedBase64);
-      } on CryptException catch (e) {
-        _cryptError = e.toString();
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    _ownsController = widget.controller == null;
+    _controller = widget.controller ?? ExamplesController();
   }
 
-  void _runTamperingDemo() {
-    setState(() {
-      _cryptError = '';
-      _decryptedText = '';
-      try {
-        final payload = CryptUtil.encryptText('segredo', key: _cryptKey);
-
-        // Adultera o primeiro byte do ciphertext
-        final tamperedBytes = Uint8List.fromList(payload.ciphertext);
-        tamperedBytes[0] ^= 0xFF;
-        final tampered = EncryptedPayload(
-          ciphertext: Uint8List.fromList(
-              List<int>.from(payload.ciphertext)..[0] ^= 0xFF),
-          key: payload.key,
-          tag: payload.tag,
-          nonce: payload.nonce,
-          aad: payload.aad,
-        );
-
-        CryptUtil.decryptText(tampered); // deve lançar CryptException
-      } on CryptException catch (e) {
-        _cryptError = '✅ Adulteração detectada:\n${e.message}';
-      }
-    });
+  @override
+  void dispose() {
+    if (_ownsController) _controller.dispose();
+    super.dispose();
   }
-
-  // ──────────────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +173,45 @@ class _ExamplesPageState extends State<ExamplesPage> {
                 AllValidations.isCpf('728.551.470-50')),
             _resultRow(
                 'isCpf("72855147050")', AllValidations.isCpf('72855147050')),
+            _labelValue(
+              'BrZod + Result',
+              _controller.validateCpfWithResult('52998224725'),
+            ),
+            const SizedBox(height: 12),
+            TextFormField(
+              inputFormatters: const [PhoneMask()],
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: BrZod().required().phone().build,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                labelText: 'Telefone — máscara + validação',
+                hintText: '(11) 91234-5678',
+                border: OutlineInputBorder(),
+                isDense: true,
+              ),
+            ),
+
+            const Divider(height: 32),
+
+            _sectionTitle('AllLogger — pipeline testável'),
+            const Text(
+              'O exemplo usa BrMemoryOutput: nenhum dado é enviado para rede.',
+              style: TextStyle(fontSize: 12, color: Colors.black54),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: _controller.runLoggerDemo,
+              child: const Text('Registrar evento seguro'),
+            ),
+            Observer(() {
+              if (_controller.lastLog.value.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: _mono(_controller.lastLog.value),
+              );
+            }),
 
             const Divider(height: 32),
 
@@ -193,11 +308,11 @@ class _ExamplesPageState extends State<ExamplesPage> {
 
             const Divider(height: 32),
 
-            // ── CryptUtil — ChaCha20-Poly1305 ───────────────────────────────
-            _sectionTitle('CryptUtil — ChaCha20-Poly1305'),
-            Text(
-              'Chave (${_cryptKey.length} bytes): ${base64.encode(_cryptKey).substring(0, 16)}…',
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+            // ── AllCrypto — envelope seguro v2 ─────────────────────────────
+            _sectionTitle('AllCrypto — envelope seguro v2'),
+            const Text(
+              'Chave sintética gerada em memória; não serializada nem exibida.',
+              style: TextStyle(fontSize: 12, color: Colors.black54),
             ),
             const SizedBox(height: 8),
 
@@ -205,11 +320,11 @@ class _ExamplesPageState extends State<ExamplesPage> {
               spacing: 8,
               children: [
                 ElevatedButton(
-                  onPressed: _runCryptDemo,
+                  onPressed: _controller.runCryptDemo,
                   child: const Text('Encriptar / Decriptar'),
                 ),
                 ElevatedButton(
-                  onPressed: _runTamperingDemo,
+                  onPressed: _controller.runTamperingDemo,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                   ),
@@ -218,55 +333,59 @@ class _ExamplesPageState extends State<ExamplesPage> {
               ],
             ),
             const SizedBox(height: 12),
-
-            if (_encryptedBase64.isNotEmpty) ...[
-              _label('Ciphertext (base64):'),
-              _mono(_encryptedBase64),
-              const SizedBox(height: 8),
-              _label('Decriptado:'),
-              _mono(_decryptedText),
-            ],
-            if (_cryptError.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
-                  border: Border.all(color: Colors.orange),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  _cryptError,
-                  style: const TextStyle(fontSize: 13),
-                ),
-              ),
-            ],
-
-            const Divider(height: 32),
-
-            // ── CryptUtil — resultados estáticos ────────────────────────────
-            _sectionTitle('CryptUtil — exemplos estáticos'),
-            Builder(builder: (_) {
-              final key = CryptUtil.generateKey();
-              final payload = CryptUtil.encryptText('Olá, Brasil!', key: key);
-              final decrypted = CryptUtil.decryptText(payload);
+            Observer(() {
+              if (!_controller.hasEncrypted.value) {
+                return const SizedBox.shrink();
+              }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _labelValue('Texto original', 'Olá, Brasil!'),
-                  _labelValue(
-                      'Tag (hex)',
-                      payload.tag
-                          .map((b) => b.toRadixString(16).padLeft(2, '0'))
-                          .join()),
-                  _labelValue('Decriptado', decrypted),
-                  _labelValue(
-                    'Round-trip correto?',
-                    decrypted == 'Olá, Brasil!' ? '✅ sim' : '❌ não',
-                  ),
+                  _label('Ciphertext (base64):'),
+                  _mono(_controller.encryptedBase64.value),
+                  const SizedBox(height: 8),
+                  _label('Decriptado:'),
+                  _mono(_controller.decryptedText.value),
                 ],
               );
             }),
+            Observer(() {
+              if (!_controller.hasError.value) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Container(
+                  key: const ValueKey('crypt-error'),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade50,
+                    border: Border.all(color: Colors.orange),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    _controller.cryptError.value,
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
+              );
+            }),
+
+            const Divider(height: 32),
+
+            // ── AllCrypto — resultados estáticos ────────────────────────────
+            _sectionTitle('AllCrypto — exemplos estáticos'),
+            _labelValue('Texto original', 'Olá, Brasil!'),
+            _labelValue(
+              'Tag (hex)',
+              _controller.staticPayload.tag
+                  .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
+                  .join(),
+            ),
+            _labelValue('Decriptado', _controller.staticDecrypted),
+            _labelValue(
+              'Round-trip correto?',
+              _controller.staticDecrypted == 'Olá, Brasil!' ? '✅ sim' : '❌ não',
+            ),
           ],
         ),
       ),

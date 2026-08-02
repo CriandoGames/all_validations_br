@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.6.0
+
+- Conversão do `all_validations_br` em agregador mantido e fachada de compatibilidade.
+- Extração de `all_result`, `all_crypto`, `all_logger`, `all_br_validations` e `all_br_forms` na versão 1.0.0.
+- Preservação do barrel principal e dos imports históricos por reexports.
+- Manutenção temporária de `HelperUtil` como API legada documentada.
+- Recomendação de `AllCrypto`/`CryptEnvelope` v2 com chave externa e
+  depreciação das serializações crypto legadas que embutem a chave.
+- Padronização dos READMEs bilíngues e heroes do ecossistema.
+- Inclusão de documentação bilíngue, CI, verificações de fronteira e plano de publicação manual.
+
 ## 4.5.2
 
 ### Correções finais de validação
@@ -361,7 +372,7 @@ erros.isNotNullOrEmpty; // false
 
 **Testes:** 25 casos em `test/extensions/extensions_test.dart`.
 
-**Documentação:** [📄 Extensions.md](doc/Extensions.md)
+**Documentação:** [📄 Extensions.md](https://github.com/CriandoGames/all_br_validations/blob/main/doc/pt-BR/Extensions.md)
 
 ---
 
@@ -393,7 +404,7 @@ import 'package:all_validations_br/br_zod.dart';
 
 **Testes:** 126 casos distribuídos em `br_zod_generic_test.dart`, `br_zod_br_test.dart`, `br_zod_security_test.dart` e `br_zod_integration_test.dart`.
 
-**Documentação:** [📄 BrZod.md](doc/BrZod.md)
+**Documentação:** [📄 BrZod.md](https://github.com/CriandoGames/all_br_validations/blob/main/doc/pt-BR/BrZod.md)
 
 ---
 
@@ -411,7 +422,7 @@ import 'package:all_validations_br/br_logger.dart';
 
 **Padrão out-of-the-box:** tudo visível em debug, apenas `warning+` em produção. Printers com cores ANSI, output para `print()` e DevTools.
 
-**Documentação:** [📄 BrLogger.md](doc/BrLogger.md)
+**Documentação:** [📄 BrLogger.md](https://github.com/CriandoGames/all_logger/blob/main/doc/pt-BR/br_logger.md)
 
 ---
 

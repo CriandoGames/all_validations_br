@@ -59,6 +59,17 @@ Use o prefixo: `feat`, `fix`, `test`, `docs`, `refactor` ou `chore`.
 flutter test
 ```
 
+Para validar o ecossistema completo com os pacotes irmãos disponíveis, execute:
+
+```bash
+dart run tool/check_package_boundaries.dart
+dart run tool/analyze_all_packages.dart
+dart run tool/test_all_packages.dart
+dart run tool/publish_dry_run_all.dart
+```
+
+Manifestos publicáveis usam versões hospedadas. Dependências locais ficam apenas em `pubspec_overrides.yaml`, que não é publicado.
+
 Para um arquivo específico:
 
 ```bash

@@ -1,0 +1,11 @@
+.github/
+.dart_tool/
+coverage/
+build/
+doc/api/
+documentation/images/
+pubspec_overrides.yaml
+example/pubspec_overrides.yaml
+**/local.properties
+*.log
+*.iml

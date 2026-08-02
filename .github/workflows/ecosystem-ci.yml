@@ -1,0 +1,63 @@
+name: Ecosystem CI
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: all_validations_br
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: CriandoGames/all_crypto
+          path: all_crypto
+      - uses: actions/checkout@v4
+        with:
+          repository: CriandoGames/all_logger
+          path: all_logger
+      - uses: actions/checkout@v4
+        with:
+          repository: CriandoGames/all_result
+          path: all_result
+      - uses: actions/checkout@v4
+        with:
+          repository: CriandoGames/all_br_validations
+          path: all_br_validations
+      - uses: actions/checkout@v4
+        with:
+          repository: CriandoGames/all_br_forms
+          path: all_br_forms
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - working-directory: all_validations_br
+        run: dart tool/create_ci_overrides.dart
+      - working-directory: all_validations_br
+        run: dart run tool/check_package_boundaries.dart
+      - working-directory: all_validations_br
+        run: dart run tool/check_sensitive_files.dart
+      - working-directory: all_validations_br
+        run: dart run tool/check_examples.dart
+      - working-directory: all_validations_br
+        run: dart run tool/analyze_all_packages.dart
+      - working-directory: all_validations_br
+        run: dart run tool/test_all_packages.dart
+      - working-directory: all_validations_br
+        run: dart run tool/coverage_summary.dart
+      - run: dart pub global activate dartdoc 9.0.8
+      - working-directory: all_validations_br
+        run: dart run tool/doc_all_packages.dart
+      - working-directory: all_validations_br
+        run: dart run tool/publish_dry_run_all.dart
+      - working-directory: all_validations_br
+        run: git diff --check

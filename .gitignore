@@ -4,6 +4,10 @@
 .dart_tool/
 .packages
 build/
+coverage/
+pubspec_overrides.yaml
+example/pubspec_overrides.yaml
+*.iml
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
 

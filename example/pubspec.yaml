@@ -1,55 +1,24 @@
-name: example
-description: A new Flutter project.
-
-publish_to: 'none' 
-
+name: all_validations_br_example
+description: Integrated example for the all_validations_br compatibility aggregator.
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
+  all_observer: ^1.5.8
+  all_validations_br:
+    path: ../
+  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
-  all_validations_br: 
-    path: ../
 
 dev_dependencies:
+  all_observer_lint: ^0.6.1
+  custom_lint: ^0.8.0
   flutter_test:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
-
-  
-  
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  

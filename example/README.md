@@ -1,16 +1,20 @@
-# example
+# Exemplo integrado
 
-A new Flutter project.
+Aplicação Flutter que demonstra validações, máscara com `BrZod`, `Result`,
+logging em memória, utilitários legados e criptografia autenticada por meio do
+agregador `all_validations_br`.
 
-## Getting Started
+A seção crypto usa `AllCrypto` e `CryptEnvelope` v2; a chave sintética permanece
+somente em memória e nunca integra o envelope exibido.
 
-This project is a starting point for a Flutter application.
+A demonstração de atualização automática da saída criptográfica usa `all_observer` somente neste aplicativo. `Observable` e `Computed` vivem no controller, os `Observer`s são locais e todos os recursos são descartados. Essa dependência não faz parte de nenhum manifesto publicável do ecossistema.
 
-A few resources to get you started if this is your first Flutter project:
+```shell
+flutter pub get
+flutter analyze
+flutter test
+dart run custom_lint
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+O exemplo usa dados sintéticos. Não registre nem copie chaves, documentos pessoais ou payloads de produção. Para dependências menores em aplicações novas, consulte a seleção de pacotes no README da raiz.

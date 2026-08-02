@@ -1,49 +1,18 @@
-/// Módulo de validação fluente com foco em documentos brasileiros.
+/// Biblioteca de compatibilidade para a validação fluente [BrZod].
 ///
-/// Zero dependências externas — implementado do zero, autocontido
-/// e estruturado para eventual extração como pacote standalone.
+/// Novos projetos devem importar o barrel estreito do pacote especializado:
+/// `package:all_br_validations/br_zod.dart`.
 ///
-/// ## Importação
+/// O import histórico continua mantido e preserva `BrZod`, seu callback,
+/// locale, resultado de mapas e política de senha, exatamente como o barrel
+/// original. Não há versão de remoção aprovada.
 ///
 /// ```dart
 /// import 'package:all_validations_br/br_zod.dart';
+///
+/// final validator = BrZod().required().cpf().build;
 /// ```
-///
-/// ## Uso básico em TextFormField
-///
-/// ```dart
-/// TextFormField(
-///   validator: BrZod().required().email().build,
-/// )
-/// ```
-///
-/// ## Documentos brasileiros
-///
-/// ```dart
-/// BrZod().required().cpf().build
-/// BrZod().required().cnpj().build
-/// BrZod().optional().cep().build
-/// ```
-///
-/// ## Validação de Map (APIs / Shelf)
-///
-/// ```dart
-/// final result = BrZod.validate(
-///   data: {'email': 'foo', 'cpf': '111'},
-///   params: {
-///     'email': BrZod().required().email(),
-///     'cpf':   BrZod().required().cpf(),
-///   },
-/// );
-/// if (result.isNotValid) print(result.errors);
-/// ```
-///
-/// ## Locale customizado
-///
-/// ```dart
-/// BrZod.defaultLocale = MyLocale(); // global
-/// BrZod(locale: MyLocale()).required().cpf().build // por instância
-/// ```
+@Deprecated('Use package:all_br_validations/br_zod.dart.')
 library br_zod;
 
-export 'src/br_zod/br_zod.dart';
+export 'package:all_br_validations/br_zod.dart';

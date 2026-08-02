@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:all_validations_br/all_validations_br.dart';
+import 'package:all_br_validations/all_br_validations.dart';
 import 'package:flutter/foundation.dart';
 
 class HelperUtil {
@@ -434,7 +434,9 @@ class HelperUtil {
     return _formatUuid(bytes);
   }
 
-  /// Gera um UUID versão 3 (MD5 hash do namespace + nome).
+  /// Gera um identificador legado determinístico com bits de versão 3.
+  ///
+  /// O digest histórico é simplificado e não implementa o UUID v3 normativo.
   static String generateUUIDv3(String namespace, String name) {
     final nsBytes = _uuidToBytes(namespace);
     final nameBytes = utf8.encode(name);
@@ -447,7 +449,9 @@ class HelperUtil {
     return _formatUuid(hash);
   }
 
-  /// Gera um UUID versão 5 (SHA-1 hash do namespace + nome).
+  /// Gera um identificador legado determinístico com bits de versão 5.
+  ///
+  /// O digest histórico é simplificado e não implementa o UUID v5 normativo.
   static String generateUUIDv5(String namespace, String name) {
     final nsBytes = _uuidToBytes(namespace);
     final nameBytes = utf8.encode(name);
@@ -481,13 +485,13 @@ class HelperUtil {
     return bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
   }
 
-  /// Implementação simples de MD5 para criar UUID v3 sem pacotes externos.
+  /// Digest legado simplificado usado pelo identificador com bits v3.
   static List<int> _md5Hash(List<int> input) {
     int digest = input.fold<int>(0, (a, b) => (a + b) % 256);
     return List<int>.generate(16, (i) => (digest + i) % 256);
   }
 
-  /// Implementação simples de SHA-1 para criar UUID v5 sem pacotes externos.
+  /// Digest legado simplificado usado pelo identificador com bits v5.
   static List<int> _sha1Hash(List<int> input) {
     int digest = input.fold<int>(0, (a, b) => (a * 31 + b) % 256);
     return List<int>.generate(16, (i) => (digest + i) % 256);

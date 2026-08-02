@@ -15,17 +15,18 @@
 /// |--------|--------------------|
 /// | Validações | `AllValidations` — CPF, CNPJ, CNH, RENAVAM, PIS, Título, CEP, Placa, PIX, EAN-13 |
 /// | Formatadores | `BrFormatter`, `BrData` — CPF, CNPJ, moeda, datas (sem `intl`) |
-/// | Máscaras | `BrInputMask` + 23 máscaras especializadas para `TextField` |
+/// | Máscaras | `BrInputMask` + 24 máscaras especializadas para `TextField` |
 /// | CNPJ 2026 | `CnpjAlfanumerico` — IN RFB 2229/2024: validação, formatação, geração |
 /// | Contrato | `Contract`, `ValidationNotifiable` — validação acumulativa de entidades |
 /// | Result | `Result<F,S>`, `ContractValidations` — programação orientada a trilhos |
 /// | Utilitários | `HelperUtil` — UUID, JWT, PIX, datas, strings, maioridade |
-/// | Criptografia | `CryptUtil` — ChaCha20-Poly1305, AES-GCM, AES-CBC, AES-CTR, SHA-256, HMAC-SHA256 |
+/// | Criptografia | `AllCrypto`/`CryptEnvelope` — chave externa e payload v2; `CryptUtil` legado |
 /// | Modelos | `AllValidationsGetMonth`, `AllValidationsGetStates`, `AllValidationsGetRegions` |
 ///
-/// ## Módulos com importação separada
+/// ## Barrels históricos
 ///
-/// Estes módulos têm barrel próprio e **não** estão incluídos aqui:
+/// Estes imports continuam disponíveis, embora o barrel principal também
+/// exponha os símbolos dos cinco pacotes especializados:
 ///
 /// ```dart
 /// import 'package:all_validations_br/br_zod.dart';  // validador fluente
@@ -40,7 +41,7 @@
 /// AllValidations.isCpf('529.982.247-25'); // true
 ///
 /// // Máscara em TextField
-/// TextField(inputFormatters: [BrInputMask.cpf()])
+/// TextField(inputFormatters: [CpfMask()])
 ///
 /// // Contract em entidade
 /// Contract().isEmail(email, 'email', 'E-mail inválido').hasMinLen(nome, 2, 'nome', 'Mínimo 2')
@@ -48,50 +49,18 @@
 /// // Result assíncrono
 /// final r = await Result.tryAsync(() => dio.get('/api'), onError: (e, _) => '$e');
 ///
-/// // Criptografia — ChaCha20-Poly1305 (padrão)
-/// final enc = CryptUtil.encryptToBase64('segredo');
-/// final dec = CryptUtil.decryptFromBase64(enc);
-///
-/// // Criptografia — AES-256-GCM
-/// final payload = CryptUtil.encryptAesGcm(utf8.encode('segredo'));
-/// final plain   = CryptUtil.decryptAny(payload); // dispatch automático
+/// // Criptografia — ChaCha20-Poly1305 e envelope v2 (padrão)
+/// final key = AllCrypto.generateKey(); // mantenha em um cofre externo
+/// final envelope = AllCrypto.encryptText('segredo', key: key);
+/// final encoded = envelope.toBase64(); // nunca inclui a chave
+/// final decoded = CryptEnvelope.fromBase64(encoded);
+/// final plain = AllCrypto.decryptText(decoded, key: key);
 /// ```
 library all_validations_br;
 
-export 'src/cnpj/cnpj_alfanumerico.dart';
-export 'src/br_formatter/br_formatter.dart';
-export 'src/br_formatter/br_data.dart';
-export 'src/masks/br_input_mask.dart';
-export 'src/masks/cpf_mask.dart';
-export 'src/masks/cnpj_mask.dart';
-export 'src/masks/cnpj_alfa_mask.dart';
-export 'src/masks/phone_mask.dart';
-export 'src/masks/cep_mask.dart';
-export 'src/masks/date_mask.dart';
-export 'src/masks/time_mask.dart';
-export 'src/masks/currency_mask.dart';
-export 'src/masks/card_mask.dart';
-export 'src/masks/card_expiry_mask.dart';
-export 'src/masks/expiry_mask.dart';
-export 'src/masks/cpf_ou_cnpj_mask.dart';
-export 'src/masks/placa_mask.dart';
-export 'src/masks/km_mask.dart';
-export 'src/masks/centavos_mask.dart';
-export 'src/masks/ncm_mask.dart';
-export 'src/masks/cns_mask.dart';
-export 'src/masks/altura_mask.dart';
-export 'src/masks/peso_mask.dart';
-export 'src/masks/temperatura_mask.dart';
-export 'src/masks/cest_mask.dart';
-export 'src/masks/iof_mask.dart';
-export 'src/masks/nup_mask.dart';
-export 'src/masks/cert_nascimento_mask.dart';
-export 'src/validator/all_validations.dart';
-export 'src/models/models.dart';
-export './src/notifications/notifiable.dart';
-export './src/validator/contract.dart';
-export './src/validator/contract_validations.dart';
+export 'package:all_br_validations/all_br_validations.dart';
+export 'package:all_br_forms/all_br_forms.dart';
+export 'package:all_crypto/all_crypto.dart';
+export 'package:all_logger/all_logger.dart';
 export './src/helper_utils/helper_util.dart';
-export './src/crypt/crypt_util.dart';
-export './src/result/result_exports.dart';
-export 'src/extensions/extensions.dart';
+export 'package:all_result/all_result.dart';

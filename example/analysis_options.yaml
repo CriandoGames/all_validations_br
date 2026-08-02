@@ -1,0 +1,6 @@
+include: package:all_observer_lint/recommended.yaml
+
+custom_lint:
+  rules:
+    - all_observer:
+        language: pt-BR
