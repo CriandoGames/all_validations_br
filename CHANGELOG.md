@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.0.1
+
+### Correções
+
+- `HelperUtil.validatePixKey` reconhece CNPJ válido com ou sem máscara.
+- `HelperUtil.maskPixKey` mascara CNPJ e usa `***` para entradas desconhecidas não vazias, sem devolver o dado original.
+- `HelperUtil.isJwtExpired` trata `exp` ausente ou inválido como expirado, aceita datas numéricas seguras e considera a igualdade como expirada.
+- Adicionado `referenceTime` opcional para testes determinísticos de expiração JWT.
+- Os mínimos de `all_br_validations` e `all_logger` foram elevados para `1.0.1`.
+- O CI integrado também pode ser executado manualmente e diariamente, sem publicação automática.
+
 ## 5.0.0
 
 - Conversão do `all_validations_br` em agregador mantido e fachada de compatibilidade.

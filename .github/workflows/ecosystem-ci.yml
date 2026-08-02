@@ -7,6 +7,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
 
 jobs:
   validate:
@@ -20,22 +23,27 @@ jobs:
         with:
           repository: CriandoGames/all_crypto
           path: all_crypto
+          ref: main
       - uses: actions/checkout@v4
         with:
           repository: CriandoGames/all_logger
           path: all_logger
+          ref: main
       - uses: actions/checkout@v4
         with:
           repository: CriandoGames/all_result
           path: all_result
+          ref: main
       - uses: actions/checkout@v4
         with:
           repository: CriandoGames/all_br_validations
           path: all_br_validations
+          ref: main
       - uses: actions/checkout@v4
         with:
           repository: CriandoGames/all_br_forms
           path: all_br_forms
+          ref: main
       - uses: subosito/flutter-action@v2
         with:
           channel: stable

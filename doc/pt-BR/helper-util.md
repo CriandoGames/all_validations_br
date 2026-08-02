@@ -149,8 +149,15 @@ final payload = HelperUtil.decodeJWT(token);
 // { 'sub': '1234567890', 'role': 'admin', 'exp': 1893456000 }
 
 // Verifica se o token está expirado (compara claim 'exp' com DateTime.now())
-// Retorna true se expirado OU se não houver claim 'exp'
+// Retorna true se expirado OU se 'exp' estiver ausente ou inválido
 bool expirado = HelperUtil.isJwtExpired(token);
+
+// referenceTime é opcional e permite testes determinísticos
+final referencia = DateTime.utc(2030, 1, 1);
+bool expiradoNaReferencia = HelperUtil.isJwtExpired(
+  token,
+  referenceTime: referencia,
+);
 
 // Verifica se uma claim específica existe no payload
 bool temRole = HelperUtil.hasJwtClaim(token, 'role'); // true
@@ -161,6 +168,11 @@ dynamic userId = HelperUtil.getJwtClaim(token, 'sub');    // '1234567890'
 dynamic exp    = HelperUtil.getJwtClaim(token, 'exp');    // 1893456000 (int)
 dynamic nulo   = HelperUtil.getJwtClaim(token, 'naoexiste'); // null
 ```
+
+`exp` pode ser `int`, um `num` finito ou uma string inteira. Outros valores são
+tratados como expirados sem lançar exceção. A comparação usa `>=`: quando o
+tempo de referência é exatamente igual a `exp`, o token já está expirado. A
+leitura continua sem validar assinatura, emissor, audiência ou algoritmo.
 
 ---
 
@@ -198,9 +210,11 @@ final ok = HelperUtil.validatePassword(
 Valida e identifica o tipo de uma chave PIX seguindo a ordem de validação do BACEN.
 
 ```dart
-// Retorna: 'CPF', 'Celular', 'Email', 'Chave Aleatória', ou null
+// Retorna: 'CPF', 'CNPJ', 'Celular', 'Email', 'Chave Aleatória', ou null
 HelperUtil.validatePixKey('992.864.791-74');                          // 'CPF'
 HelperUtil.validatePixKey('99286479174');                             // 'CPF' (sem máscara)
+HelperUtil.validatePixKey('12.345.678/0001-95');                     // 'CNPJ'
+HelperUtil.validatePixKey('12345678000195');                          // 'CNPJ'
 HelperUtil.validatePixKey('+5511912345678');                          // 'Celular'
 HelperUtil.validatePixKey('user@example.com');                        // 'Email'
 HelperUtil.validatePixKey('123e4567-e89b-4d3a-a456-426614174000');   // 'Chave Aleatória'
@@ -211,6 +225,9 @@ HelperUtil.validatePixKey('');                                        // null
 HelperUtil.maskPixKey('99286479174');
 // '992.***.***-74'
 
+HelperUtil.maskPixKey('12.345.678/0001-95');
+// '12.***.***/****-95'
+
 HelperUtil.maskPixKey('+5511912345678');
 // '+5511*****678'
 
@@ -219,13 +236,17 @@ HelperUtil.maskPixKey('user@example.com');
 
 HelperUtil.maskPixKey('123e4567-e89b-4d3a-a456-426614174000');
 // '123e4567-****-****-****-426614174000'
+
+HelperUtil.maskPixKey('valor desconhecido'); // '***'
+HelperUtil.maskPixKey('');                    // ''
 ```
 
 **Ordem de validação (conforme BACEN):**
 1. **CPF** — 11 dígitos com dígitos verificadores válidos (aceita com ou sem máscara)
-2. **Celular** — formato E.164 obrigatório: `+55` + DDD + número iniciando com `9`
-3. **E-mail** — endereço válido
-4. **Chave aleatória** — UUID v4
+2. **CNPJ** — 14 dígitos com dígitos verificadores válidos (aceita com ou sem máscara)
+3. **Celular** — formato E.164 obrigatório: `+55` + DDD + número iniciando com `9`
+4. **E-mail** — endereço válido
+5. **Chave aleatória** — UUID v4
 
 > Se o valor contiver apenas dígitos, e-mail e chave aleatória são descartados imediatamente (otimização).
 
@@ -284,7 +305,7 @@ Os métodos abaixo ainda funcionam mas estão marcados como `@Deprecated` e **se
 | `generateUUIDv3(ns, name)` | `String` | identificador legado determinístico com bits v3 |
 | `generateUUIDv5(ns, name)` | `String` | identificador legado determinístico com bits v5 |
 | `decodeJWT(token)` | `Map?` | Payload do JWT |
-| `isJwtExpired(token)` | `bool` | JWT expirado? |
+| `isJwtExpired(token, {referenceTime})` | `bool` | JWT expirado? |
 | `hasJwtClaim(token, claim)` | `bool` | Claim existe? |
 | `getJwtClaim(token, claim)` | `dynamic` | Valor da claim |
 | `encryptPassword(pass, key, salt)` | `String` | Hash simples |

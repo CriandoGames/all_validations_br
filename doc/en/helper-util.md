@@ -139,13 +139,19 @@ material at the security boundary.
 ```dart
 final payload = HelperUtil.decodeJWT(token); // Map or null
 final expired = HelperUtil.isJwtExpired(token);
+final expiredAtReference = HelperUtil.isJwtExpired(
+  token,
+  referenceTime: DateTime.utc(2030, 1, 1),
+);
 final hasRole = HelperUtil.hasJwtClaim(token, 'role');
 final role = HelperUtil.getJwtClaim(token, 'role');
 ```
 
-`isJwtExpired` compares the `exp` claim with the current time and returns true
-for malformed/missing expiration according to the legacy contract. None of
-these methods makes an untrusted claim authoritative.
+`isJwtExpired` accepts an `int`, finite `num`, or integer string `exp` value.
+Missing, malformed, or unsupported values are treated as expired without
+throwing. The comparison uses `>=`, so a token expires exactly at the `exp`
+instant. `referenceTime` is optional and enables deterministic tests. None of
+these methods validates a signature or makes an untrusted claim authoritative.
 
 ## Legacy password helpers
 
@@ -175,10 +181,12 @@ salt unless its entropy source has been independently reviewed for that use.
 ## PIX keys
 
 `validatePixKey` returns a type label or null. The implemented order is CPF,
-E.164 Brazilian mobile, email, then UUID v4 random key.
+CNPJ, E.164 Brazilian mobile, email, then UUID v4 random key.
 
 ```dart
 HelperUtil.validatePixKey('992.864.791-74');
+HelperUtil.validatePixKey('12.345.678/0001-95');
+HelperUtil.validatePixKey('12345678000195');
 HelperUtil.validatePixKey('+5511912345678');
 HelperUtil.validatePixKey('user@example.com');
 HelperUtil.validatePixKey(
@@ -193,12 +201,16 @@ registration/ownership.
 
 ```dart
 HelperUtil.maskPixKey('99286479174');
+HelperUtil.maskPixKey('12.345.678/0001-95'); // 12.***.***/****-95
 HelperUtil.maskPixKey('+5511912345678');
 HelperUtil.maskPixKey('user@example.com');
+HelperUtil.maskPixKey('unknown non-empty value'); // ***
+HelperUtil.maskPixKey(''); // empty
 ```
 
-Masking reduces display exposure but does not anonymize, encrypt, or authorize
-storage of a real key.
+Unknown non-empty values are never returned in clear text; the safe fallback is
+`***`, while an empty input remains empty. Masking reduces display exposure but
+does not anonymize, encrypt, or authorize storage of a real key.
 
 ## Platform information
 

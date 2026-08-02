@@ -22,16 +22,29 @@ class HelperUtil {
   }
 
   /// Decodifica um JWT (Valida se está expirado) e retorna seu payload.
-  static bool isJwtExpired(String token) {
+  static bool isJwtExpired(
+    String token, {
+    DateTime? referenceTime,
+  }) {
     final payload = decodeJWT(token);
     if (payload == null || !payload.containsKey('exp')) {
       return true; // Considera expirado se não houver data de expiração
     }
 
-    final expTimestamp = payload['exp'] as int;
-    final currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final expirationSeconds = _parseJwtNumericDate(payload['exp']);
+    if (expirationSeconds == null) return true;
 
-    return currentTimestamp > expTimestamp;
+    final now = referenceTime ?? DateTime.now().toUtc();
+    final nowSeconds = now.millisecondsSinceEpoch ~/ 1000;
+
+    return nowSeconds >= expirationSeconds;
+  }
+
+  static int? _parseJwtNumericDate(dynamic value) {
+    if (value is int) return value;
+    if (value is num && value.isFinite) return value.toInt();
+    if (value is String) return int.tryParse(value);
+    return null;
   }
 
   /// Decodifica um JWT e verifica se contém uma reivindicação específica.
@@ -77,9 +90,10 @@ class HelperUtil {
   ///
   /// Ordem de validação:
   /// 1. CPF (11 dígitos com dígitos verificadores válidos)
-  /// 2. Celular (formato E.164: +55 + DDD + 9XXXXXXXX)
-  /// 3. E-mail
-  /// 4. Chave aleatória (UUID v4)
+  /// 2. CNPJ (14 dígitos com dígitos verificadores válidos)
+  /// 3. Celular (formato E.164: +55 + DDD + 9XXXXXXXX)
+  /// 4. E-mail
+  /// 5. Chave aleatória (UUID v4)
   ///
   /// Otimização: se a chave contiver apenas dígitos (após limpeza), e-mail e
   /// chave aleatória são descartados imediatamente.
@@ -93,16 +107,19 @@ class HelperUtil {
     // 1. CPF — valida dígitos verificadores via AllValidations.isCpf
     if (AllValidations.isCpf(key)) return 'CPF';
 
-    // 2. Celular — formato E.164 exigido pelo BACEN: +55 + DDD (2) + 9XXXXXXXX (9 dígitos)
+    // 2. CNPJ — valida dígitos verificadores via AllValidations.isCnpj
+    if (AllValidations.isCnpj(key)) return 'CNPJ';
+
+    // 3. Celular — formato E.164 exigido pelo BACEN: +55 + DDD (2) + 9XXXXXXXX (9 dígitos)
     if (RegExp(r'^\+55\d{2}9\d{8}$').hasMatch(key)) return 'Celular';
 
     // Se só tem dígitos, não pode ser e-mail nem chave aleatória
     if (onlyDigits) return null;
 
-    // 3. E-mail
+    // 4. E-mail
     if (AllValidations.isEmail(key)) return 'Email';
 
-    // 4. Chave aleatória — UUID v4 conforme padrão BACEN
+    // 5. Chave aleatória — UUID v4 conforme padrão BACEN
     if (RegExp(
       r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
       caseSensitive: false,
@@ -117,15 +134,23 @@ class HelperUtil {
   ///
   /// Exemplos:
   /// - CPF `99286479174` → `992.***.***-74`
+  /// - CNPJ `12.345.678/0001-95` → `12.***.***/****-95`
   /// - Celular `+5511912345678` → `+5511*****678`
   /// - Email `user@example.com` → `us**@example.com`
   /// - Chave aleatória UUID → `123e4567-****-****-****-426614174000`
   static String maskPixKey(String key) {
+    if (key.isEmpty) return '';
+
     final type = validatePixKey(key);
 
     if (type == 'CPF') {
       final n = key.replaceAll(RegExp(r'[^0-9]'), '');
       return '${n.substring(0, 3)}.***.***-${n.substring(9)}';
+    }
+
+    if (type == 'CNPJ') {
+      final n = key.replaceAll(RegExp(r'[^0-9]'), '');
+      return '${n.substring(0, 2)}.***.***/****-${n.substring(12)}';
     }
 
     if (type == 'Celular') {
@@ -149,7 +174,7 @@ class HelperUtil {
       }
     }
 
-    return key; // Tipo desconhecido: retorna sem mascarar
+    return '***';
   }
 
   /// Verifica se a data de nascimento corresponde a uma pessoa maior de [minAge] anos (padrão: 18).

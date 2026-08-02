@@ -1,6 +1,6 @@
 name: all_validations_br
 description: Complete Flutter toolkit for Brazilian validations, form masks, typed results, structured logging, and authenticated cryptography.
-version: 5.0.0
+version: 5.0.1
 homepage: https://github.com/CriandoGames/all_validations_br
 repository: https://github.com/CriandoGames/all_validations_br
 issue_tracker: https://github.com/CriandoGames/all_validations_br/issues
@@ -18,9 +18,9 @@ environment:
 
 dependencies:
   all_br_forms: ">=1.0.0 <2.0.0"
-  all_br_validations: ">=1.0.0 <2.0.0"
+  all_br_validations: ">=1.0.1 <2.0.0"
   all_crypto: ">=1.0.1 <2.0.0"
-  all_logger: ">=1.0.0 <2.0.0"
+  all_logger: ">=1.0.1 <2.0.0"
   all_result: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
