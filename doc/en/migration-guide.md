@@ -2,7 +2,7 @@
 
 ## No immediate source change
 
-Upgrade to `all_validations_br: ^4.6.0` and keep the current import. Historical public APIs remain re-exported and covered by compilation tests.
+Upgrade to `all_validations_br: ^5.0.0` and keep the current import. Historical public APIs remain re-exported and covered by compilation tests.
 
 ## Modular migration
 

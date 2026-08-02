@@ -2,7 +2,7 @@
 
 ## Sem alteração imediata
 
-Atualize para `all_validations_br: ^4.6.0` e mantenha o import atual. As APIs públicas históricas continuam reexportadas e cobertas por testes de compilação.
+Atualize para `all_validations_br: ^5.0.0` e mantenha o import atual. As APIs públicas históricas continuam reexportadas e cobertas por testes de compilação.
 
 ## Migração modular
 

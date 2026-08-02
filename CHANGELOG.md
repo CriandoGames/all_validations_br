@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.6.0
+## 5.0.0
 
 - Conversão do `all_validations_br` em agregador mantido e fachada de compatibilidade.
 - Extração de `all_result`, `all_crypto`, `all_logger`, `all_br_validations` e `all_br_forms` na versão 1.0.0.
@@ -10,6 +10,8 @@
   depreciação das serializações crypto legadas que embutem a chave.
 - Padronização dos READMEs bilíngues e heroes do ecossistema.
 - Inclusão de documentação bilíngue, CI, verificações de fronteira e plano de publicação manual.
+- Atualização major motivada pela nova arquitetura modular; os imports públicos
+  históricos permanecem disponíveis por reexports.
 
 ## 4.5.2
 

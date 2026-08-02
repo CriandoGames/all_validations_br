@@ -42,7 +42,7 @@ separadamente ao usar o toolkit.
 
 ```yaml
 dependencies:
-  all_validations_br: ^4.6.0
+  all_validations_br: ^5.0.0
 ```
 
 ```dart
