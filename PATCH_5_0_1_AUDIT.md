@@ -3,7 +3,8 @@
 Escopo validado: correções críticas e médias solicitadas para
 `all_br_validations`, `all_logger` e `all_validations_br`, além da correção
 documental suplementar solicitada para `all_result`. Nenhuma publicação, tag,
-release ou push foi realizada.
+release ou push foi realizada pelo agente. Após a validação, as versões
+`all_br_validations 1.0.1` e `all_logger 1.0.1` foram publicadas externamente.
 
 ## all_br_validations
 
@@ -14,7 +15,7 @@ release ou push foi realizada.
 - Testes antes: regressão de telefone confirmou 7 falhas de permissividade/divergência; os 5 comparadores ordenáveis lançaram `NoSuchMethodError` para tipos incompatíveis.
 - Testes depois: 23 testes isolados novos e suíte completa com 739 testes aprovados.
 - Analyzer: aprovado, sem issues.
-- Cobertura: 951/1151 linhas, 82,62%.
+- Cobertura LCOV regenerada: 968/1143 linhas, 84,69%.
 - Dartdoc: aprovado, 0 warnings e 0 errors.
 - Publish dry-run: aprovado, 0 warnings.
 
@@ -27,7 +28,7 @@ release ou push foi realizada.
 - Testes antes: os casos `maxRecords: 0` e `maxRecords: -1` falharam porque o construtor aceitava ambos.
 - Testes depois: 6 testes isolados de `BrMemoryOutput` e suíte completa com 36 testes aprovados.
 - Analyzer: aprovado, sem issues.
-- Cobertura: 118/151 linhas, 78,15%.
+- Cobertura LCOV regenerada: 146/173 linhas, 84,39%.
 - Dartdoc: aprovado, 0 warnings e 0 errors.
 - Publish dry-run: aprovado, 0 warnings.
 
@@ -40,7 +41,7 @@ release ou push foi realizada.
 - Testes antes: a regressão documental falhou porque o comentário de `FutureResult` usava o método nativo `Future.then` e não continha a composição pretendida com `flatMapAsync`.
 - Testes depois: teste isolado aprovado e suíte completa com 70 testes aprovados.
 - Analyzer: aprovado, sem issues.
-- Cobertura: 109/141 linhas, 77,30%.
+- Cobertura LCOV regenerada: 111/141 linhas, 78,72%.
 - Dartdoc: aprovado, 0 warnings e 0 errors; o exemplo gerado usa `flatMapAsync(checkStatus)`.
 - Publish dry-run: aprovado, 0 warnings.
 
@@ -69,13 +70,24 @@ release ou push foi realizada.
 | Pix sem CNPJ | all_validations_br | sim | sim | 5.0.1 |
 | máscara expondo dado | all_validations_br | sim | sim | 5.0.1 |
 | JWT com `exp` incompatível | all_validations_br | sim | sim | 5.0.1 |
-| CI integrado incompleto | repositório | N/A (inspeção do workflow) | sim | sem versão |
+| CI sem LCOV de pacote Dart | repositório | sim ([run 30762959844](https://github.com/CriandoGames/all_validations_br/actions/runs/30762959844/job/91536666304)) | sim | sem versão |
+
+## Correção do pipeline LCOV
+
+- Falha reproduzida: o run `30762959844` chegou ao resumo sem `all_result/coverage/lcov.info` e encerrou com código 255.
+- Causa raiz: `dart test --coverage=coverage` não garantia LCOV no SDK do GitHub Actions, não havia conversão explícita e relatórios antigos não eram removidos localmente.
+- Pacotes Dart: a cobertura bruta agora é convertida explicitamente com `coverage:format_coverage` 1.15.1.
+- Pacotes Flutter: continuam produzindo LCOV com `flutter test --coverage`.
+- Antes de cada pacote: o diretório `coverage/` é removido.
+- Depois de cada pacote: `lcov.info` é validado imediatamente e a mensagem identifica o pacote responsável.
+- Regressão: 3 testes aprovados para limpeza, ausência do relatório e totais válidos.
 
 ## Validação integrada
 
 - `check_package_boundaries.dart`: aprovado.
 - `analyze_all_packages.dart`: seis pacotes aprovados, sem alterações de formatação e sem issues.
-- `test_all_packages.dart`: seis pacotes aprovados com cobertura.
+- `test_all_packages.dart`: seis pacotes aprovados após limpeza; conversão explícita dos quatro pacotes Dart e LCOV direto dos dois pacotes Flutter.
+- `coverage_summary.dart`: seis pacotes presentes e relatórios válidos.
 - `check_examples.dart`: exemplos Dart e Flutter aprovados; testes de widget e `custom_lint` aprovados.
 - `doc_all_packages.dart`: seis pacotes documentados, sem erros. Foram preservados warnings de links já existentes em documentação legada.
 - `publish_dry_run_all.dart`: seis dry-runs aprovados; nenhum pacote foi publicado.
@@ -86,10 +98,10 @@ release ou push foi realizada.
 
 | Pacote | Linhas cobertas | Linhas instrumentadas | Cobertura |
 |---|---:|---:|---:|
-| all_result | 109 | 141 | 77,30% |
+| all_result | 111 | 141 | 78,72% |
 | all_crypto | 767 | 774 | 99,10% |
-| all_logger | 118 | 151 | 78,15% |
-| all_br_validations | 951 | 1151 | 82,62% |
+| all_logger | 146 | 173 | 84,39% |
+| all_br_validations | 968 | 1143 | 84,69% |
 | all_br_forms | 261 | 274 | 95,26% |
 | all_validations_br | 198 | 221 | 89,59% |
 
@@ -103,10 +115,10 @@ release ou push foi realizada.
 
 ## Ordem manual futura de publicação
 
-1. `all_result 1.0.1`
-2. `all_br_validations 1.0.1`
-3. `all_logger 1.0.1`
-4. `all_validations_br 5.0.1`
+1. `all_result 1.0.1` — pendente.
+2. `all_br_validations 1.0.1` — publicado externamente.
+3. `all_logger 1.0.1` — publicado externamente.
+4. `all_validations_br 5.0.1` — pendente e deve permanecer por último.
 
 O agregador deve ser publicado por último, pois exige
 `all_br_validations >=1.0.1` e `all_logger >=1.0.1`.

@@ -58,6 +58,7 @@ jobs:
         run: dart run tool/check_examples.dart
       - working-directory: all_validations_br
         run: dart run tool/analyze_all_packages.dart
+      - run: dart pub global activate coverage 1.15.1
       - working-directory: all_validations_br
         run: dart run tool/test_all_packages.dart
       - working-directory: all_validations_br
