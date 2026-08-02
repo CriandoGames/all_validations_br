@@ -13,6 +13,26 @@
 - Atualização major motivada pela nova arquitetura modular; os imports públicos
   históricos permanecem disponíveis por reexports.
 
+### Impacto de migração
+
+- O import principal `package:all_validations_br/all_validations_br.dart` e os
+  entry points públicos históricos continuam compilando.
+- Imports privados em `package:all_validations_br/src/...` deixam de existir.
+  Eles nunca fizeram parte da API pública e devem ser substituídos pelo barrel
+  principal ou pelo pacote especializado responsável.
+- `validation.dart`, `br_zod.dart`, `br_logger.dart` e
+  `regions_validations.dart` continuam disponíveis, mas agora emitem aviso de
+  depreciação para orientar novos projetos aos pacotes especializados.
+- `BrLogger()` passa a bloquear todos os logs em release por padrão. Aplicações
+  que dependem de logs em produção precisam habilitá-los explicitamente com
+  `BrDevelopmentFilter(allowInRelease: true, ...)` ou `BrProductionFilter`.
+- Os printers do logger exibem ícones por padrão; integrações que analisam o
+  texto formatado devem configurar `showIcons: false` para preservar seu
+  formato anterior.
+- Payloads históricos de `CryptUtil` continuam legíveis. Suas serializações que
+  embutem a chave estão depreciadas; dados novos devem usar `AllCrypto` e
+  `CryptEnvelope` com chave externa.
+
 ## 4.5.2
 
 ### Correções finais de validação

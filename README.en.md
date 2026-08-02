@@ -139,6 +139,10 @@ The main barrel and the historical `validation.dart`, `br_zod.dart`,
 available. `HelperUtil` stays in the aggregator for compatibility; prefer the
 specialized APIs in new code.
 
+When migrating from 4.5.2, deep imports under `src/` must be replaced, and the
+logger is now fully disabled in release builds by default. See the
+[migration guide](https://github.com/CriandoGames/all_validations_br/blob/main/doc/en/migration-guide.md).
+
 ## Integrated example
 
 The [example application](https://github.com/CriandoGames/all_validations_br/tree/main/example)
