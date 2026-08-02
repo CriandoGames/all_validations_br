@@ -1,13 +1,14 @@
 # Auditoria do patch 5.0.1
 
 Escopo validado: correções críticas e médias solicitadas para
-`all_br_validations`, `all_logger` e `all_validations_br`. Nenhuma publicação,
-tag, release ou push foi realizada.
+`all_br_validations`, `all_logger` e `all_validations_br`, além da correção
+documental suplementar solicitada para `all_result`. Nenhuma publicação, tag,
+release ou push foi realizada.
 
 ## all_br_validations
 
 - Commit inicial: `1b945802aa918973b3bb86d4f1a42f9ffed22526`
-- Commit final local da implementação: `f49bfbf`
+- Commit final local: `f49bfbf930c62ada70f559a451206587ce3ea642`
 - Versão anterior: `1.0.0`
 - Versão preparada: `1.0.1`
 - Testes antes: regressão de telefone confirmou 7 falhas de permissividade/divergência; os 5 comparadores ordenáveis lançaram `NoSuchMethodError` para tipos incompatíveis.
@@ -20,7 +21,7 @@ tag, release ou push foi realizada.
 ## all_logger
 
 - Commit inicial: `a32ff332119277cebdaaa953ee2a9f50f66b278f`
-- Commit final local da implementação: `32539f0`
+- Commit final local: `32539f0dd37d51fc0f7e55f70735d00185fee1cf`
 - Versão anterior: `1.0.0`
 - Versão preparada: `1.0.1`
 - Testes antes: os casos `maxRecords: 0` e `maxRecords: -1` falharam porque o construtor aceitava ambos.
@@ -30,10 +31,23 @@ tag, release ou push foi realizada.
 - Dartdoc: aprovado, 0 warnings e 0 errors.
 - Publish dry-run: aprovado, 0 warnings.
 
+## all_result
+
+- Commit inicial: `85054a222f2c1560c5488de76328bcc876ca289d`
+- Commit final local: `c82ffd7e2a4ece6381d187086c3c0b97606ac61a`
+- Versão anterior: `1.0.0`
+- Versão preparada: `1.0.1`
+- Testes antes: a regressão documental falhou porque o comentário de `FutureResult` usava o método nativo `Future.then` e não continha a composição pretendida com `flatMapAsync`.
+- Testes depois: teste isolado aprovado e suíte completa com 70 testes aprovados.
+- Analyzer: aprovado, sem issues.
+- Cobertura: 109/141 linhas, 77,30%.
+- Dartdoc: aprovado, 0 warnings e 0 errors; o exemplo gerado usa `flatMapAsync(checkStatus)`.
+- Publish dry-run: aprovado, 0 warnings.
+
 ## all_validations_br
 
 - Commit inicial: `f2ab179172b93ee26d15f62c2447cae2501b7079`
-- Commit final local da implementação: `6ce5d60` (o relatório de auditoria é adicionado em commit posterior).
+- Commit final local: `b711a3cc86a2799206f41605b102e96e61a9ac8a` (implementação em `6ce5d60`; relatório adicionado no commit seguinte).
 - Versão anterior: `5.0.0`
 - Versão preparada: `5.0.1`
 - Testes antes: uma worktree temporária do commit inicial confirmou 4 falhas executadas (CNPJ não reconhecido, CNPJ devolvido sem máscara, valor desconhecido devolvido em aberto e `TypeError` para `exp` string). O teste de igualdade JWT não compilava por ausência de `referenceTime`, e o teste integrado confirmou a versão antiga permissiva de telefone.
@@ -51,6 +65,7 @@ tag, release ou push foi realizada.
 | divergência entre fachadas | all_br_validations | sim | sim | 1.0.1 |
 | comparadores lançando | all_br_validations | sim | sim | 1.0.1 |
 | `maxRecords <= 0` | all_logger | sim | sim | 1.0.1 |
+| exemplo assíncrono de `FutureResult` | all_result | sim | sim | 1.0.1 |
 | Pix sem CNPJ | all_validations_br | sim | sim | 5.0.1 |
 | máscara expondo dado | all_validations_br | sim | sim | 5.0.1 |
 | JWT com `exp` incompatível | all_validations_br | sim | sim | 5.0.1 |
@@ -64,7 +79,8 @@ tag, release ou push foi realizada.
 - `check_examples.dart`: exemplos Dart e Flutter aprovados; testes de widget e `custom_lint` aprovados.
 - `doc_all_packages.dart`: seis pacotes documentados, sem erros. Foram preservados warnings de links já existentes em documentação legada.
 - `publish_dry_run_all.dart`: seis dry-runs aprovados; nenhum pacote foi publicado.
-- `git diff --check`: aprovado nos três pacotes alterados.
+- Após a correção suplementar, `all_result 1.0.1` também foi revalidado isoladamente com formatação, analyzer, suíte, cobertura, dartdoc e publish dry-run.
+- `git diff --check`: aprovado nos quatro pacotes alterados.
 
 ## Cobertura integrada
 
@@ -79,7 +95,7 @@ tag, release ou push foi realizada.
 
 ## Problemas não corrigidos
 
-- O `dart doc` embutido no SDK usa dartdoc 9.0.4 e falhou internamente com `RangeError` ao processar o grande grafo Flutter. A versão 9.0.8 já fixada no workflow concluiu normalmente.
+- No Dart SDK 3.12.2 usado na revalidação, o `dart doc` embutido falhou internamente ao detectar o diretório do SDK (`type 'Null' is not a subtype of type 'String'`). O dartdoc 9.0.8 fixado no workflow concluiu normalmente com o Flutter SDK informado pelo CI; a execução manual equivalente também passou com `--sdk-dir` explícito.
 - O dartdoc do agregador ainda informa 4 warnings de links relativos ao barrel legado `all_validations_br.crypt`; não houve erro de geração.
 - Documentações legadas de alguns pacotes irmãos também produzem warnings de links relativos no dartdoc consolidado. Eles não pertencem ao escopo funcional deste patch.
 - O workflow atualizado foi validado por seus scripts equivalentes locais. A execução agendada real só poderá ser confirmada após o workflow estar no GitHub.
@@ -87,9 +103,10 @@ tag, release ou push foi realizada.
 
 ## Ordem manual futura de publicação
 
-1. `all_br_validations 1.0.1`
-2. `all_logger 1.0.1`
-3. `all_validations_br 5.0.1`
+1. `all_result 1.0.1`
+2. `all_br_validations 1.0.1`
+3. `all_logger 1.0.1`
+4. `all_validations_br 5.0.1`
 
 O agregador deve ser publicado por último, pois exige
 `all_br_validations >=1.0.1` e `all_logger >=1.0.1`.
