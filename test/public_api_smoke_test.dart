@@ -1,4 +1,5 @@
 import 'package:all_validations_br/all_validations_br.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -21,5 +22,34 @@ void main() {
       CnpjAlfanumerico.isValid('12ABC34501DE35'),
       isTrue,
     );
+  });
+
+  test('módulos do toolkit funcionam juntos pelo barrel principal', () {
+    final maskedPhone = const PhoneMask().formatEditUpdate(
+      TextEditingValue.empty,
+      const TextEditingValue(text: '11912345678'),
+    );
+    expect(maskedPhone.text, '(11) 91234-5678');
+    expect(BrZod().required().phone().build(maskedPhone.text), isNull);
+
+    final cpfResult = AllValidations.isCpf('529.982.247-25')
+        ? Result.success<String, String>('529.982.247-25')
+        : Result.failure<String, String>('CPF inválido');
+    expect(cpfResult.isSuccess, isTrue);
+
+    final output = BrMemoryOutput(maxRecords: 1);
+    final logger = BrLogger(
+      tag: 'ToolkitTest',
+      filter: const BrAllFilter(),
+      output: output,
+    );
+    logger.info('fluxo validado');
+    expect(output.records.single.message, 'fluxo validado');
+    logger.dispose();
+
+    final key = AllCrypto.generateKey();
+    final envelope = AllCrypto.encryptText('segredo', key: key);
+    expect(AllCrypto.decryptText(envelope, key: key), 'segredo');
+    expect(envelope.toJson(), isNot(contains('key')));
   });
 }

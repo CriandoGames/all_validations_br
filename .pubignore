@@ -2,10 +2,17 @@
 .dart_tool/
 coverage/
 build/
+test/
+tool/
 doc/api/
 documentation/images/
 pubspec_overrides.yaml
 example/pubspec_overrides.yaml
+example/android/
+example/ios/
+example/web/
+example/test/
+example/analysis_options.yaml
 **/local.properties
 *.log
 *.iml
