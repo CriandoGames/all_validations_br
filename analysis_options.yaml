@@ -8,3 +8,4 @@ linter:
     - curly_braces_in_flow_control_structures
     - prefer_single_quotes
     - avoid_print
+    - public_member_api_docs

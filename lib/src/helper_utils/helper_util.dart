@@ -4,7 +4,16 @@ import 'dart:math';
 import 'package:all_br_validations/all_br_validations.dart';
 import 'package:flutter/foundation.dart';
 
+/// Reúne utilitários estáticos para JWT, PIX, texto, datas e números.
+///
+/// A classe não mantém estado; seus métodos podem ser chamados diretamente.
 class HelperUtil {
+  /// Cria uma instância sem estado para compatibilidade com usos legados.
+  ///
+  /// Todos os utilitários são estáticos, portanto normalmente não é
+  /// necessário instanciar esta classe.
+  HelperUtil();
+
   /// Decodifica um JWT (JSON Web Token) e retorna seu payload.
   static Map<String, dynamic>? decodeJWT(String token) {
     try {
@@ -243,6 +252,9 @@ class HelperUtil {
     return min + rand.nextInt(max - min + 1);
   }
 
+  /// Calcula quanto [value] representa de [total], em porcentagem.
+  ///
+  /// Lança [ArgumentError] quando [total] é zero.
   static double calculatePercentage(double value, double total) {
     if (total == 0) throw ArgumentError('O total não pode ser zero.');
     return (value / total) * 100;

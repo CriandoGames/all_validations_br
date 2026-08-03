@@ -8,7 +8,7 @@ void main() {
     final BrZodCallback validator = BrZod().required().cpf().build;
     const ILocaleBrZod locale = LocalePtBR();
     const policy = PasswordPolicy.strong;
-    const mapResult = BrZodResult(
+    final mapResult = BrZodResult(
       isValid: true,
       errors: {},
       errorList: [],
