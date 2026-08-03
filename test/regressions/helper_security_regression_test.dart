@@ -14,22 +14,29 @@ void main() {
   group('chave Pix CNPJ', () {
     test('validatePixKey reconhece CNPJ formatado', () {
       expect(
-        HelperUtil.validatePixKey('12.345.678/0001-95'),
-        'CNPJ',
+        AllValidations.validatePixKey('12.345.678/0001-95').successValue,
+        PixKeyType.cnpj,
       );
     });
 
     test('validatePixKey reconhece CNPJ sem máscara', () {
       expect(
-        HelperUtil.validatePixKey('12345678000195'),
-        'CNPJ',
+        AllValidations.validatePixKey('12345678000195').successValue,
+        PixKeyType.cnpj,
+      );
+    });
+
+    test('validatePixKey reconhece CNPJ alfanumérico', () {
+      expect(
+        AllValidations.validatePixKey('12ABC34501DE35').successValue,
+        PixKeyType.cnpj,
       );
     });
 
     test('validatePixKey rejeita CNPJ inválido', () {
       expect(
-        HelperUtil.validatePixKey('12.345.678/0001-96'),
-        isNull,
+        AllValidations.validatePixKey('12.345.678/0001-96').isFailure,
+        isTrue,
       );
     });
 
@@ -37,6 +44,13 @@ void main() {
       expect(
         HelperUtil.maskPixKey('12.345.678/0001-95'),
         '12.***.***/****-95',
+      );
+    });
+
+    test('mascara CNPJ alfanumérico sem expor seu conteúdo', () {
+      expect(
+        HelperUtil.maskPixKey('12ABC34501DE35'),
+        '12.***.***/****-35',
       );
     });
 

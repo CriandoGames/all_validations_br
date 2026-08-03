@@ -243,7 +243,7 @@ class _ExamplesPageState extends State<ExamplesPage> {
             ),
             _labelValue(
               'validatePixKey("+5511912345678")',
-              HelperUtil.validatePixKey('+5511912345678') ?? 'inválida',
+              AllValidations.validatePixKey('+5511912345678').successValue.name,
             ),
             _labelValue(
               'maskPixKey("99286479174")',

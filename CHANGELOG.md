@@ -1,5 +1,23 @@
 # Changelog
 
+## 5.0.2
+
+### Breaking changes reexportados
+
+- `AllValidations.validatePixKey` agora retorna
+  `Result<ValidationError, PixKeyType>` em vez de rótulos textuais.
+- `BrZod.type<T>()` agora usa verificação estrita `value is T` e não aceita
+  strings apenas por serem convertíveis.
+
+### Migração e consistência
+
+- Removido `HelperUtil.validatePixKey`; use
+  `AllValidations.validatePixKey`, a fonte única que retorna `PixKeyType`.
+- `HelperUtil.maskPixKey` passou a delegar a classificação ao validador tipado
+  e agora mascara CNPJ PIX alfanumérico.
+- Dependências mínimas atualizadas para `all_br_validations` 1.0.2 e
+  `all_br_forms` 1.0.1.
+
 ## 5.0.1
 
 ### Correções

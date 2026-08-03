@@ -28,8 +28,8 @@ máscaras, contratos de resultado, logs estruturados e criptografia autenticada.
 
 | Área | Pacote incluído | Principais recursos |
 |---|---|---|
-| Validações | [`all_br_validations`](https://pub.dev/packages/all_br_validations) `^1.0.1` | CPF, CNPJ, documentos, `BrZod`, `Contract`, formatadores e modelos BR |
-| Formulários | [`all_br_forms`](https://pub.dev/packages/all_br_forms) `^1.0.0` | 24 máscaras e `TextInputFormatter`s para Flutter |
+| Validações | [`all_br_validations`](https://pub.dev/packages/all_br_validations) `^1.0.2` | CPF, CNPJ, documentos, `BrZod`, `Contract`, formatadores e modelos BR |
+| Formulários | [`all_br_forms`](https://pub.dev/packages/all_br_forms) `^1.0.1` | 24 máscaras e `TextInputFormatter`s para Flutter |
 | Resultados | [`all_result`](https://pub.dev/packages/all_result) `^1.0.0` | `Result<F, S>`, composição síncrona e assíncrona |
 | Logging | [`all_logger`](https://pub.dev/packages/all_logger) `^1.0.1` | níveis, filtros, cores, printers e outputs |
 | Criptografia | [`all_crypto`](https://pub.dev/packages/all_crypto) `^1.0.1` | ChaCha20-Poly1305, AES-GCM, SHA-256, HMAC e envelope v2 |
@@ -42,7 +42,7 @@ separadamente ao usar o toolkit.
 
 ```yaml
 dependencies:
-  all_validations_br: ^5.0.1
+  all_validations_br: ^5.0.2
 ```
 
 ```dart
@@ -136,13 +136,12 @@ grafo de dependências.
 
 O barrel principal e os imports históricos `validation.dart`, `br_zod.dart`,
 `br_logger.dart`, `crypt.dart` e `regions_validations.dart` continuam
-disponíveis. `HelperUtil` permanece no agregador para compatibilidade; prefira
-as APIs especializadas em código novo.
+disponíveis. `HelperUtil` permanece no agregador para compatibilidade, exceto
+por `validatePixKey`, removido na 5.0.2 para eliminar a validação duplicada.
+Use `AllValidations.validatePixKey`, que retorna `PixKeyType`.
 
-Na versão 5.0.1, `HelperUtil` reconhece e mascara CNPJ como chave Pix; entradas
-desconhecidas não vazias são mascaradas como `***`. `isJwtExpired` trata `exp`
-ausente ou inválido como expirado, aceita `referenceTime` opcional e considera
-expirado o instante exatamente igual ao claim `exp`.
+`HelperUtil.maskPixKey` permanece disponível e usa o validador tipado como
+fonte única. Entradas desconhecidas não vazias são mascaradas como `***`.
 
 Na migração da 4.5.2, deep imports em `src/` precisam ser substituídos e o
 logger passa a ficar totalmente desligado em release por padrão. Consulte o

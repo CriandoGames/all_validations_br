@@ -1,4 +1,34 @@
-# Migrating from 4.5.2 to 5.0.0
+# Migration guides
+
+## From 5.0.1 to 5.0.2
+
+Version 5.0.2 incorporates two incompatible changes from
+`all_br_validations` 1.0.2 and removes duplicate PIX validation from the
+aggregator.
+
+### PIX keys
+
+```dart
+// Before
+final type = HelperUtil.validatePixKey(key); // String?
+
+// Now
+final result = AllValidations.validatePixKey(key);
+final type = result.successValue; // PixKeyType
+```
+
+`HelperUtil.maskPixKey` remains available and uses the typed API internally.
+
+### Strict type checks
+
+`BrZod.type<T>()` no longer performs coercion:
+
+```dart
+BrZod().type<int>().build(123);   // valid
+BrZod().type<int>().build('123'); // invalid
+```
+
+## From 4.5.2 to 5.0.0
 
 Version 5 turns the monolithic package into an aggregator toolkit. The
 implementations now live in five specialized packages, while

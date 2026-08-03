@@ -207,19 +207,18 @@ final ok = HelperUtil.validatePassword(
 
 ## Chaves PIX
 
-Valida e identifica o tipo de uma chave PIX seguindo a ordem de validação do BACEN.
+Use `AllValidations.validatePixKey` como fonte única de validação e
+identificação. O retorno de sucesso é um `PixKeyType`:
 
 ```dart
-// Retorna: 'CPF', 'CNPJ', 'Celular', 'Email', 'Chave Aleatória', ou null
-HelperUtil.validatePixKey('992.864.791-74');                          // 'CPF'
-HelperUtil.validatePixKey('99286479174');                             // 'CPF' (sem máscara)
-HelperUtil.validatePixKey('12.345.678/0001-95');                     // 'CNPJ'
-HelperUtil.validatePixKey('12345678000195');                          // 'CNPJ'
-HelperUtil.validatePixKey('+5511912345678');                          // 'Celular'
-HelperUtil.validatePixKey('user@example.com');                        // 'Email'
-HelperUtil.validatePixKey('123e4567-e89b-4d3a-a456-426614174000');   // 'Chave Aleatória'
-HelperUtil.validatePixKey('12345678901');                             // null (CPF inválido)
-HelperUtil.validatePixKey('');                                        // null
+AllValidations.validatePixKey('992.864.791-74').successValue;
+// PixKeyType.cpf
+
+AllValidations.validatePixKey('12ABC34501DE35').successValue;
+// PixKeyType.cnpj
+
+AllValidations.validatePixKey('+5511912345678').successValue;
+// PixKeyType.phone
 
 // Mascara a chave para exibição segura (não expõe dados completos)
 HelperUtil.maskPixKey('99286479174');
@@ -227,6 +226,9 @@ HelperUtil.maskPixKey('99286479174');
 
 HelperUtil.maskPixKey('12.345.678/0001-95');
 // '12.***.***/****-95'
+
+HelperUtil.maskPixKey('12ABC34501DE35');
+// '12.***.***/****-35'
 
 HelperUtil.maskPixKey('+5511912345678');
 // '+5511*****678'
@@ -241,14 +243,8 @@ HelperUtil.maskPixKey('valor desconhecido'); // '***'
 HelperUtil.maskPixKey('');                    // ''
 ```
 
-**Ordem de validação (conforme BACEN):**
-1. **CPF** — 11 dígitos com dígitos verificadores válidos (aceita com ou sem máscara)
-2. **CNPJ** — 14 dígitos com dígitos verificadores válidos (aceita com ou sem máscara)
-3. **Celular** — formato E.164 obrigatório: `+55` + DDD + número iniciando com `9`
-4. **E-mail** — endereço válido
-5. **Chave aleatória** — UUID v4
-
-> Se o valor contiver apenas dígitos, e-mail e chave aleatória são descartados imediatamente (otimização).
+`HelperUtil.maskPixKey` delega a classificação ao mesmo validador tipado; não
+mantém uma segunda regra de identificação.
 
 ---
 
@@ -310,7 +306,6 @@ Os métodos abaixo ainda funcionam mas estão marcados como `@Deprecated` e **se
 | `getJwtClaim(token, claim)` | `dynamic` | Valor da claim |
 | `encryptPassword(pass, key, salt)` | `String` | Hash simples |
 | `validatePassword(pass, key, hash)` | `bool` | Valida hash |
-| `validatePixKey(key)` | `String?` | Tipo da chave PIX |
 | `maskPixKey(key)` | `String` | Chave mascarada |
 | `getDeviceInfo()` | `Map` | `platform` + `isWeb` |
 

@@ -28,8 +28,8 @@ contracts, structured logging, and authenticated encryption.
 
 | Area | Included package | Main capabilities |
 |---|---|---|
-| Validations | [`all_br_validations`](https://pub.dev/packages/all_br_validations) `^1.0.1` | CPF, CNPJ, documents, `BrZod`, `Contract`, formatters, and Brazilian models |
-| Forms | [`all_br_forms`](https://pub.dev/packages/all_br_forms) `^1.0.0` | 24 Flutter masks and `TextInputFormatter`s |
+| Validations | [`all_br_validations`](https://pub.dev/packages/all_br_validations) `^1.0.2` | CPF, CNPJ, documents, `BrZod`, `Contract`, formatters, and Brazilian models |
+| Forms | [`all_br_forms`](https://pub.dev/packages/all_br_forms) `^1.0.1` | 24 Flutter masks and `TextInputFormatter`s |
 | Results | [`all_result`](https://pub.dev/packages/all_result) `^1.0.0` | `Result<F, S>` and sync/async composition |
 | Logging | [`all_logger`](https://pub.dev/packages/all_logger) `^1.0.1` | levels, filters, colors, printers, and outputs |
 | Cryptography | [`all_crypto`](https://pub.dev/packages/all_crypto) `^1.0.1` | ChaCha20-Poly1305, AES-GCM, SHA-256, HMAC, and v2 envelopes |
@@ -42,7 +42,7 @@ them separately when using the toolkit.
 
 ```yaml
 dependencies:
-  all_validations_br: ^5.0.1
+  all_validations_br: ^5.0.2
 ```
 
 ```dart
@@ -136,13 +136,12 @@ dependency graph.
 
 The main barrel and the historical `validation.dart`, `br_zod.dart`,
 `br_logger.dart`, `crypt.dart`, and `regions_validations.dart` imports remain
-available. `HelperUtil` stays in the aggregator for compatibility; prefer the
-specialized APIs in new code.
+available. `HelperUtil` stays in the aggregator for compatibility, except for
+`validatePixKey`, removed in 5.0.2 to eliminate duplicate validation. Use
+`AllValidations.validatePixKey`, which returns `PixKeyType`.
 
-In 5.0.1, `HelperUtil` recognizes and masks CNPJ PIX keys; unknown non-empty
-values are masked as `***`. `isJwtExpired` treats missing or invalid `exp` as
-expired, accepts an optional `referenceTime`, and expires a token exactly at
-the `exp` instant.
+`HelperUtil.maskPixKey` remains available and uses the typed validator as its
+single source. Unknown non-empty values are masked as `***`.
 
 When migrating from 4.5.2, deep imports under `src/` must be replaced, and the
 logger is now fully disabled in release builds by default. See the

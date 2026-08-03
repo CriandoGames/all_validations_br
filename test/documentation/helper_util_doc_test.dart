@@ -68,7 +68,10 @@ void main() {
         ),
         isTrue,
       );
-      expect(HelperUtil.validatePixKey('+5511912345678'), 'Celular');
+      expect(
+        AllValidations.validatePixKey('+5511912345678').successValue,
+        PixKeyType.phone,
+      );
       expect(HelperUtil.maskPixKey('99286479174'), '992.***.***-74');
       expect(HelperUtil.getDeviceInfo(), containsPair('isWeb', isA<bool>()));
     });

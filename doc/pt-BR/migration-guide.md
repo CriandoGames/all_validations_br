@@ -1,4 +1,37 @@
-# Migração da 4.5.2 para a 5.0.0
+# Guias de migração
+
+## Da 5.0.1 para a 5.0.2
+
+A 5.0.2 incorpora duas alterações incompatíveis de `all_br_validations`
+1.0.2 e remove a validação PIX duplicada do agregador.
+
+### Chaves PIX
+
+```dart
+// Antes
+final tipo = HelperUtil.validatePixKey(chave); // String?
+
+// Agora
+final resultado = AllValidations.validatePixKey(chave);
+final tipo = resultado.successValue; // PixKeyType
+```
+
+Mapeamento: `'CPF'` → `PixKeyType.cpf`, `'CNPJ'` → `PixKeyType.cnpj`,
+`'Celular'` → `PixKeyType.phone`, `'Email'` → `PixKeyType.email` e
+`'Chave Aleatória'` → `PixKeyType.random`.
+
+`HelperUtil.maskPixKey` continua disponível e usa essa API tipada internamente.
+
+### Verificação estrita de tipo
+
+`BrZod.type<T>()` não realiza mais coerção:
+
+```dart
+BrZod().type<int>().build(123);   // válido
+BrZod().type<int>().build('123'); // inválido
+```
+
+## Da 4.5.2 para a 5.0.0
 
 A versão 5 transforma o pacote monolítico em um toolkit agregador. As
 implementações passam a viver em cinco pacotes especializados, enquanto

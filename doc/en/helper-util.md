@@ -180,18 +180,15 @@ salt unless its entropy source has been independently reviewed for that use.
 
 ## PIX keys
 
-`validatePixKey` returns a type label or null. The implemented order is CPF,
-CNPJ, E.164 Brazilian mobile, email, then UUID v4 random key.
+Use `AllValidations.validatePixKey` as the single validation and
+classification source. A successful result contains a `PixKeyType`:
 
 ```dart
-HelperUtil.validatePixKey('992.864.791-74');
-HelperUtil.validatePixKey('12.345.678/0001-95');
-HelperUtil.validatePixKey('12345678000195');
-HelperUtil.validatePixKey('+5511912345678');
-HelperUtil.validatePixKey('user@example.com');
-HelperUtil.validatePixKey(
-  '123e4567-e89b-4d3a-a456-426614174000',
-);
+AllValidations.validatePixKey('992.864.791-74').successValue;
+// PixKeyType.cpf
+
+AllValidations.validatePixKey('12ABC34501DE35').successValue;
+// PixKeyType.cnpj
 ```
 
 Validation checks local shape/check digits. It does not contact BACEN or prove
@@ -202,6 +199,7 @@ registration/ownership.
 ```dart
 HelperUtil.maskPixKey('99286479174');
 HelperUtil.maskPixKey('12.345.678/0001-95'); // 12.***.***/****-95
+HelperUtil.maskPixKey('12ABC34501DE35'); // 12.***.***/****-35
 HelperUtil.maskPixKey('+5511912345678');
 HelperUtil.maskPixKey('user@example.com');
 HelperUtil.maskPixKey('unknown non-empty value'); // ***
@@ -211,6 +209,8 @@ HelperUtil.maskPixKey(''); // empty
 Unknown non-empty values are never returned in clear text; the safe fallback is
 `***`, while an empty input remains empty. Masking reduces display exposure but
 does not anonymize, encrypt, or authorize storage of a real key.
+`maskPixKey` delegates classification to `AllValidations.validatePixKey`; it
+does not maintain a second validation implementation.
 
 ## Platform information
 

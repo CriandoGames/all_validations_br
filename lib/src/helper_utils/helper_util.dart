@@ -86,50 +86,6 @@ class HelperUtil {
   /// Converte horário local para UTC.
   static DateTime convertLocalToUtc(DateTime localDate) => localDate.toUtc();
 
-  /// Valida uma chave PIX e retorna o tipo identificado, ou null se inválida.
-  ///
-  /// Ordem de validação:
-  /// 1. CPF (11 dígitos com dígitos verificadores válidos)
-  /// 2. CNPJ (14 dígitos com dígitos verificadores válidos)
-  /// 3. Celular (formato E.164: +55 + DDD + 9XXXXXXXX)
-  /// 4. E-mail
-  /// 5. Chave aleatória (UUID v4)
-  ///
-  /// Otimização: se a chave contiver apenas dígitos (após limpeza), e-mail e
-  /// chave aleatória são descartados imediatamente.
-  static String? validatePixKey(String key) {
-    if (key.trim().isEmpty) return null;
-
-    final onlyDigits = RegExp(r'^\d+$').hasMatch(
-      key.replaceAll(RegExp(r'[\s.\-]'), ''),
-    );
-
-    // 1. CPF — valida dígitos verificadores via AllValidations.isCpf
-    if (AllValidations.isCpf(key)) return 'CPF';
-
-    // 2. CNPJ — valida dígitos verificadores via AllValidations.isCnpj
-    if (AllValidations.isCnpj(key)) return 'CNPJ';
-
-    // 3. Celular — formato E.164 exigido pelo BACEN: +55 + DDD (2) + 9XXXXXXXX (9 dígitos)
-    if (RegExp(r'^\+55\d{2}9\d{8}$').hasMatch(key)) return 'Celular';
-
-    // Se só tem dígitos, não pode ser e-mail nem chave aleatória
-    if (onlyDigits) return null;
-
-    // 4. E-mail
-    if (AllValidations.isEmail(key)) return 'Email';
-
-    // 5. Chave aleatória — UUID v4 conforme padrão BACEN
-    if (RegExp(
-      r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
-      caseSensitive: false,
-    ).hasMatch(key)) {
-      return 'Chave Aleatória';
-    }
-
-    return null; // Chave inválida
-  }
-
   /// Mascara uma chave PIX para exibição segura, ocultando parte dos dados.
   ///
   /// Exemplos:
@@ -141,40 +97,42 @@ class HelperUtil {
   static String maskPixKey(String key) {
     if (key.isEmpty) return '';
 
-    final type = validatePixKey(key);
+    final result = AllValidations.validatePixKey(key);
+    if (result.isFailure) return '***';
 
-    if (type == 'CPF') {
-      final n = key.replaceAll(RegExp(r'[^0-9]'), '');
-      return '${n.substring(0, 3)}.***.***-${n.substring(9)}';
-    }
+    return switch (result.successValue) {
+      PixKeyType.cpf => _maskCpfPixKey(key),
+      PixKeyType.cnpj => _maskCnpjPixKey(key),
+      PixKeyType.phone =>
+        '${key.substring(0, 5)}*****${key.substring(key.length - 3)}',
+      PixKeyType.email => _maskEmailPixKey(key),
+      PixKeyType.random => _maskRandomPixKey(key),
+    };
+  }
 
-    if (type == 'CNPJ') {
-      final n = key.replaceAll(RegExp(r'[^0-9]'), '');
-      return '${n.substring(0, 2)}.***.***/****-${n.substring(12)}';
-    }
+  static String _maskCpfPixKey(String key) {
+    final normalized = key.replaceAll(RegExp(r'[^0-9]'), '');
+    return '${normalized.substring(0, 3)}.***.***-${normalized.substring(9)}';
+  }
 
-    if (type == 'Celular') {
-      // +5511912345678 → +5511*****678
-      return '${key.substring(0, 5)}*****${key.substring(key.length - 3)}';
-    }
+  static String _maskCnpjPixKey(String key) {
+    final normalized =
+        key.replaceAll(RegExp(r'[^A-Za-z0-9]'), '').toUpperCase();
+    return '${normalized.substring(0, 2)}.***.***/****-${normalized.substring(12)}';
+  }
 
-    if (type == 'Email') {
-      final parts = key.split('@');
-      final local = parts[0];
-      final masked = local.length <= 2
-          ? local
-          : '${local.substring(0, 2)}${'*' * (local.length - 2)}';
-      return '$masked@${parts[1]}';
-    }
+  static String _maskEmailPixKey(String key) {
+    final parts = key.split('@');
+    final local = parts[0];
+    final masked = local.length <= 2
+        ? local
+        : '${local.substring(0, 2)}${'*' * (local.length - 2)}';
+    return '$masked@${parts[1]}';
+  }
 
-    if (type == 'Chave Aleatória') {
-      final segments = key.split('-');
-      if (segments.length == 5) {
-        return '${segments[0]}-****-****-****-${segments[4]}';
-      }
-    }
-
-    return '***';
+  static String _maskRandomPixKey(String key) {
+    final segments = key.split('-');
+    return '${segments[0]}-****-****-****-${segments[4]}';
   }
 
   /// Verifica se a data de nascimento corresponde a uma pessoa maior de [minAge] anos (padrão: 18).

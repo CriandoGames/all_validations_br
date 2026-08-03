@@ -24,8 +24,16 @@ void main() {
     );
 
     expect(
-      HelperUtil.validatePixKey('12.345.678/0001-95'),
-      'CNPJ',
+      AllValidations.validatePixKey('12.345.678/0001-95').successValue,
+      PixKeyType.cnpj,
     );
+
+    expect(
+      AllValidations.validatePixKey('12ABC34501DE35').successValue,
+      PixKeyType.cnpj,
+    );
+
+    expect(BrZod().type<int>().build(123), isNull);
+    expect(BrZod().type<int>().build('123'), isNotNull);
   });
 }
