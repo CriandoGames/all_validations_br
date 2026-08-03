@@ -18,6 +18,15 @@
 - Dependências mínimas atualizadas para `all_br_validations` 1.0.2 e
   `all_br_forms` 1.0.1.
 
+### Documentação e qualidade
+
+- Completada a documentação dartdoc da API pública do agregador e dos
+  pacotes reexportados.
+- Habilitado o lint `public_member_api_docs` em todo o ecossistema.
+- Dependências mínimas finais do patch atualizadas para
+  `all_br_validations` 1.0.3, `all_crypto` 1.0.2, `all_logger` 1.0.2 e
+  `all_result` 1.0.2.
+
 ## 5.0.1
 
 ### Correções

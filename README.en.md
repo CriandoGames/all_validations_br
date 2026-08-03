@@ -28,11 +28,11 @@ contracts, structured logging, and authenticated encryption.
 
 | Area | Included package | Main capabilities |
 |---|---|---|
-| Validations | [`all_br_validations`](https://pub.dev/packages/all_br_validations) `^1.0.2` | CPF, CNPJ, documents, `BrZod`, `Contract`, formatters, and Brazilian models |
+| Validations | [`all_br_validations`](https://pub.dev/packages/all_br_validations) `^1.0.3` | CPF, CNPJ, documents, `BrZod`, `Contract`, formatters, and Brazilian models |
 | Forms | [`all_br_forms`](https://pub.dev/packages/all_br_forms) `^1.0.1` | 24 Flutter masks and `TextInputFormatter`s |
-| Results | [`all_result`](https://pub.dev/packages/all_result) `^1.0.0` | `Result<F, S>` and sync/async composition |
-| Logging | [`all_logger`](https://pub.dev/packages/all_logger) `^1.0.1` | levels, filters, colors, printers, and outputs |
-| Cryptography | [`all_crypto`](https://pub.dev/packages/all_crypto) `^1.0.1` | ChaCha20-Poly1305, AES-GCM, SHA-256, HMAC, and v2 envelopes |
+| Results | [`all_result`](https://pub.dev/packages/all_result) `^1.0.2` | `Result<F, S>` and sync/async composition |
+| Logging | [`all_logger`](https://pub.dev/packages/all_logger) `^1.0.2` | levels, filters, colors, printers, and outputs |
+| Cryptography | [`all_crypto`](https://pub.dev/packages/all_crypto) `^1.0.2` | ChaCha20-Poly1305, AES-GCM, SHA-256, HMAC, and v2 envelopes |
 | Compatibility | included in the aggregator | `HelperUtil` and historical barrels |
 
 These dependencies are installed automatically. You do not need to declare
